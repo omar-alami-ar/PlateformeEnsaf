@@ -49,6 +49,7 @@ namespace PlateformeEnsaf.Areas.Identity.Pages.Account
 
             [Required]
             [DataType(DataType.Password)]
+            [Display(Name = "Mot de passe")]
             public string Password { get; set; }
 
             [Display(Name = "Remember me?")]

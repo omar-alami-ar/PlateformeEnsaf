@@ -3,51 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlateformeEnsaf.Data;
 
 namespace PlateformeEnsaf.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220306102411_Updating database")]
+    partial class Updatingdatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.14")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("AnnonceDomaine", b =>
-                {
-                    b.Property<int>("AnnoncesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DomainesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AnnoncesId", "DomainesId");
-
-                    b.HasIndex("DomainesId");
-
-                    b.ToTable("AnnonceDomaine");
-                });
-
-            modelBuilder.Entity("ApplicationUserDomaine", b =>
-                {
-                    b.Property<int>("InteretsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("InteretsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("ApplicationUserDomaine");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -199,7 +171,7 @@ namespace PlateformeEnsaf.Data.Migrations
 
                     b.HasIndex("Id_Following_User");
 
-                    b.ToTable("Abonnements");
+                    b.ToTable("Abonnement");
                 });
 
             modelBuilder.Entity("PlateformeEnsaf.Models.Annonce", b =>
@@ -218,6 +190,10 @@ namespace PlateformeEnsaf.Data.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Id_User")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -272,13 +248,13 @@ namespace PlateformeEnsaf.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("FiliereId")
-                        .HasColumnType("int");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Id_Filiere")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsInBlacklist")
                         .HasColumnType("bit");
@@ -336,7 +312,7 @@ namespace PlateformeEnsaf.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FiliereId");
+                    b.HasIndex("Id_Filiere");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -367,6 +343,13 @@ namespace PlateformeEnsaf.Data.Migrations
                     b.Property<DateTime>("DatePublication")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Id_Annonce")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Id_User")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
@@ -386,11 +369,16 @@ namespace PlateformeEnsaf.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Nom")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Domaines");
                 });
@@ -424,6 +412,9 @@ namespace PlateformeEnsaf.Data.Migrations
                     b.Property<byte[]>("Contenu")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int>("Id_Annonce")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AnnonceId");
@@ -454,36 +445,6 @@ namespace PlateformeEnsaf.Data.Migrations
                     b.HasBaseType("PlateformeEnsaf.Models.Annonce");
 
                     b.HasDiscriminator().HasValue("Question");
-                });
-
-            modelBuilder.Entity("AnnonceDomaine", b =>
-                {
-                    b.HasOne("PlateformeEnsaf.Models.Annonce", null)
-                        .WithMany()
-                        .HasForeignKey("AnnoncesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PlateformeEnsaf.Models.Domaine", null)
-                        .WithMany()
-                        .HasForeignKey("DomainesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ApplicationUserDomaine", b =>
-                {
-                    b.HasOne("PlateformeEnsaf.Models.Domaine", null)
-                        .WithMany()
-                        .HasForeignKey("InteretsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PlateformeEnsaf.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -565,7 +526,9 @@ namespace PlateformeEnsaf.Data.Migrations
                 {
                     b.HasOne("PlateformeEnsaf.Models.Filiere", "Filiere")
                         .WithMany()
-                        .HasForeignKey("FiliereId");
+                        .HasForeignKey("Id_Filiere")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Filiere");
                 });
@@ -573,7 +536,7 @@ namespace PlateformeEnsaf.Data.Migrations
             modelBuilder.Entity("PlateformeEnsaf.Models.Commentaire", b =>
                 {
                     b.HasOne("PlateformeEnsaf.Models.Annonce", "Annonce")
-                        .WithMany("Commentaires")
+                        .WithMany()
                         .HasForeignKey("AnnonceId");
 
                     b.HasOne("PlateformeEnsaf.Models.ApplicationUser", "User")
@@ -585,20 +548,20 @@ namespace PlateformeEnsaf.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("PlateformeEnsaf.Models.Domaine", b =>
+                {
+                    b.HasOne("PlateformeEnsaf.Models.ApplicationUser", null)
+                        .WithMany("Interets")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
             modelBuilder.Entity("PlateformeEnsaf.Models.Image", b =>
                 {
                     b.HasOne("PlateformeEnsaf.Models.Annonce", "Annonce")
-                        .WithMany("Images")
+                        .WithMany()
                         .HasForeignKey("AnnonceId");
 
                     b.Navigation("Annonce");
-                });
-
-            modelBuilder.Entity("PlateformeEnsaf.Models.Annonce", b =>
-                {
-                    b.Navigation("Commentaires");
-
-                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("PlateformeEnsaf.Models.ApplicationUser", b =>
@@ -608,6 +571,8 @@ namespace PlateformeEnsaf.Data.Migrations
                     b.Navigation("Followers");
 
                     b.Navigation("Follows");
+
+                    b.Navigation("Interets");
                 });
 #pragma warning restore 612, 618
         }

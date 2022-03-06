@@ -27,11 +27,12 @@ namespace PlateformeEnsaf.Models
         [Column(TypeName = "nvarchar(200)")]
         public string Biographie { get; set; }
 
-        [Required]
-        [ForeignKey("Filiere")]
-        [Display(Name = "Filiere")]
-        public int Id_Filiere { get; set; }
-        
+        //[ForeignKey("Filieres")]
+        //[Required]
+        //[Display(Name ="Filiere")]
+        //public int Id_Filiere { get; set; }
+
+        //[NotMapped]
         public virtual Filiere Filiere { get; set; }
 
         [Required]
@@ -44,9 +45,15 @@ namespace PlateformeEnsaf.Models
 
         public int NbrVotes { get; set; }
 
-        public virtual List<ApplicationUser> Abonnés { get; set; }
+        public  virtual List<Abonnement> Followers { get; set; }
+        public virtual List<Abonnement> Follows { get; set; }
 
-        public virtual List<ApplicationUser> Abonnements { get; set; }
+        public virtual List<Annonce> Annonces { get; set; }
+
+        public virtual List<Domaine> Interets { get; set; }
+
+        //public virtual List<Commentaire> Commentaires { get; set; }
+
     }
 
 }

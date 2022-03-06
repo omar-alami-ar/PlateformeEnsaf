@@ -27,7 +27,7 @@ namespace PlateformeEnsaf.Controllers
             }
             var currentUser = await GetCurrentUser();
             ViewBag.CurrentUserId = currentUser.Id;
-            var user = await userManager.Users.FirstOrDefaultAsync(u=> u.Id==id);
+            var user = await userManager.Users.Include(u=> u.Filiere).FirstOrDefaultAsync(u=> u.Id==id);
             if (user == null)
             {
                 return RedirectToAction("PageNotFound", "Home");

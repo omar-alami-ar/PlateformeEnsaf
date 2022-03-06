@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 
 namespace PlateformeEnsaf.Models
 {
-    public class Filiere
+    public class Image
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
-        [Column(TypeName = "nvarchar(100)")]
-        public string Nom { get; set; }
 
-       // public virtual List<ApplicationUser> Users { get; set; }
+        public virtual Annonce Annonce { get; set; }
+
+        public byte[] Contenu { get; set; }
+
+
     }
 }

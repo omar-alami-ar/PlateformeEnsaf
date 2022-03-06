@@ -15,9 +15,33 @@ namespace PlateformeEnsaf.Data
         {
         }
 
+        public DbSet<Filiere> Filieres { get; set; }
+        public DbSet<Offre> Offres { get; set; }
+        public DbSet<Image> Images { get; set; }
+        public DbSet<Commentaire> Commentaires { get; set; }
+        public DbSet<Question> Questions { get; set; }
+
+        public DbSet<Abonnement> Abonnements { get; set; }
+
+        public DbSet<Domaine> Domaines { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
             base.OnModelCreating(builder);
+
+           
+
+            builder.Entity<Abonnement>()
+            .HasOne(l => l.FollowingUser)
+            .WithMany(a => a.Follows)
+            .HasForeignKey(l => l.Id_Following_User);
+
+            builder.Entity<Abonnement>()
+                   .HasOne(l => l.FollowedUser)
+                   .WithMany(a => a.Followers)
+                   .HasForeignKey(l => l.Id_Followed_User);
+
             builder.Entity<ApplicationUser>(entity =>
             {
                 entity.ToTable(name: "Users");

@@ -14,8 +14,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using PlateformeEnsaf.Data;
 using PlateformeEnsaf.Models;
 
 namespace PlateformeEnsaf.Areas.Identity.Pages.Account
@@ -27,17 +29,20 @@ namespace PlateformeEnsaf.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [BindProperty]
@@ -51,11 +56,11 @@ namespace PlateformeEnsaf.Areas.Identity.Pages.Account
         {
 
             [Required]
-            [Display(Name = "First Name")]
+            [Display(Name = "Prénom")]
             public string FirstName { get; set; }
 
             [Required]
-            [Display(Name = "Last Name")]
+            [Display(Name = "Nom")]
             public string LastName { get; set; }
 
 
@@ -67,16 +72,16 @@ namespace PlateformeEnsaf.Areas.Identity.Pages.Account
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Mot de passe")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
+            [Display(Name = "Confirmer mot de passe")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
            
-            [Display(Name = "Profile Picture")]
+            [Display(Name = "Photo de profil")]
             public byte[] ProfilePicture { get; set; }
 
             [Required]
@@ -85,7 +90,7 @@ namespace PlateformeEnsaf.Areas.Identity.Pages.Account
             public string CIN { get; set; }
 
             [Required]
-            [StringLength(50, ErrorMessage = "L'adresse doit contenir entre 5 et 50 caracteres.",MinimumLength =5)]
+            [StringLength(50, ErrorMessage = "L'adresse doit contenir entre 5 et 50 caracteres.")]
             [Display(Name = "Adresse")]
             public string Adresse { get; set; }
 
@@ -99,13 +104,13 @@ namespace PlateformeEnsaf.Areas.Identity.Pages.Account
             public int Filiere { get; set; }
 
             [Column(TypeName = "nvarchar(500)")]
-            [Display(Name = "Niveau")]
+            [Display(Name = "Niveau d'études")]
             public string Niveau { get; set; }
 
             [Required]
             [Column(TypeName = "nvarchar(10)")]
             [DataType(DataType.PhoneNumber)]
-            [Display(Name = "Tel")]
+            [Display(Name = "Telephone")]
             public string Tel { get; set; }
 
 
@@ -115,6 +120,7 @@ namespace PlateformeEnsaf.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
+            ViewData["Id_Filiere"] = new SelectList(_context.Filieres, "Id", "Nom");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
@@ -135,7 +141,8 @@ namespace PlateformeEnsaf.Areas.Identity.Pages.Account
                     PhoneNumber = Input.Tel,
                     Adresse = Input.Adresse,
                     Biographie = Input.Biographie,
-                    Id_Filiere = Input.Filiere,
+                    Filiere = _context.Filieres.FirstOrDefault(f=>f.Id==Input.Filiere),
+                    //Id_Filiere = Input.Filiere,
                     Niveau = Input.Niveau
                     };
                 if (Request.Form.Files.Count > 0)
@@ -181,6 +188,7 @@ namespace PlateformeEnsaf.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+            ViewData["Id_Filiere"] = new SelectList(_context.Filieres, "Id", "Nom");
             return Page();
         }
     }

@@ -1,7 +1,7 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Inscription";
     Layout = null;
 }
 
@@ -41,77 +41,94 @@
 
             <div class="container-xl px-4">
                 <div class="row justify-content-center">
-                    <div class="col-lg-5">
+                    <div class="col-lg-8">
                         <!-- Basic login form-->
                         <div class="card shadow-lg border-0 rounded-lg mt-5">
-                            <div class="card-header justify-content-center"><h3 class="fw-light my-4">Register</h3></div>
+                            <div class="card-header justify-content-center"><h3 class="fw-light my-4">Inscription</h3></div>
                             <div asp-validation-summary="All" class="text-danger"></div>
                             <div class="card-body">
                                 <!-- Login form-->
+                                
                                 <form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
-                                    <div class="form-group">
-                                        <label asp-for="Input.FirstName"></label>
-                                        <input asp-for="Input.FirstName" class="form-control" />
-                                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="Input.LastName"></label>
-                                        <input asp-for="Input.LastName" class="form-control" />
-                                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="Input.CIN"></label>
-                                        <input asp-for="Input.CIN" class="form-control" />
-                                        <span asp-validation-for="Input.CIN" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="Input.Tel"></label>
-                                        <input asp-for="Input.Tel" class="form-control" />
-                                        <span asp-validation-for="Input.Tel" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="Input.Adresse"></label>
-                                        <input asp-for="Input.Adresse" class="form-control" />
-                                        <span asp-validation-for="Input.Adresse" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="Input.Biographie"></label>
-                                        <textarea class="form-control" asp-for="Input.Biographie" rows="3"></textarea>
-                                        <span asp-validation-for="Input.Biographie" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="Input.Niveau"></label>
-                                        <select class="form-select" asp-for="Input.Niveau" required>
-                                            <option selected disabled value="">--Choisir niveau d'études--</option>
-                                            <option value="1">1ère Année</option>
-                                            <option value="2">2éme Année</option>
-                                            <option value="3">2éme Année</option>
-                                            <option value="Laureat">Lauréat</option>
-                                        </select>
-                                        <span asp-validation-for="Input.Niveau" class="text-danger"></span>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label asp-for="Input.FirstName"></label>
+                                            <input asp-for="Input.FirstName" class="form-control" />
+                                            <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label asp-for="Input.LastName"></label>
+                                            <input asp-for="Input.LastName" class="form-control" />
+                                            <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label asp-for="Input.Email"></label>
                                         <input asp-for="Input.Email" class="form-control" />
                                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                                     </div>
-                                    <div class="form-group">
-                                        <label asp-for="Input.Password"></label>
-                                        <input asp-for="Input.Password" class="form-control" />
-                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label asp-for="Input.Password"></label>
+                                            <input asp-for="Input.Password" class="form-control" />
+                                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label asp-for="Input.ConfirmPassword"></label>
+                                            <input asp-for="Input.ConfirmPassword" class="form-control" />
+                                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label asp-for="Input.CIN"></label>
+                                            <input asp-for="Input.CIN" class="form-control" />
+                                            <span asp-validation-for="Input.CIN" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label asp-for="Input.Tel"></label>
+                                            <input asp-for="Input.Tel" class="form-control" />
+                                            <span asp-validation-for="Input.Tel" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label asp-for="Input.Adresse"></label>
+                                            <input asp-for="Input.Adresse" class="form-control" />
+                                            <span asp-validation-for="Input.Adresse" class="text-danger"></span>
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <label asp-for="Input.ConfirmPassword"></label>
-                                        <input asp-for="Input.ConfirmPassword" class="form-control" />
-                                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                        <label asp-for="Input.Biographie"></label>
+                                        <textarea class="form-control" asp-for="Input.Biographie" rows="3"></textarea>
+                                        <span asp-validation-for="Input.Biographie" class="text-danger"></span>
                                     </div>
-                                    <div class="custom-file form-group">
-                                        <label class="custome-file-label" asp-for="Input.ProfilePicture"></label>
-                                        <input type="file" accept="image/*" asp-for="Input.ProfilePicture" class="" />
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label asp-for="Input.Niveau"></label>
+                                            <br />
+                                            <select class="form-control" asp-for="Input.Niveau" required>
+                                                <option selected disabled value="">--Choisir niveau d'études--</option>
+                                                <option value="1ère Année">1ère Année</option>
+                                                <option value="2éme Année">2éme Année</option>
+                                                <option value="3éme Année">3éme Année</option>
+                                                <option value="Laureat">Lauréat</option>
+                                            </select>
+                                            <span asp-validation-for="Input.Niveau" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">Filière</label>
+                                            <select asp-for="Input.Filiere" class="form-control" asp-items="ViewBag.Id_Filiere"></select>
+                                        </div>
+                                     </div>
+                                        <div class="custom-file form-group col-md-6">
+                                            <label class="custome-file-label" asp-for="Input.ProfilePicture"></label>
+                                            <br />
+                                            <input type="file" accept="image/*" asp-for="Input.ProfilePicture" class="" />
 
-                                        <span asp-validation-for="Input.ProfilePicture" class="text-danger"></span>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary mt-3">Register</button>
+                                            <span asp-validation-for="Input.ProfilePicture" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-12 text-center">
+                                            <button type="submit" class="btn btn-primary col-md-12 mt-4">Valider</button>
+                                        </div>
                                 </form>
                             </div>
                             <div class="card-footer text-center form-group">
@@ -155,61 +172,5 @@
 
 
 
-@*<h1>@ViewData["Title"]</h1>
 
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                <h4>Create a new account.</h4>
-                <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Input.Email"></label>
-                    <input asp-for="Input.Email" class="form-control" />
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Input.Password"></label>
-                    <input asp-for="Input.Password" class="form-control" />
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Input.ConfirmPassword"></label>
-                    <input asp-for="Input.ConfirmPassword" class="form-control" />
-                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                </div>
-                <button type="submit" class="btn btn-primary">Register</button>
-            </form>
-        </div>
-        <div class="col-md-6 col-md-offset-2">
-            <section>
-                <h4>Use another service to register.</h4>
-                <hr />
-                @{
-                    if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                    {
-                        <div>
-                            <p>
-                                There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                                for details on setting up this ASP.NET application to support logging in via external services.
-                            </p>
-                        </div>
-                    }
-                    else
-                    {
-                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                            <div>
-                                <p>
-                                    @foreach (var provider in Model.ExternalLogins)
-                                    {
-                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                    }
-                                </p>
-                            </div>
-                        </form>
-                    }
-                }
-            </section>
-        </div>
-    </div>*@
 
