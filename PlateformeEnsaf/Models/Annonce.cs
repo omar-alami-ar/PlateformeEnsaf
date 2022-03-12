@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PlateformeEnsaf.Models
 {
-    public abstract class  Annonce
+    public class  Annonce
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -20,18 +20,18 @@ namespace PlateformeEnsaf.Models
         [Required, MaxLength(500)]
         public string Description { get; set; }
 
-        
-        public virtual  ApplicationUser User { get; set; }
+
+        public virtual ApplicationUser User { get; set; }
 
         
         [DataType(DataType.Date)]
         public DateTime DatePublication { get; set; } = DateTime.Now;
 
-        public int Note { get; set; }
+        public int Note { get; set; } = 0;
 
-        public string Statut { get; set; }
+        public string Statut { get; set; } = "En attente";
 
-        public virtual List<Domaine> Domaines { get; set; }
+        public virtual List<Annonce_Domaine> Annonce_Domaines { get; set; } = new List<Annonce_Domaine>();
 
         public virtual List<Image> Images { get; set; }
 

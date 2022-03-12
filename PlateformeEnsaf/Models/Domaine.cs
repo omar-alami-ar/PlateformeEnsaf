@@ -17,9 +17,9 @@ namespace PlateformeEnsaf.Models
         [Column(TypeName = "nvarchar(100)")]
         public string Nom { get; set; }
 
-        public List<ApplicationUser> Users { get; set; }
+        public List<ApplicationUser_Domaine> User_Domaines { get; set; }
 
-        public List<Annonce> Annonces { get; set; }
+        public List<Annonce_Domaine> Annonce_Domaines { get; set; }
 
     }
 }
