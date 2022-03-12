@@ -45,14 +45,17 @@ namespace PlateformeEnsaf.Models
 
         public int NbrVotes { get; set; }
 
-        public  virtual List<Abonnement> Followers { get; set; }
-        public virtual List<Abonnement> Follows { get; set; }
+        public  virtual ICollection<Abonnement> Followers { get; set; }
+        public  virtual ICollection<Abonnement> Follows { get; set; }
 
         public virtual List<Annonce> Annonces { get; set; }
 
         public virtual List<Domaine> Interets { get; set; }
 
         //public virtual List<Commentaire> Commentaires { get; set; }
+
+        [NotMapped]
+        public static List<string> Ids = new List<string>();
 
     }
 

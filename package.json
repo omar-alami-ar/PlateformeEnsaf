@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@microsoft/signalr": "^6.0.3",
+    "jquery-bar-rating": "^1.2.2"
+  }
+}
