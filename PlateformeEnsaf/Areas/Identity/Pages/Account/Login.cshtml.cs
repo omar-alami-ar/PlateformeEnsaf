@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using PlateformeEnsaf.Models;
+using System.Security.Claims;
 
 namespace PlateformeEnsaf.Areas.Identity.Pages.Account
 {
@@ -82,8 +83,12 @@ namespace PlateformeEnsaf.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (user != null) { 
-                var result = await _signInManager.PasswordSignInAsync(user, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                if (user != null) {
+                    //var claimEmail = new Claim(ClaimTypes.Email, user.Email);
+                    //var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, user.Id);
+                    //var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier }, "serverAuth");
+                    //var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                    var result = await _signInManager.PasswordSignInAsync(user, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
