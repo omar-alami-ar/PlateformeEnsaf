@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PlateformeEnsaf.Models;
@@ -10,6 +10,7 @@ namespace PlateformeEnsaf.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+   
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -20,6 +21,8 @@ namespace PlateformeEnsaf.Data
         public DbSet<Image> Images { get; set; }
         public DbSet<Commentaire> Commentaires { get; set; }
         public DbSet<Question> Questions { get; set; }
+        public DbSet<ApplicationUser_Domaine> user_Domaines { get; set; }
+        public DbSet<Annonce_Domaine> Annonce_Domaines { get; set; }
 
         public DbSet<Abonnement> Abonnements { get; set; }
 
@@ -30,7 +33,25 @@ namespace PlateformeEnsaf.Data
 
             base.OnModelCreating(builder);
 
-           
+            builder.Entity<Annonce_Domaine>()
+            .HasOne(l => l.Annonce)
+            .WithMany(a => a.Annonce_Domaines)
+            .HasForeignKey(l => l.AnnonceId);
+
+            builder.Entity<Annonce_Domaine>()
+                   .HasOne(l => l.Domaine)
+                   .WithMany(a => a.Annonce_Domaines)
+                   .HasForeignKey(l => l.DomaineId);
+
+            builder.Entity<ApplicationUser_Domaine>()
+            .HasOne(l => l.User)
+            .WithMany(a => a.User_Domaines)
+            .HasForeignKey(l => l.UserId);
+
+            builder.Entity<ApplicationUser_Domaine>()
+                   .HasOne(l => l.Domaine)
+                   .WithMany(a => a.User_Domaines)
+                   .HasForeignKey(l => l.DomaineId);
 
             builder.Entity<Abonnement>()
             .HasOne(l => l.FollowingUser)
@@ -73,5 +94,7 @@ namespace PlateformeEnsaf.Data
 
           
         }
+
+        public DbSet<PlateformeEnsaf.Models.Annonce> Annonce { get; set; }
     }
 }

@@ -50,7 +50,7 @@ namespace PlateformeEnsaf.Models
 
         public virtual List<Annonce> Annonces { get; set; }
 
-        public virtual List<Domaine> Interets { get; set; }
+        public virtual List<ApplicationUser_Domaine> User_Domaines { get; set; }
 
         //public virtual List<Commentaire> Commentaires { get; set; }
 
