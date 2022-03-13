@@ -84,11 +84,16 @@ namespace PlateformeEnsaf.Areas.Identity.Pages.Account
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var user = await _userManager.FindByEmailAsync(Input.Email);
                 if (user != null) {
-                    //var claimEmail = new Claim(ClaimTypes.Email, user.Email);
-                    //var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, user.Id);
-                    //var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier }, "serverAuth");
+                   // var claimEmail = new Claim(ClaimTypes.Email, user.Email);
+                   // var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, user.Id);
+                   //// var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier }, "serverAuth");
+                   // await _userManager.AddClaimAsync(user,claimEmail);
+                   // await _userManager.AddClaimAsync(user, claimNameIdentifier);
                     //var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                    //var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
+                    //var result2 = await _signInManager.Context.SignInAsync(user,claimsPrincipal);
                     var result = await _signInManager.PasswordSignInAsync(user, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                    
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");

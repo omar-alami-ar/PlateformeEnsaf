@@ -8,18 +8,18 @@
 <div class="container p-0">
 
     <h1 class="h3 mb-3">Messages</h1>
-    <ul>
+    @*<ul>
        
         @foreach (var item in ViewBag.number) {
          <li>@item</li>
         }
         
-    </ul>
+    </ul>*@
     
-    <input id="connectionId" value="" />
-    <input id="receiverId" value="@ViewBag.user.Id" />
-    <input id="senderId" value="@ViewBag.senderId" />
-    <input id="senderName" value="@ViewBag.senderName" />
+    <input type="hidden" id="connectionId"  value="" />
+    <input type="hidden" id="receiverId" value="@ViewBag.user.Id" />
+    <input type="hidden" id="senderId" value="@ViewBag.senderId" />
+    <input type="hidden" id="senderName" value="@ViewBag.senderName" />
     <div class="card">
         <div class="row g-0">
             <div class="col-12 col-lg-5 col-xl-3 border-right">
@@ -42,70 +42,29 @@
                         </div>
                     </div>
                 </a>
-                <a href="#" class="list-group-item list-group-item-action border-0">
-                    <div class="badge bg-success float-right">2</div>
-                    <div class="d-flex align-items-start">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="rounded-circle mr-1" alt="William Harris" width="40" height="40">
+
+                @foreach (var contact in ViewBag.contacts)
+                {
+                    <a href="#" class="list-group-item list-group-item-action border-0">
+                        <div class="badge bg-success float-right">5</div>
+                        <div class="d-flex align-items-start">
+                            @if (contact.FollowedUser.ProfilePicture != null)
+                            {
+                                <img src="data:image/*;base64,@(Convert.ToBase64String(contact.FollowedUser.ProfilePicture))" class="rounded-circle mr-1" alt="" width="40" height="40">
+                            }
+                            else
+                            {
+                                <img src="https://bootdey.com/img/Content/avatar/avatar5.png" class="rounded-circle mr-1" alt="" width="40" height="40">
+                                
+                                            }
                         <div class="flex-grow-1 ml-3">
-                            William Harris
+                            @contact.FollowedUser.FirstName @contact.FollowedUser.LastName
                             <div class="small"><span class="fas fa-circle chat-online"></span> Online</div>
                         </div>
-                    </div>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action border-0">
-                    <div class="d-flex align-items-start">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
-                        <div class="flex-grow-1 ml-3">
-                            Sharon Lessman
-                            <div class="small"><span class="fas fa-circle chat-online"></span> Online</div>
                         </div>
-                    </div>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action border-0">
-                    <div class="d-flex align-items-start">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar4.png" class="rounded-circle mr-1" alt="Christina Mason" width="40" height="40">
-                        <div class="flex-grow-1 ml-3">
-                            Christina Mason
-                            <div class="small"><span class="fas fa-circle chat-offline"></span> Offline</div>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action border-0">
-                    <div class="d-flex align-items-start">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar5.png" class="rounded-circle mr-1" alt="Fiona Green" width="40" height="40">
-                        <div class="flex-grow-1 ml-3">
-                            Fiona Green
-                            <div class="small"><span class="fas fa-circle chat-offline"></span> Offline</div>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action border-0">
-                    <div class="d-flex align-items-start">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="rounded-circle mr-1" alt="Doris Wilder" width="40" height="40">
-                        <div class="flex-grow-1 ml-3">
-                            Doris Wilder
-                            <div class="small"><span class="fas fa-circle chat-offline"></span> Offline</div>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action border-0">
-                    <div class="d-flex align-items-start">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar4.png" class="rounded-circle mr-1" alt="Haley Kennedy" width="40" height="40">
-                        <div class="flex-grow-1 ml-3">
-                            Haley Kennedy
-                            <div class="small"><span class="fas fa-circle chat-offline"></span> Offline</div>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action border-0">
-                    <div class="d-flex align-items-start">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Jennifer Chang" width="40" height="40">
-                        <div class="flex-grow-1 ml-3">
-                            Jennifer Chang
-                            <div class="small"><span class="fas fa-circle chat-offline"></span> Offline</div>
-                        </div>
-                    </div>
-                </a>
+                    </a>
+                }
+
 
                 <hr class="d-block d-lg-none mt-1 mb-0">
             </div>
@@ -115,13 +74,13 @@
                         <div class="position-relative">
                             @if (ViewBag.user.ProfilePicture != null)
                             {
-                            <img class="rounded-circle"
+                            <img id="chat-profile-pic" class="rounded-circle"
                                  src="data:image/*;base64,@(Convert.ToBase64String(ViewBag.user.ProfilePicture))" style="width:40px; height:40px">
 
                             }
                             else
                             {
-                            <img class="rounded-circle"
+                            <img id="chat-profile-pic" class="rounded-circle"
                                  src="~/img/undraw_profile.svg">
                             }
 
@@ -296,7 +255,14 @@
         var imageAndTimeDiv = jQuery('<div>', {
         }).appendTo(rootDiv);
 
-        imageAndTimeDiv.prepend('<img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">')
+       // var image = $("#chat-profile-pic");
+        var imageSrc = $("#chat-profile-pic").attr('src');
+        var img = $('<img />', {
+            src: imageSrc,
+            class: 'rounded-circle mr-1',
+            alt: 'img'
+        }).height(40).width(40);
+        imageAndTimeDiv.prepend(img);
         var time = jQuery('<div>', {
             class: 'text-muted small text-nowrap mt-2'
         });
@@ -348,7 +314,15 @@
             var imageAndTimeDiv = jQuery('<div>', {
             }).appendTo(rootDiv);
 
-            imageAndTimeDiv.prepend('<img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">')
+            var imageSrc = $("#current-profile-pic").attr('src');
+            var img = $('<img />', {
+
+                src: imageSrc,
+                class: 'rounded-circle mr-1',
+                alt: 'img'
+            }).height(40).width(40);
+            
+            imageAndTimeDiv.prepend(img);
             var time = jQuery('<div>', {
                 class: 'text-muted small text-nowrap mt-2'
             });
@@ -370,7 +344,7 @@
             var user = document.getElementById("senderName").value; //name of sender
             var receiverConnectionId = document.getElementById("receiverId").value;  //id of receiver
             contentDiv.append(message);
-            connection.invoke("SendToUser", user, receiverConnectionId, message).catch(function (err) {
+            connection.invoke("SendMessage", user, message).catch(function (err) {
                 return console.error(err.toString());
             });
             event.preventDefault();

@@ -30,7 +30,9 @@ namespace PlateformeEnsaf.Controllers
             ViewBag.user = await userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
             var sender = await GetCurrentUser();
             ViewBag.senderId = sender.Id;
-            ViewBag.senderName = sender.FirstName + sender.LastName;
+            var currentUser = await userManager.Users.Include(u => u.Follows).Include(u => u.Followers).FirstOrDefaultAsync(u => u.Id == sender.Id);
+            ViewBag.senderName = sender.FirstName + " "+ sender.LastName;
+            ViewBag.contacts = currentUser.Follows;
             return View();
         }
 
