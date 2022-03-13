@@ -7,7 +7,6 @@
 
 <div class="container p-0">
 
-    <h1 class="h3 mb-3">Messages</h1>
     @*<ul>
        
         @foreach (var item in ViewBag.number) {
@@ -99,31 +98,40 @@
 
                 <div class="position-relative">
                     <div id="chat-messages-list" class="chat-messages p-4">
+                       
+                        @foreach (var message in ViewBag.messages)
+                        {
+                            @if (message.Sender.Id == ViewBag.senderId)
+                            {
+                                <div class="chat-message-right pb-4">
+                                    <div>
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
+                                        <div class="text-muted small text-nowrap mt-2">@message.DateEnvoi.ToString("dd/MM")<br />@message.DateEnvoi.ToString("HH:mm")</div>
+                                    </div>
+                                    <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+                                        <div class="font-weight-bold mb-1">You</div>
+                                        @message.Content
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="chat-message-left pb-4">
+                                    <div>
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+                                        <div class="text-muted small text-nowrap mt-2">@message.DateEnvoi.ToString("dd/MM")<br />@message.DateEnvoi.ToString("HH:mm")</div>
+                                    </div>
+                                    <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                                        <div class="font-weight-bold mb-1">@message.Sender.FirstName @message.Sender.LastName</div>
+                                        @message.Content
+                                    </div>
+                                </div>
+                            }
+                        }
 
-                        <div class="chat-message-right pb-4">
-                            <div>
-                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
-                                <div class="text-muted small text-nowrap mt-2">2:33 am</div>
-                            </div>
-                            <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-                                <div class="font-weight-bold mb-1">You</div>
-                                Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
-                            </div>
-                        </div>
-
-                        <div class="chat-message-left pb-4">
-                            <div>
-                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
-                                <div class="text-muted small text-nowrap mt-2">2:34 am</div>
-                            </div>
-                            <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                                <div class="font-weight-bold mb-1">Sharon Lessman</div>
-                                Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
-                            </div>
-                        </div>
-
-
+                        <div id="scroll"></div>
                     </div>
+                    
                 </div>
 
                 <div class="flex-grow-0 py-3 px-4 border-top">
@@ -151,7 +159,7 @@
     .chat-messages {
         display: flex;
         flex-direction: column;
-        max-height: 800px;
+        max-height: 350px;
         overflow-y: scroll
     }
 
@@ -238,6 +246,13 @@
 </script>*@
 
 <script type="text/javascript">
+
+    function chatBottom() {
+       // $("#chat-messages-list").lastElementChild.scrollIntoView();
+        document.getElementById('scroll').scrollIntoView();
+    };
+    chatBottom();
+
     "use strict";
     var connection = new signalR.HubConnectionBuilder().withUrl("/MessageHub").build();
 
@@ -248,9 +263,12 @@
     connection.on("ReceiveMessage", function (user, message) {
         var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+        $('#scroll').remove();
         var rootDiv = jQuery('<div>', {
             class: 'chat-message-left pb-4',
         }).appendTo('#chat-messages-list');
+
+        
 
         var imageAndTimeDiv = jQuery('<div>', {
         }).appendTo(rootDiv);
@@ -267,6 +285,17 @@
             class: 'text-muted small text-nowrap mt-2'
         });
         var dateWithouthSecond = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        var MyDate = new Date();
+        var MyDateString;
+
+        //MyDate.setDate(MyDate.getDate() + 20);
+
+        MyDateString = ('0' + MyDate.getDate()).slice(-2) + '/'
+            + ('0' + (MyDate.getMonth() + 1)).slice(-2);
+
+        time.prepend(MyDateString + '<br>');
+
         time.append(dateWithouthSecond);
         imageAndTimeDiv.append(time);
 
@@ -281,6 +310,12 @@
         contentDiv.append(nameDiv);
         contentDiv.append(msg);
 
+        var rootDiv = jQuery('<div>', {
+            id: 'scroll',
+        }).appendTo('#chat-messages-list');
+        chatBottom();
+        //rootDiv.scrollIntoView();
+
     });
 
     connection.start().then(function () {
@@ -291,7 +326,7 @@
     }).catch(function (err) {
         return console.error(err.toString());
     });
-
+    
     //document.getElementById("sendButton").addEventListener("click", function (event) {
     //    var user = document.getElementById("userInput").value;
     //    var message = document.getElementById("messageInput").value;
@@ -307,9 +342,12 @@
         var message = $("#message-box").val();
         if (message != "") {
 
+            $('#scroll').remove();
             var rootDiv = jQuery('<div>', {
                 class: 'chat-message-right pb-4',
             }).appendTo('#chat-messages-list');
+
+            
 
             var imageAndTimeDiv = jQuery('<div>', {
             }).appendTo(rootDiv);
@@ -327,6 +365,17 @@
                 class: 'text-muted small text-nowrap mt-2'
             });
             var dateWithouthSecond = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          
+
+            var MyDate = new Date();
+            var MyDateString;
+
+            //MyDate.setDate(MyDate.getDate() + 20);
+
+            MyDateString = ('0' + MyDate.getDate()).slice(-2) + '/'
+                + ('0' + (MyDate.getMonth() + 1)).slice(-2);
+
+            time.prepend(MyDateString+'<br>');
             time.append(dateWithouthSecond);
             imageAndTimeDiv.append(time);
 
@@ -342,15 +391,35 @@
             /*contentDiv.append(message);*/
 
             var user = document.getElementById("senderName").value; //name of sender
-            var receiverConnectionId = document.getElementById("receiverId").value;  //id of receiver
+           // var receiverConnectionId = document.getElementById("receiverId").value;  //id of receiver
             contentDiv.append(message);
+           
             connection.invoke("SendMessage", user, message).catch(function (err) {
                 return console.error(err.toString());
             });
+
+            $.ajax({
+                type: "POST",
+                url: "/Chat/StoreMessage",
+                data: { senderId: $("#senderId").val(), receiverId: $("#receiverId").val(), content: message },
+                success: function () {
+                    //console.log(null);
+                    
+                },
+                error: function (req, status, error) {
+                    console.log(result);
+                }
+            });
+
             event.preventDefault();
 
             //clear input box
             $("#message-box").val('');
+            var rootDiv = jQuery('<div>', {
+                id: 'scroll',
+            }).appendTo('#chat-messages-list');
+            chatBottom();
+            //rootDiv.scrollIntoView();
 
         }
     });

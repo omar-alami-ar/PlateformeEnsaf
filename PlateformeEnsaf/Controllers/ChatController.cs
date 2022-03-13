@@ -27,13 +27,30 @@ namespace PlateformeEnsaf.Controllers
         public async Task<IActionResult> Index(string id)
         {
             ViewBag.number = ApplicationUser.Ids;
-            ViewBag.user = await userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var receiver = await userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
+            ViewBag.user = receiver;
             var sender = await GetCurrentUser();
+            
             ViewBag.senderId = sender.Id;
-            var currentUser = await userManager.Users.Include(u => u.Follows).Include(u => u.Followers).FirstOrDefaultAsync(u => u.Id == sender.Id);
+            var currentUser = await userManager.Users.Include(u => u.Follows).ThenInclude(x => x.FollowedUser).Include(u => u.Followers).FirstOrDefaultAsync(u => u.Id == sender.Id);
             ViewBag.senderName = sender.FirstName + " "+ sender.LastName;
             ViewBag.contacts = currentUser.Follows;
+
+            var messages = _context.Messages.Where(r => (r.Sender == sender && r.Receiver == receiver) || (r.Sender == receiver && r.Receiver == sender)).Include(u=>u.Sender).Include(u => u.Receiver).OrderBy(u=>u.DateEnvoi).ToList();
+            ViewBag.messages = messages;
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> StoreMessage(string content,string senderId, string receiverId)
+        {
+            Message message = new Message();
+            message.Content = content;
+            message.Sender = await _context.Users.FindAsync(senderId);
+            message.Receiver = await _context.Users.FindAsync(receiverId);
+            _context.Messages.Add(message);
+            _context.SaveChanges();
+            return null;
         }
 
         private async Task<ApplicationUser> GetCurrentUser()

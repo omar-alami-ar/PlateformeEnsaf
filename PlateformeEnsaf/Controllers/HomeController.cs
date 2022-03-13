@@ -57,10 +57,7 @@ namespace PlateformeEnsaf.Controllers
             {
                 Text = Request.Form["body"]
             };
-            //{
-            //    Text ="hello we are so happy to see you in this invitation class you will be so close to zaghoura or maybe akora legend so dont talk about it",
 
-                //};
 
             using (var client = new SmtpClient())
             {

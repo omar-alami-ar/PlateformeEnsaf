@@ -16,6 +16,7 @@ namespace PlateformeEnsaf.Data
         {
         }
 
+        public DbSet<Message> Messages { get; set; }
         public DbSet<Filiere> Filieres { get; set; }
         public DbSet<Offre> Offres { get; set; }
         public DbSet<Image> Images { get; set; }
