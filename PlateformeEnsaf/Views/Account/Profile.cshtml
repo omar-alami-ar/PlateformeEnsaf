@@ -3,6 +3,50 @@
     ViewData["Title"] = "Profile";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@functions{
+    public string TimeAgo(DateTime dateTime)
+    {
+        string result = string.Empty;
+        var timeSpan = DateTime.Now.Subtract(dateTime);
+
+        if (timeSpan <= TimeSpan.FromSeconds(60))
+        {
+            result = string.Format("Il y a {0} secondes", timeSpan.Seconds);
+        }
+        else if (timeSpan <= TimeSpan.FromMinutes(60))
+        {
+            result = timeSpan.Minutes > 1 ?
+                String.Format("Il y a {0} minutes", timeSpan.Minutes) :
+                "Il y a une minute";
+        }
+        else if (timeSpan <= TimeSpan.FromHours(24))
+        {
+            result = timeSpan.Hours > 1 ?
+                String.Format("Il y a {0} heures", timeSpan.Hours) :
+                "Il y a une heure";
+        }
+        else if (timeSpan <= TimeSpan.FromDays(30))
+        {
+            result = timeSpan.Days > 1 ?
+                String.Format("Il y a {0} jours", timeSpan.Days) :
+                "Hier";
+        }
+        else if (timeSpan <= TimeSpan.FromDays(365))
+        {
+            result = timeSpan.Days > 30 ?
+                String.Format("Il y a {0} mois", timeSpan.Days / 30) :
+                "Il y a un mois";
+        }
+        else
+        {
+            result = timeSpan.Days > 365 ?
+                String.Format("Il y a {0} ans", timeSpan.Days / 365) :
+                "Il y a un an";
+        }
+
+        return result;
+    }
+}
 <link href="~/css/star-rating.css" rel="stylesheet" />
 
 <style>
@@ -129,139 +173,139 @@
 
             @if (Model.Id != ViewBag.CurrentUserId)
             {
-                          <div class="card border-left-primary shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Noter ce profil</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
+                <div class="card border-left-primary shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Noter ce profil</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
 
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        <section class='rating-widget'>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <section class='rating-widget'>
 
-                                            <!-- Rating Stars Box -->
-                                            <div class='rating-stars text-center'>
-                                                <ul id='stars'>
-                                                    <li class='star' title='Poor' data-value='1'>
-                                                        <i class='fa fa-star fa-fw'></i>
-                                                    </li>
-                                                    <li class='star' title='Fair' data-value='2'>
-                                                        <i class='fa fa-star fa-fw'></i>
-                                                    </li>
-                                                    <li class='star' title='Good' data-value='3'>
-                                                        <i class='fa fa-star fa-fw'></i>
-                                                    </li>
-                                                    <li class='star' title='Excellent' data-value='4'>
-                                                        <i class='fa fa-star fa-fw'></i>
-                                                    </li>
-                                                    <li class='star' title='WOW!!!' data-value='5'>
-                                                        <i class='fa fa-star fa-fw'></i>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                        <!-- Rating Stars Box -->
+                                        <div class='rating-stars text-center'>
+                                            <ul id='stars'>
+                                                <li class='star' title='Poor' data-value='1'>
+                                                    <i class='fa fa-star fa-fw'></i>
+                                                </li>
+                                                <li class='star' title='Fair' data-value='2'>
+                                                    <i class='fa fa-star fa-fw'></i>
+                                                </li>
+                                                <li class='star' title='Good' data-value='3'>
+                                                    <i class='fa fa-star fa-fw'></i>
+                                                </li>
+                                                <li class='star' title='Excellent' data-value='4'>
+                                                    <i class='fa fa-star fa-fw'></i>
+                                                </li>
+                                                <li class='star' title='WOW!!!' data-value='5'>
+                                                    <i class='fa fa-star fa-fw'></i>
+                                                </li>
+                                            </ul>
+                                        </div>
 
-                                            <div class='success-box'>
-                                                <div class='clearfix'></div>
-                                                <img alt='tick image' width='20' src='data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA0MjYuNjY3IDQyNi42NjciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQyNi42NjcgNDI2LjY2NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCI+CjxwYXRoIHN0eWxlPSJmaWxsOiM2QUMyNTk7IiBkPSJNMjEzLjMzMywwQzk1LjUxOCwwLDAsOTUuNTE0LDAsMjEzLjMzM3M5NS41MTgsMjEzLjMzMywyMTMuMzMzLDIxMy4zMzMgIGMxMTcuODI4LDAsMjEzLjMzMy05NS41MTQsMjEzLjMzMy0yMTMuMzMzUzMzMS4xNTcsMCwyMTMuMzMzLDB6IE0xNzQuMTk5LDMyMi45MThsLTkzLjkzNS05My45MzFsMzEuMzA5LTMxLjMwOWw2Mi42MjYsNjIuNjIyICBsMTQwLjg5NC0xNDAuODk4bDMxLjMwOSwzMS4zMDlMMTc0LjE5OSwzMjIuOTE4eiIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K' />
-                                                <div class='text-message'></div>
-                                                <div class='clearfix'></div>
-                                            </div>
+                                        <div class='success-box'>
+                                            <div class='clearfix'></div>
+                                            <img alt='tick image' width='20' src='data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA0MjYuNjY3IDQyNi42NjciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQyNi42NjcgNDI2LjY2NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCI+CjxwYXRoIHN0eWxlPSJmaWxsOiM2QUMyNTk7IiBkPSJNMjEzLjMzMywwQzk1LjUxOCwwLDAsOTUuNTE0LDAsMjEzLjMzM3M5NS41MTgsMjEzLjMzMywyMTMuMzMzLDIxMy4zMzMgIGMxMTcuODI4LDAsMjEzLjMzMy05NS41MTQsMjEzLjMzMy0yMTMuMzMzUzMzMS4xNTcsMCwyMTMuMzMzLDB6IE0xNzQuMTk5LDMyMi45MThsLTkzLjkzNS05My45MzFsMzEuMzA5LTMxLjMwOWw2Mi42MjYsNjIuNjIyICBsMTQwLjg5NC0xNDAuODk4bDMxLjMwOSwzMS4zMDlMMTc0LjE5OSwzMjIuOTE4eiIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K' />
+                                            <div class='text-message'></div>
+                                            <div class='clearfix'></div>
+                                        </div>
 
-                                        </section>
-                                    </div>
+                                    </section>
                                 </div>
-
                             </div>
+
                         </div>
                     </div>
+                </div>
             }
-            
+
 
 
             <!--<div class="card">
-    <div class="card-body">
-        <h4 class="header-title mb-3">Inbox</h4>
+            <div class="card-body">
+                <h4 class="header-title mb-3">Inbox</h4>
 
-        <div class="inbox-widget" data-simplebar="init" style="max-height: 350px;">
-            <div class="simplebar-wrapper" style="margin: 0px;">
-                <div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask">
-                    <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
-                        <div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;">
-                            <div class="simplebar-content" style="padding: 0px;">
-                                <div class="d-flex align-items-center pb-1" id="tooltips-container">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
-                                    <div class="w-100 ms-3">
-                                        <h5 class="mb-1">Tomaslau</h5>
-                                        <p class="mb-0 font-13">I've finished it! See you so...</p>
+                <div class="inbox-widget" data-simplebar="init" style="max-height: 350px;">
+                    <div class="simplebar-wrapper" style="margin: 0px;">
+                        <div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask">
+                            <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                <div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;">
+                                    <div class="simplebar-content" style="padding: 0px;">
+                                        <div class="d-flex align-items-center pb-1" id="tooltips-container">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
+                                            <div class="w-100 ms-3">
+                                                <h5 class="mb-1">Tomaslau</h5>
+                                                <p class="mb-0 font-13">I've finished it! See you so...</p>
+                                            </div>
+                                            <a href="javascript:(0);" class="btn btn-sm btn-soft-info font-13" data-bs-container="#tooltips-container" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Reply"> <i class="mdi mdi-reply"></i> </a>
+                                        </div>
+                                        <div class="d-flex align-items-center py-1" id="tooltips-container1">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
+                                            <div class="w-100 ms-3">
+                                                <h5 class="mb-1">Stillnotdavid</h5>
+                                                <p class="mb-0 font-13">This theme is awesome!</p>
+                                            </div>
+                                            <a href="javascript:(0);" class="btn btn-sm btn-soft-info font-13" data-bs-container="#tooltips-container1" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Reply"> <i class="mdi mdi-reply"></i> </a>
+                                        </div>
+                                        <div class="d-flex align-items-center py-1" id="tooltips-container2">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar4.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
+                                            <div class="w-100 ms-3">
+                                                <h5 class="mb-1">Shahedk</h5>
+                                                <p class="mb-0 font-13">Hey! there I'm available...</p>
+                                            </div>
+                                            <a href="javascript:(0);" class="btn btn-sm btn-soft-info font-13" data-bs-container="#tooltips-container2" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Reply"> <i class="mdi mdi-reply"></i> </a>
+                                        </div>
+                                        <div class="d-flex align-items-center py-1" id="tooltips-container3">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar5.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
+                                            <div class="w-100 ms-3">
+                                                <h5 class="mb-1">Kurafire</h5>
+                                                <p class="mb-0 font-13">Nice to meet you</p>
+                                            </div>
+                                            <a href="javascript:(0);" class="btn btn-sm btn-soft-info font-13" data-bs-container="#tooltips-container3" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Reply"> <i class="mdi mdi-reply"></i> </a>
+                                        </div>
+                                        <div class="d-flex align-items-center py-1" id="tooltips-container4">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
+                                            <div class="w-100 ms-3">
+                                                <h5 class="mb-1">Adhamdannaway</h5>
+                                                <p class="mb-0 font-13">This theme is awesome!</p>
+                                            </div>
+                                            <a href="javascript:(0);" class="btn btn-sm btn-soft-info font-13" data-bs-container="#tooltips-container4" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Reply"> <i class="mdi mdi-reply"></i> </a>
+                                        </div>
+                                        <div class="d-flex align-items-center py-1" id="tooltips-container5">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
+                                            <div class="w-100 ms-3">
+                                                <h5 class="mb-1">Tomaslau</h5>
+                                                <p class="mb-0 font-13">I've finished it! See you so...</p>
+                                            </div>
+                                            <a href="javascript:(0);" class="btn btn-sm btn-soft-info font-13" data-bs-container="#tooltips-container5" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Reply"> <i class="mdi mdi-reply"></i> </a>
+                                        </div>
+                                        <div class="d-flex align-items-center py-1" id="tooltips-container6">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar8.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
+                                            <div class="w-100 ms-3">
+                                                <h5 class="mb-1">Shahedk</h5>
+                                                <p class="mb-0 font-13">Hey! there I'm available...</p>
+                                            </div>
+                                            <a href="javascript:(0);" class="btn btn-sm btn-soft-info font-13" data-bs-container="#tooltips-container6" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Reply"> <i class="mdi mdi-reply"></i> </a>
+                                        </div>
+                                        <div class="d-flex align-items-center pt-1" id="tooltips-container7">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar5.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
+                                            <div class="w-100 ms-3">
+                                                <h5 class="mb-1">Stillnotdavid</h5>
+                                                <p class="mb-0 font-13">This theme is awesome!</p>
+                                            </div>
+                                            <a href="javascript:(0);" class="btn btn-sm btn-soft-info font-13" data-bs-container="#tooltips-container7" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Reply"> <i class="mdi mdi-reply"></i> </a>
+                                        </div>
                                     </div>
-                                    <a href="javascript:(0);" class="btn btn-sm btn-soft-info font-13" data-bs-container="#tooltips-container" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Reply"> <i class="mdi mdi-reply"></i> </a>
-                                </div>
-                                <div class="d-flex align-items-center py-1" id="tooltips-container1">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
-                                    <div class="w-100 ms-3">
-                                        <h5 class="mb-1">Stillnotdavid</h5>
-                                        <p class="mb-0 font-13">This theme is awesome!</p>
-                                    </div>
-                                    <a href="javascript:(0);" class="btn btn-sm btn-soft-info font-13" data-bs-container="#tooltips-container1" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Reply"> <i class="mdi mdi-reply"></i> </a>
-                                </div>
-                                <div class="d-flex align-items-center py-1" id="tooltips-container2">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar4.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
-                                    <div class="w-100 ms-3">
-                                        <h5 class="mb-1">Shahedk</h5>
-                                        <p class="mb-0 font-13">Hey! there I'm available...</p>
-                                    </div>
-                                    <a href="javascript:(0);" class="btn btn-sm btn-soft-info font-13" data-bs-container="#tooltips-container2" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Reply"> <i class="mdi mdi-reply"></i> </a>
-                                </div>
-                                <div class="d-flex align-items-center py-1" id="tooltips-container3">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar5.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
-                                    <div class="w-100 ms-3">
-                                        <h5 class="mb-1">Kurafire</h5>
-                                        <p class="mb-0 font-13">Nice to meet you</p>
-                                    </div>
-                                    <a href="javascript:(0);" class="btn btn-sm btn-soft-info font-13" data-bs-container="#tooltips-container3" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Reply"> <i class="mdi mdi-reply"></i> </a>
-                                </div>
-                                <div class="d-flex align-items-center py-1" id="tooltips-container4">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
-                                    <div class="w-100 ms-3">
-                                        <h5 class="mb-1">Adhamdannaway</h5>
-                                        <p class="mb-0 font-13">This theme is awesome!</p>
-                                    </div>
-                                    <a href="javascript:(0);" class="btn btn-sm btn-soft-info font-13" data-bs-container="#tooltips-container4" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Reply"> <i class="mdi mdi-reply"></i> </a>
-                                </div>
-                                <div class="d-flex align-items-center py-1" id="tooltips-container5">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
-                                    <div class="w-100 ms-3">
-                                        <h5 class="mb-1">Tomaslau</h5>
-                                        <p class="mb-0 font-13">I've finished it! See you so...</p>
-                                    </div>
-                                    <a href="javascript:(0);" class="btn btn-sm btn-soft-info font-13" data-bs-container="#tooltips-container5" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Reply"> <i class="mdi mdi-reply"></i> </a>
-                                </div>
-                                <div class="d-flex align-items-center py-1" id="tooltips-container6">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar8.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
-                                    <div class="w-100 ms-3">
-                                        <h5 class="mb-1">Shahedk</h5>
-                                        <p class="mb-0 font-13">Hey! there I'm available...</p>
-                                    </div>
-                                    <a href="javascript:(0);" class="btn btn-sm btn-soft-info font-13" data-bs-container="#tooltips-container6" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Reply"> <i class="mdi mdi-reply"></i> </a>
-                                </div>
-                                <div class="d-flex align-items-center pt-1" id="tooltips-container7">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar5.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
-                                    <div class="w-100 ms-3">
-                                        <h5 class="mb-1">Stillnotdavid</h5>
-                                        <p class="mb-0 font-13">This theme is awesome!</p>
-                                    </div>
-                                    <a href="javascript:(0);" class="btn btn-sm btn-soft-info font-13" data-bs-container="#tooltips-container7" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Reply"> <i class="mdi mdi-reply"></i> </a>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div><div class="simplebar-placeholder" style="width: auto; height: 532px;"></div>
-            </div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 230px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div>
-        </div>-->
+                        </div><div class="simplebar-placeholder" style="width: auto; height: 532px;"></div>
+                    </div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 230px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div>
+                </div>-->
             <!-- end inbox-widget -->
             <!--</div>
-    </div>-->
+            </div>-->
             <!-- end card-->
             <div class="card border-left-warning">
                 <div class="card-body">
@@ -401,125 +445,77 @@
         </div> <!-- end col-->
 
         <div class="col-xl-7">
-            <div class="card border-left-secondary">
-                <div class="card-body">
-                    <!-- comment box -->
-                    <form action="#" class="comment-area-box mb-3">
-                        <span class="input-icon">
-                            <textarea rows="3" class="form-control" placeholder="Write something..."></textarea>
-                        </span>
-                        <div class="comment-area-btn">
-                            <div class="float-end">
-                                <button type="submit" class="btn btn-sm btn-dark waves-effect waves-light">Post</button>
-                            </div>
-                            <div>
-                                <a href="#" class="btn btn-sm btn-light text-black-50"><i class="far fa-user"></i></a>
-                                <a href="#" class="btn btn-sm btn-light text-black-50"><i class="fa fa-map-marker-alt"></i></a>
-                                <a href="#" class="btn btn-sm btn-light text-black-50"><i class="fa fa-camera"></i></a>
-                                <a href="#" class="btn btn-sm btn-light text-black-50"><i class="far fa-smile"></i></a>
+            <div>
+                @foreach (var annonce in ViewBag.userAnnonces)
+                {
+                    <div class="card shadow gedf-card mb-3">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="mr-2">
+                                        @if (annonce.User.ProfilePicture != null)
+                                        {
+                                            <img class="rounded-circle" src="data:image/*;base64,@(Convert.ToBase64String(annonce.User.ProfilePicture))" alt="" width="45" height="45">
+                                        }
+                                        else
+                                        {
+                                            <img class="rounded-circle" src="~/img/undraw_profile.svg" alt="" width="45">
+                                        }
+
+                                    </div><div class="ml-2"><a asp-controller="Account" asp-action="Profile" asp-route-id="@annonce.User.Id" class="h5 m-0 text-muted">@annonce.User.FirstName @annonce.User.LastName</a><div class="h7 text-muted"><span>@@</span>@annonce.User.UserName</div></div>
+                                </div><div><div class="dropdown"> <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-ellipsis-h"></i> </button><div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1"><div class="h6 dropdown-header">Configuration</div> <a class="dropdown-item" href="#">Save</a> <a class="dropdown-item" href="#">Hide</a> <a class="dropdown-item" href="#">Report</a></div></div></div>
                             </div>
                         </div>
-                    </form>
-                    <!-- end comment box -->
-                    <!-- Story Box-->
-                    <div class="border border-light p-2 mb-3">
-                        <div class="d-flex align-items-start">
-                            <img class="me-2 avatar-sm rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="Generic placeholder image">
-                            <div class="w-100">
-                                <h5 class="">Thelma Fridley <small class="text-muted"> 1 hour ago</small></h5>
-                                <div class="">
-                                    Cras sit amet nibh libero, in
-                                    gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras
-                                    purus odio, vestibulum in vulputate at, tempus viverra turpis. Duis
-                                    sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper
-                                    porta. Mauris massa.
-                                    <br>
-                                    <a href="javascript: void(0);" class="text-muted font-13 d-inline-block mt-2"><i class="mdi mdi-reply"></i> Reply</a>
-                                </div>
+                        <div class="card-body">
+
+                            <div class="text-muted h7 d-flex align-items-center justify-content-between mb-2">
+
+                                <h5 class="card-link">@annonce.Categorie.ToString()</h5><h6>@TimeAgo(annonce.DatePublication)</h6>
                             </div>
-
-                        </div>
-
-
-                        <div class="post-user-comment-box">
-                            <div class="d-flex align-items-start">
-                                <img class="me-2 avatar-sm rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="Generic placeholder image">
-                                <div class="w-100">
-                                    <h5 class="mt-0">Jeremy Tomlinson <small class="text-muted">3 hours ago</small></h5>
-                                    Nice work, makes me think of The Money Pit.
-
-                                    <br>
-                                    <a href="javascript: void(0);" class="text-muted font-13 d-inline-block mt-2"><i class="mdi mdi-reply"></i> Reply</a>
-
-                                    <div class="d-flex align-items-start mt-3">
-                                        <a class="pe-2" href="#">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar4.png" class="avatar-sm rounded-circle" alt="Generic placeholder image">
-                                        </a>
-                                        <div class="w-100">
-                                            <h5 class="mt-0">Kathleen Thomas <small class="text-muted">5 hours ago</small></h5>
-                                            i'm in the middle of a timelapse animation myself! (Very different though.) Awesome stuff.
-                                        </div>
+                            <a class="card-link" href="#">
+                                <h5 class="card-title">
+                                    @annonce.Titre
+                                </h5>
+                            </a><p class="card-text">
+                                @annonce.Description
+                            </p>
+                            @if (annonce.Images.Count != 0)
+                            {
+                                @if (annonce.Images.Count == 1)
+                                {
+                                    @foreach (var image in annonce.Images)
+                                    {
+                                        <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" class="img-responsive" width="200">
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="d-flex">
+                                        @foreach (var image in annonce.Images)
+                                        {
+                                            <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" class="img-responsive mr-2" width="200">
+                                        }
                                     </div>
-                                </div>
-                            </div>
+                                }
+                            }
+                            <div class="mt-2">
+                                @foreach (var domaine in annonce.Annonce_Domaines)
+                                {
+                                    <span class="badge badge-primary">@domaine.Domaine.Nom</span>
+                                }
 
-                            <div class="d-flex align-items-start mt-2">
-                                <a class="pe-2" href="#">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle" alt="Generic placeholder image" height="31">
-                                </a>
-                                <div class="w-100">
-                                    <input type="text" id="simpleinput" class="form-control border-0 form-control-sm" placeholder="Add comment">
-                                </div>
                             </div>
                         </div>
-
-                        <div class="mt-2">
-                            <a href="javascript: void(0);" class="btn btn-sm btn-link text-danger"><i class="mdi mdi-heart"></i> Like (28)</a>
-                            <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted"><i class="mdi mdi-share-variant"></i> Share</a>
+                        <div class="card-footer">
+                            <a href="#" class="card-link"><i class="fa-solid fa-circle-up"></i> Upvote</a>
+                            <a href="#" class="card-link"><i class="fa-solid fa-circle-down"></i> Downvote</a>
+                            <a href="#" class="card-link"><i class="fa fa-comment"></i> Commenter</a>
+                            <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Partager</a>
                         </div>
                     </div>
-
-                    <!-- Story Box-->
-                    <div class="border border-light p-2 mb-3">
-                        <div class="d-flex align-items-start">
-                            <img class="me-2 avatar-sm rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="Generic placeholder image">
-                            <div class="w-100">
-                                <h5 class="m-0">Jeremy Tomlinson</h5>
-                                <p class="text-muted"><small>about 2 minuts ago</small></p>
-                            </div>
-                        </div>
-                        <p>Story based around the idea of time lapse, animation to post soon!</p>
-
-                        <img src="https://via.placeholder.com/800x540/FF7F50/000000" alt="post-img" class="rounded me-1" height="60">
-                        <img src="https://via.placeholder.com/800x540/FF7F50/000000" alt="post-img" class="rounded me-1" height="60">
-                        <img src="https://via.placeholder.com/800x540/FF7F50/000000" alt="post-img" class="rounded" height="60">
-
-                        <div class="mt-2">
-                            <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted"><i class="mdi mdi-reply"></i> Reply</a>
-                            <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted"><i class="mdi mdi-heart-outline"></i> Like</a>
-                            <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted"><i class="mdi mdi-share-variant"></i> Share</a>
-                        </div>
-                    </div>
-
-                    <!-- Story Box-->
-                    <div class="border border-light p-2 mb-3">
-                        <div class="d-flex align-items-start">
-                            <img class="me-2 avatar-sm rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="Generic placeholder image">
-                            <div class="w-100">
-                                <h5 class="m-0">Jeremy Tomlinson</h5>
-                                <p class="text-muted"><small>15 hours ago</small></p>
-                            </div>
-                        </div>
-                        <p>The parallax is a little odd but O.o that house build is awesome!!</p>
-
-                        <iframe src="https://player.vimeo.com/video/87993762" height="300" class="img-fluid border-0"></iframe>
-                    </div>
-
-                    <div class="text-center">
-                        <a href="javascript:void(0);" class="text-danger"><i class="mdi mdi-spin mdi-loading me-1"></i> Load more </a>
-                    </div>
-                </div>
-            </div> <!-- end card-->
+                }
+                
+            </div>
 
         </div> <!-- end col -->
     </div>
@@ -528,7 +524,7 @@
 </div>
 
 <script type="text/javascript">
-   
+
     $('#follow').on('click', function () {
         var targetUserId = $('#profileId').val();
         /*var targetUserId = "hhhhhhhh";*/

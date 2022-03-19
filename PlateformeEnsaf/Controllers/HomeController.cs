@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 using PlateformeEnsaf.Data;
@@ -34,9 +35,18 @@ namespace PlateformeEnsaf.Controllers
             var currentUser = await GetCurrentUser();
             //var currentUserId = await User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
             ViewBag.People =  userManager.Users.Where(a => a.Id != currentUser.Id ).Take(3);
+            GenericAnnoces ga = new GenericAnnoces();
+            var user = await GetCurrentUser();
+
+            foreach (var offre in await _context.Offres.Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d=>d.Domaine).Include(a => a.User).Where(a => a.User != currentUser).ToListAsync())
+            {
+                ga.Offres.Add(offre);
+            }
+            ViewBag.annonces = ga.Offres;
             return View();
         }
 
+      
 
         public IActionResult Report()
         {
