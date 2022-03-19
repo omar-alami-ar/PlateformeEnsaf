@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlateformeEnsaf.Data;
 
 namespace PlateformeEnsaf.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220317095539_Adding IFORMFILECOLLECTION attribute for annonce")]
+    partial class AddingIFORMFILECOLLECTIONattributeforannonce
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -286,6 +288,9 @@ namespace PlateformeEnsaf.Data.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<int>("NbrVotes")
+                        .HasColumnType("int");
+
                     b.Property<string>("Niveau")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -475,34 +480,6 @@ namespace PlateformeEnsaf.Data.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("PlateformeEnsaf.Models.Vote", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
-
-                    b.Property<string>("VotantId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("VoteeId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VotantId");
-
-                    b.HasIndex("VoteeId");
-
-                    b.ToTable("Votes");
-                });
-
             modelBuilder.Entity("PlateformeEnsaf.Models.Offre", b =>
                 {
                     b.HasBaseType("PlateformeEnsaf.Models.Annonce");
@@ -667,8 +644,7 @@ namespace PlateformeEnsaf.Data.Migrations
                 {
                     b.HasOne("PlateformeEnsaf.Models.Annonce", "Annonce")
                         .WithMany("Images")
-                        .HasForeignKey("AnnonceId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("AnnonceId");
 
                     b.Navigation("Annonce");
                 });
@@ -686,21 +662,6 @@ namespace PlateformeEnsaf.Data.Migrations
                     b.Navigation("Receiver");
 
                     b.Navigation("Sender");
-                });
-
-            modelBuilder.Entity("PlateformeEnsaf.Models.Vote", b =>
-                {
-                    b.HasOne("PlateformeEnsaf.Models.ApplicationUser", "Votant")
-                        .WithMany("Votes")
-                        .HasForeignKey("VotantId");
-
-                    b.HasOne("PlateformeEnsaf.Models.ApplicationUser", "Votee")
-                        .WithMany("Voted")
-                        .HasForeignKey("VoteeId");
-
-                    b.Navigation("Votant");
-
-                    b.Navigation("Votee");
                 });
 
             modelBuilder.Entity("PlateformeEnsaf.Models.Annonce", b =>
@@ -721,10 +682,6 @@ namespace PlateformeEnsaf.Data.Migrations
                     b.Navigation("Follows");
 
                     b.Navigation("User_Domaines");
-
-                    b.Navigation("Voted");
-
-                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("PlateformeEnsaf.Models.Domaine", b =>

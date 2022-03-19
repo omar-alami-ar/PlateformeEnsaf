@@ -1,0 +1,100 @@
+﻿@model PlateformeEnsaf.Models.GenericAnnoces
+@{
+    ViewData["Title"] = "Historique";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
+
+<h2>Historique Personnel</h2>
+
+<div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-pills flex-row">
+                <li class="nav-item"><a class="nav-link active" id="profile" href="/Identity/Account/Manage">Historique de publications</a></li>
+                <li class="nav-item"><a class="nav-link" id="email" href="/Identity/Account/Manage/Email">Historique d'abonnements</a></li>
+                <li class="nav-item"><a class="nav-link" id="change-password" href="/Identity/Account/Manage/ChangePassword">Historique de likes</a></li>
+                <li class="nav-item"><a class="nav-link" id="two-factor" href="/Identity/Account/Manage/TwoFactorAuthentication">Historique de commentaires</a></li>
+            </ul>
+
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-12">
+
+            <table id="myTable" class="table table-sm" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th class="th-sm">
+                            Titre
+                        </th>
+                        <th class="th-sm">
+                            Date de publication
+                        </th>
+                        <th class="th-sm">
+                            Catégorie
+                        </th>
+                        <th class="th-sm">
+                            Statut
+                        </th>
+                        <th class="th-sm">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var annonce in Model.Offres)
+                    {
+                    <tr>
+                        <td>@annonce.Titre</td>
+                        <td>@annonce.DatePublication</td>
+                        <td>@annonce.Categorie</td>
+                        @if (annonce.Statut == "En attente")
+                        {
+                            <td><span class="badge badge-danger rounded-pill">@annonce.Statut</span></td>
+                        }
+                        else
+                        {
+                            <td><span class="badge badge-success rounded-pill">@annonce.Statut</span></td>
+                        }
+
+                    <td>
+                        <a 
+                                class="btn btn-link btn-rounded btn-sm fw-bold"
+                                data-mdb-ripple-color="dark" asp-action="DetailsOff" asp-controller="Annonce" asp-route-id="@annonce.Id">
+                            Détails
+                        </a> |
+                        <a 
+                                class="btn btn-link btn-rounded btn-sm fw-bold"
+                                data-mdb-ripple-color="dark" asp-action="EditOff" asp-controller="Annonce" asp-route-id="@annonce.Id">
+                            Modifier
+                        </a> |
+                        <a 
+                                class="btn btn-link btn-rounded btn-sm fw-bold"
+                                data-mdb-ripple-color="dark" asp-action="DeleteOff" asp-controller="Annonce" asp-route-id="@annonce.Id">
+                            Supprimer
+                        </a>
+
+                    </td>
+                    </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.noConflict();
+        $('#myTable').DataTable();
+    });
+</script>

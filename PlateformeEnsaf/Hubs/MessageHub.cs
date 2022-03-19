@@ -9,10 +9,9 @@ using System.Threading.Tasks;
 public class MessageHub : Hub
 {
 
-    
-    public async Task SendMessage(string user, string message)
+    public async Task SendMessage(string user, string message,string receiverId)
     {
-        await Clients.Others.SendAsync("ReceiveMessage", user, message);
+        await Clients.Others.SendAsync("ReceiveMessage", user, message,receiverId);
     }
 
     //public async Task SendMessage(string user, string message)

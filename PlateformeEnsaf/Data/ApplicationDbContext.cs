@@ -24,15 +24,19 @@ namespace PlateformeEnsaf.Data
         public DbSet<Question> Questions { get; set; }
         public DbSet<ApplicationUser_Domaine> user_Domaines { get; set; }
         public DbSet<Annonce_Domaine> Annonce_Domaines { get; set; }
-
         public DbSet<Abonnement> Abonnements { get; set; }
-
         public DbSet<Domaine> Domaines { get; set; }
+        public DbSet<Vote> Votes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
             base.OnModelCreating(builder);
+
+            builder.Entity<Annonce>()
+            .HasMany(l => l.Images)
+            .WithOne(a=> a.Annonce)
+            .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Annonce_Domaine>()
             .HasOne(l => l.Annonce)
@@ -53,6 +57,16 @@ namespace PlateformeEnsaf.Data
                    .HasOne(l => l.Domaine)
                    .WithMany(a => a.User_Domaines)
                    .HasForeignKey(l => l.DomaineId);
+
+            builder.Entity<Vote>()
+            .HasOne(l => l.Votant)
+            .WithMany(a => a.Votes)
+            .HasForeignKey(l => l.VotantId);
+
+            builder.Entity<Vote>()
+                   .HasOne(l => l.Votee)
+                   .WithMany(a => a.Voted)
+                   .HasForeignKey(l => l.VoteeId);
 
             builder.Entity<Abonnement>()
             .HasOne(l => l.FollowingUser)

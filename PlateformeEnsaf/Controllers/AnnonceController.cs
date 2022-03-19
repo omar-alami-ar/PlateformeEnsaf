@@ -14,6 +14,7 @@ using System.Web;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Drawing;
+using Image = PlateformeEnsaf.Models.Image;
 
 namespace PlateformeEnsaf.Controllers
 {
@@ -71,7 +72,7 @@ namespace PlateformeEnsaf.Controllers
                 return NotFound();
             }
 
-            var offre = await _context.Offres.Include(x => x.Annonce_Domaines).ThenInclude(x => x.Domaine).FirstOrDefaultAsync(m => m.Id == id);
+            var offre = await _context.Offres.Include(x => x.Images).Include(x => x.Annonce_Domaines).ThenInclude(x => x.Domaine).FirstOrDefaultAsync(m => m.Id == id);
             if (offre == null)
             {
                 return NotFound();
@@ -98,6 +99,7 @@ namespace PlateformeEnsaf.Controllers
 
             if (ModelState.IsValid)
             {
+                
                 ApplicationUser tst = await GetCurrentUser();
                 offre.User = tst;
                 var test = Request.Form["doms"];
@@ -115,25 +117,26 @@ namespace PlateformeEnsaf.Controllers
                 }
 
                 //TODO: Upload Image here
+                if (offre.ImageFiles != null)
+                {
+                    offre.Images = new List<Image>();
+                    foreach (var file in offre.ImageFiles)
+                    {
 
-                //long size = photos.Sum(f => f.Length);
+                        using (var dataStream = new MemoryStream())
+                        {
+                            await file.CopyToAsync(dataStream);
+                            Image image = new Image()
+                            {
+                                Contenu = dataStream.ToArray()
+                            };
+                            offre.Images.Add(image);
+                        }
 
-                //foreach (var photo in photos)
-                //{
+                    }
 
-
-                //    if (file.Length > 0)
-                //    {
-                //        var filePath = Path.GetTempFileName();
-
-                //        using (var stream = System.IO.File.Create(filePath))
-                //        {
-                //            await file.CopyToAsync(stream);
-                //        }
-                //    }
-                //}
-
-
+                }
+               
                 _context.Add(offre);
                 await _context.SaveChangesAsync();
 
