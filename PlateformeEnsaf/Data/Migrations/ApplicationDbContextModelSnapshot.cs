@@ -286,9 +286,6 @@ namespace PlateformeEnsaf.Data.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("NbrVotes")
-                        .HasColumnType("int");
-
                     b.Property<string>("Niveau")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -478,6 +475,34 @@ namespace PlateformeEnsaf.Data.Migrations
                     b.ToTable("Messages");
                 });
 
+            modelBuilder.Entity("PlateformeEnsaf.Models.Vote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VotantId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("VoteeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VotantId");
+
+                    b.HasIndex("VoteeId");
+
+                    b.ToTable("Votes");
+                });
+
             modelBuilder.Entity("PlateformeEnsaf.Models.Offre", b =>
                 {
                     b.HasBaseType("PlateformeEnsaf.Models.Annonce");
@@ -663,6 +688,21 @@ namespace PlateformeEnsaf.Data.Migrations
                     b.Navigation("Sender");
                 });
 
+            modelBuilder.Entity("PlateformeEnsaf.Models.Vote", b =>
+                {
+                    b.HasOne("PlateformeEnsaf.Models.ApplicationUser", "Votant")
+                        .WithMany("Votes")
+                        .HasForeignKey("VotantId");
+
+                    b.HasOne("PlateformeEnsaf.Models.ApplicationUser", "Votee")
+                        .WithMany("Voted")
+                        .HasForeignKey("VoteeId");
+
+                    b.Navigation("Votant");
+
+                    b.Navigation("Votee");
+                });
+
             modelBuilder.Entity("PlateformeEnsaf.Models.Annonce", b =>
                 {
                     b.Navigation("Annonce_Domaines");
@@ -681,6 +721,10 @@ namespace PlateformeEnsaf.Data.Migrations
                     b.Navigation("Follows");
 
                     b.Navigation("User_Domaines");
+
+                    b.Navigation("Voted");
+
+                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("PlateformeEnsaf.Models.Domaine", b =>

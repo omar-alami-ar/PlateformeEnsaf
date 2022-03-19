@@ -81,6 +81,7 @@ namespace PlateformeEnsaf.Controllers
                 return RedirectToAction("PageNotFound", "Home");
             }
             ViewBag.checkFollow = _context.Abonnements.Where(a => a.Id_Following_User == currentUser.Id && a.Id_Followed_User == user.Id).FirstOrDefault();
+<<<<<<< HEAD
             GenericAnnoces ga = new GenericAnnoces();
         
 
@@ -89,6 +90,21 @@ namespace PlateformeEnsaf.Controllers
                 ga.Offres.Add(offre);
             }
             ViewBag.userAnnonces = ga.Offres;
+=======
+
+
+
+            var lastvote = _context.Votes.Where(a => a.Votant == currentUser && a.VoteeId == id).FirstOrDefault();
+            if(lastvote != null)
+            ViewBag.lastVote = lastvote.Value;
+
+            var votes = _context.Votes.Where(a => a.Votee == user).ToList();
+            var nbrVotes = votes.Count;
+            ViewBag.NbrVotes = nbrVotes;
+            
+            int test = votes.Sum(x => x.Value);
+            ViewBag.NoteSum = test;
+>>>>>>> 21a9001c838dcaffab726503fab65a9e4e2fb8c1
             return View(user);
         }
 
@@ -150,6 +166,46 @@ namespace PlateformeEnsaf.Controllers
             }
 
 
+
+        }
+
+        [HttpPost]
+        public async Task<string> Vote(string id, int stars)
+        {
+
+            var sourceUser = await GetCurrentUser();
+            var targetUser = await userManager.FindByIdAsync(id);
+            Vote vote = _context.Votes.Include(x => x.Votee).Include(x=>x.Votant).Where(a => a.Votant == sourceUser && a.Votee == targetUser).FirstOrDefault();
+
+            if(vote != null)
+            {
+                vote.Value = stars;
+                vote.Date = DateTime.Now;
+
+                _context.SaveChanges();
+
+                return "update";
+
+
+            }
+            else
+            {
+                Vote newVote = new Vote()
+                {
+                    Votant = sourceUser,
+                    VotantId = sourceUser.Id,
+                    Votee = targetUser,
+                    VoteeId = targetUser.Id,
+                    Value = stars ,
+                    Date = DateTime.Now
+                };
+
+                _context.Votes.Add(newVote);
+                _context.SaveChanges();
+
+                return "add";
+            }
+            
 
         }
 

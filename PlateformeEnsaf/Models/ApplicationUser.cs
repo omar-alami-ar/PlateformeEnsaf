@@ -43,7 +43,7 @@ namespace PlateformeEnsaf.Models
 
         public double Note { get; set; }
 
-        public int NbrVotes { get; set; }
+        //public int NbrVotes { get; set; }
 
         public  virtual ICollection<Abonnement> Followers { get; set; }
         public  virtual ICollection<Abonnement> Follows { get; set; }
@@ -53,6 +53,8 @@ namespace PlateformeEnsaf.Models
         public virtual List<ApplicationUser_Domaine> User_Domaines { get; set; }
 
         //public virtual List<Commentaire> Commentaires { get; set; }
+        public List<Vote> Votes { get; set; }
+        public List<Vote> Voted { get; set; }
 
         [NotMapped]
         public static List<string> Ids = new List<string>();
