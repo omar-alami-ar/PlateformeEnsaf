@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -33,7 +34,10 @@ namespace PlateformeEnsaf.Models
 
         public virtual List<Annonce_Domaine> Annonce_Domaines { get; set; } = new List<Annonce_Domaine>();
 
-        public virtual List<Image> Images { get; set; }
+        [NotMapped]
+        public virtual IFormFileCollection ImageFiles { get; set; }
+
+        public virtual ICollection<Image> Images { get; set; }
 
         public virtual List<Commentaire> Commentaires { get; set; }
 

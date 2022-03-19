@@ -178,7 +178,7 @@ namespace PlateformeEnsaf.Areas.Identity.Pages.Account
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        return RedirectToAction("Interets","Account");
                     }
                 }
                 foreach (var error in result.Errors)

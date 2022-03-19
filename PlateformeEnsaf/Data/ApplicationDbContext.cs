@@ -34,6 +34,11 @@ namespace PlateformeEnsaf.Data
 
             base.OnModelCreating(builder);
 
+            builder.Entity<Annonce>()
+            .HasMany(l => l.Images)
+            .WithOne(a=> a.Annonce)
+            .OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<Annonce_Domaine>()
             .HasOne(l => l.Annonce)
             .WithMany(a => a.Annonce_Domaines)

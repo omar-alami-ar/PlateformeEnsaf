@@ -1,0 +1,212 @@
+﻿@{
+    ViewData["Title"] = "Interets";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<style>
+    .md-chip {
+        display: inline-block;
+        background: #e0e0e0;
+        padding: 0 12px;
+        border-radius: 32px;
+        font-size: 13px;
+    }
+
+        .md-chip.md-chip-hover:hover {
+            background: #ccc;
+        }
+
+    .md-chip-clickable {
+        cursor: pointer;
+    }
+
+    .md-chip, .md-chip-icon {
+        height: 32px;
+        line-height: 32px;
+    }
+
+    .md-chip-icon {
+        display: block;
+        float: left;
+        background: #009587;
+        width: 32px;
+        border-radius: 50%;
+        text-align: center;
+        color: white;
+        margin: 0 8px 0 -12px;
+    }
+
+    .md-chip-remove {
+        display: inline-block;
+        background: #aaa;
+        border: 0;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        padding: 0;
+        margin: 0 -4px 0 4px;
+        cursor: pointer;
+        font: inherit;
+        line-height: 20px;
+    }
+
+        .md-chip-remove:after {
+            color: #e0e0e0;
+            content: 'x';
+        }
+
+        .md-chip-remove:hover {
+            background: #999;
+        }
+
+        .md-chip-remove:active {
+            background: #777;
+        }
+
+    .md-chips {
+        padding: 12px 0;
+    }
+
+        .md-chips .md-chip {
+            margin: 0 5px 15px 0;
+        }
+
+    .md-chip-raised {
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    }
+
+    input[type="checkbox"] {
+        display: none;
+    }
+
+        input[type="checkbox"]:checked + label {
+            -webkit-transition: all 500ms ease;
+            transition: all 500ms ease;
+            background-color: #0061f2;
+            color: white;
+            border-color: #fc6c27;
+        }
+
+    *, *:before, *:after {
+        box-sizing: border-box;
+    }
+
+    section {
+        background: white;
+        margin: 0 auto;
+        padding: 4em;
+        max-width: 800px;
+    }
+
+        section h1 {
+            margin: 0 0 2em;
+        }
+</style>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Inscription</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+
+<body id="page-top" style="background-color: #0061f2">
+
+    <!-- Page Wrapper -->
+
+
+
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <div class="container-xl px-4">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <!-- Basic login form-->
+                        <div class="card shadow-lg border-0 rounded-lg mt-5">
+                            <form action="SaveInterets" id="interets" method="post">
+                                <div class="card-header justify-content-center"><h3 class="fw-light my-4">Choisissez vos domaines d'intérêt</h3></div>
+                                <div class="card-body">
+                                    <p>Finaliser votre inscription en choisissant des domaines d'interet. Cela nous aidera a vous proposer des offres et des annonces qui pourraient vous interesser. 
+                                    <br />Vous pouvez a tout moment changer vos preferences dans 
+                                    les parametres de votre profil. </p>
+                                    <div class="md-chips">
+                                        <input type="checkbox" onClick="toggle(this)" id="myCheckbox" />
+                                        <label for="myCheckbox" class="md-chip md-chip-clickable md-chip-hover">Selectionner tout</label>
+                                        
+                                        @foreach (var domaine in ViewBag.Domaines)
+                                        {
+                                            <input type="checkbox" name="foo" value="@domaine.Id" id="@domaine.Id">
+                                            <label for="@domaine.Id" class="md-chip md-chip-clickable md-chip-hover">@domaine.Nom</label>
+                                        }
+                                    </div>
+
+
+                                </div>
+                                <div class="card-footer text-center">
+                                    <div class="text-right"><a href="javascript:$('#interets').submit();">Continuer</a></div>
+                                </div>
+                            </form>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- End of Main Content -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <!-- Bootstrap core JavaScript-->
+
+
+</body>
+
+
+
+</html>
+
+<script src="~/vendor/jquery/jquery.min.js"></script>
+<script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="~/js/sb-admin-2.min.js"></script>
+
+<script>
+    function toggle(source) {
+        checkboxes = document.getElementsByName('foo');
+        for (var i = 0, n = checkboxes.length; i < n; i++) {
+            checkboxes[i].checked = source.checked;
+        }
+    }
+</script>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
