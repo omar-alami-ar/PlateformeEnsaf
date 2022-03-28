@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Drawing;
 using Image = PlateformeEnsaf.Models.Image;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PlateformeEnsaf.Controllers
 {
@@ -412,10 +413,87 @@ namespace PlateformeEnsaf.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        [Authorize]
+        public async Task<string> Upvote(int id)
+        {
+            var currentUser = await GetCurrentUser();
+            var annonce = _context.Annonce.Find(id);
+            var existingRating = _context.User_Annonce_Rating.Find(currentUser.Id, annonce.Id);
+            if (existingRating != null)
+            {
+                if (existingRating.Type == "upvote")
+                {
+                    _context.User_Annonce_Rating.Remove(existingRating);
+                    annonce.Note -= 1;
+                    await _context.SaveChangesAsync();
+                    return "cancelledUpvote";
+                }
+                _context.User_Annonce_Rating.Remove(existingRating);
+                annonce.Note += 1;
+            }
+            _context.Annonce.Attach(annonce);
+            _context.Attach(annonce);
+            annonce.Note += 1;
+            
+            _context.Entry(annonce).Property(a => a.Note).IsModified = true;
+            
+            User_Annonce_Rating rating = new User_Annonce_Rating()
+            {
+                User = currentUser,
+                Annonce = annonce,
+                Type = "upvote"
+            };
+            _context.User_Annonce_Rating.Add(rating);
+
+            await _context.SaveChangesAsync();
+           
+            return "upvoted";
+            
+        }
+
+        [Authorize]
+        public async Task<string> Downvote(int id)
+        {
+            var currentUser = await GetCurrentUser();
+            var annonce = _context.Annonce.Find(id);
+            var existingRating = _context.User_Annonce_Rating.Find(currentUser.Id, annonce.Id);
+            if (existingRating != null)
+            {
+                if (existingRating.Type == "downvote")
+                {
+                    _context.User_Annonce_Rating.Remove(existingRating);
+                    annonce.Note += 1;
+                    await _context.SaveChangesAsync();
+                    return "cancelledDownvote";
+                }
+                _context.User_Annonce_Rating.Remove(existingRating);
+                annonce.Note -= 1;
+            }
+            _context.Annonce.Attach(annonce);
+            _context.Attach(annonce);
+            annonce.Note -= 1;
+
+            User_Annonce_Rating rating = new User_Annonce_Rating()
+            {
+                User = currentUser,
+                Annonce = annonce,
+                Type = "downvote"
+            };
+            _context.Entry(annonce).Property(a => a.Note).IsModified = true;
+            _context.User_Annonce_Rating.Add(rating);
+            await _context.SaveChangesAsync();
+
+            return "downvoted";
+
+        }
+
         private bool AnnonceExists(int id)
         {
             return _context.Annonce.Any(e => e.Id == id);
         }
+
+
 
 
         private async Task<ApplicationUser> GetCurrentUser()

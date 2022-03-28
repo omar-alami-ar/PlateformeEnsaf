@@ -12,3 +12,11 @@
     height: 40px;
     background-position: center center;
 }
+
+a.upvoted, a.upvoted > i {
+    color:  #1cc88a;
+}
+
+a.downvoted, a.downvoted > i {
+    color: #FF4500;
+}

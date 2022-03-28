@@ -24,6 +24,7 @@ namespace PlateformeEnsaf.Data
         public DbSet<Question> Questions { get; set; }
         public DbSet<ApplicationUser_Domaine> user_Domaines { get; set; }
         public DbSet<Annonce_Domaine> Annonce_Domaines { get; set; }
+        public DbSet<User_Annonce_Rating> User_Annonce_Rating { get; set; }
         public DbSet<Abonnement> Abonnements { get; set; }
         public DbSet<Domaine> Domaines { get; set; }
         public DbSet<Vote> Votes { get; set; }
@@ -107,7 +108,18 @@ namespace PlateformeEnsaf.Data
                 entity.ToTable("UserTokens");
             });
 
-          
+            builder.Entity<User_Annonce_Rating>()
+            .HasKey(bc => new { bc.UserId, bc.AnnonceId });
+            builder.Entity<User_Annonce_Rating>()
+                .HasOne(bc => bc.Annonce)
+                .WithMany(b => b.Rated_By)
+                .HasForeignKey(bc => bc.AnnonceId);
+            builder.Entity<User_Annonce_Rating>()
+                .HasOne(bc => bc.User)
+                .WithMany(c => c.Rated_Annonces)
+                .HasForeignKey(bc => bc.UserId);
+
+
         }
 
         public DbSet<PlateformeEnsaf.Models.Annonce> Annonce { get; set; }

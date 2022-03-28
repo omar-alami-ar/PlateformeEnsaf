@@ -48,6 +48,8 @@ namespace PlateformeEnsaf.Models
         public  virtual ICollection<Abonnement> Followers { get; set; }
         public  virtual ICollection<Abonnement> Follows { get; set; }
 
+        public virtual ICollection<User_Annonce_Rating> Rated_Annonces { get; set; }
+
         public virtual List<Annonce> Annonces { get; set; }
 
         public virtual List<ApplicationUser_Domaine> User_Domaines { get; set; }

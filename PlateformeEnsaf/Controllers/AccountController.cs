@@ -81,16 +81,6 @@ namespace PlateformeEnsaf.Controllers
                 return RedirectToAction("PageNotFound", "Home");
             }
             ViewBag.checkFollow = _context.Abonnements.Where(a => a.Id_Following_User == currentUser.Id && a.Id_Followed_User == user.Id).FirstOrDefault();
-<<<<<<< HEAD
-            GenericAnnoces ga = new GenericAnnoces();
-        
-
-            foreach (var offre in await _context.Offres.Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User == user).ToListAsync())
-            {
-                ga.Offres.Add(offre);
-            }
-            ViewBag.userAnnonces = ga.Offres;
-=======
 
 
 
@@ -104,7 +94,14 @@ namespace PlateformeEnsaf.Controllers
             
             int test = votes.Sum(x => x.Value);
             ViewBag.NoteSum = test;
->>>>>>> 21a9001c838dcaffab726503fab65a9e4e2fb8c1
+            GenericAnnoces ga = new GenericAnnoces();
+        
+
+            foreach (var offre in await _context.Offres.Include(u => u.Rated_By).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User == user).ToListAsync())
+            {
+                ga.Offres.Add(offre);
+            }
+            ViewBag.userAnnonces = ga.Offres;
             return View(user);
         }
 

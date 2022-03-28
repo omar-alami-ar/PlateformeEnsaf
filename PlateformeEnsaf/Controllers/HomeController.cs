@@ -30,23 +30,101 @@ namespace PlateformeEnsaf.Controllers
         }
 
         [Authorize]
+
         public async  Task<IActionResult> Index()
         {
             var currentUser = await GetCurrentUser();
+            ViewBag.User = currentUser;
             //var currentUserId = await User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
             ViewBag.People =  userManager.Users.Where(a => a.Id != currentUser.Id ).Take(3);
             GenericAnnoces ga = new GenericAnnoces();
             var user = await GetCurrentUser();
 
-            foreach (var offre in await _context.Offres.Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d=>d.Domaine).Include(a => a.User).Where(a => a.User != currentUser).ToListAsync())
+            foreach (var offre in await _context.Offres.Include(a => a.Rated_By).ThenInclude(r=>r.User).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d=>d.Domaine).Include(a => a.User).Where(a => a.User != currentUser).ToListAsync())
             {
                 ga.Offres.Add(offre);
             }
             ViewBag.annonces = ga.Offres;
-            return View();
+            var annonces = ga.Offres;
+            ViewData["domaines"] = new SelectList(_context.Domaines, "Id", "Nom");
+            var villes = _context.Offres.Select(p => p.Ville).Distinct().ToList();
+            ViewData["villes"] = villes;
+            return View(annonces);
         }
 
-      
+        public async Task<PartialViewResult> Listing(int SelectedDomaine, string selectedCity, string selectedFilter)
+        {
+            var currentUser = await GetCurrentUser();
+            ViewBag.User = currentUser;
+            GenericAnnoces ga = new GenericAnnoces();
+            
+            if (SelectedDomaine == 0 && selectedCity == "0")
+            {
+                ga.Offres.Clear();
+                foreach (var offre in  _context.Offres.Include(a => a.Rated_By).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser)) 
+                {
+                    ga.Offres.Add(offre);
+                }
+               // var res = _context.Offres.Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser);
+                if (selectedFilter == "rating-desc")
+                    return PartialView( ga.Offres.OrderByDescending(a => a.Note));
+                else if (selectedFilter == "date-asc")
+                    return PartialView( ga.Offres.OrderBy(a => a.DatePublication));
+                else if (selectedFilter == "date-desc")
+                    return PartialView( ga.Offres.OrderByDescending(a => a.DatePublication));
+                return PartialView( ga.Offres);
+            }
+            else if (SelectedDomaine == 0 && selectedCity != "0")
+            {
+                ga.Offres.Clear();
+                foreach (var offre in _context.Offres.Include(a => a.Rated_By).Where(a => a.Ville == selectedCity).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser))
+                {
+                    ga.Offres.Add(offre);
+                }
+               // var res = _context.Offres.Where(a=>a.Ville=="selectedCity").Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser);
+                if (selectedFilter == "rating-desc")
+                    return PartialView( ga.Offres.OrderByDescending(a => a.Note));
+                else if (selectedFilter == "date-asc")
+                    return PartialView(ga.Offres.OrderBy(a => a.DatePublication));
+                else if (selectedFilter == "date-desc")
+                    return PartialView(ga.Offres.OrderByDescending(a => a.DatePublication));
+                return PartialView( ga.Offres);
+            }
+            else if (SelectedDomaine != 0 && selectedCity == "0")
+            {
+                ga.Offres.Clear();
+                // Annonce_Domaine d = new Annonce_Domaine();
+                var offres = _context.Offres.Include(a => a.Rated_By).Where(a => a.Annonce_Domaines.Any(d => d.DomaineId == SelectedDomaine)).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser).ToList();
+                foreach (var offre in _context.Offres.Include(a => a.Rated_By).Where(a => a.Annonce_Domaines.Any(d=>d.DomaineId==SelectedDomaine)).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser))
+                {
+                    ga.Offres.Add(offre);
+                }
+               // var res = _context.Offres.Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser);
+                if (selectedFilter == "rating-desc")
+                    return PartialView(ga.Offres.OrderByDescending(a => a.Note));
+                else if (selectedFilter == "date-asc")
+                    return PartialView(ga.Offres.OrderBy(a => a.DatePublication));
+                else if (selectedFilter == "date-desc")
+                    return PartialView(ga.Offres.OrderByDescending(a => a.DatePublication));
+                return PartialView(ga.Offres);
+            }
+            else
+            {
+                ga.Offres.Clear();
+                foreach (var offre in _context.Offres.Include(a => a.Rated_By).Where(a => a.Annonce_Domaines.Any(d => d.DomaineId == SelectedDomaine)).Where(a => a.Ville == selectedCity).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser))
+                {
+                    ga.Offres.Add(offre);
+                }
+                if (selectedFilter == "rating-desc")
+                    return PartialView(ga.Offres.OrderByDescending(a => a.Note));
+                else if (selectedFilter == "date-asc")
+                    return PartialView(ga.Offres.OrderBy(a => a.DatePublication));
+                else if (selectedFilter == "date-desc")
+                    return PartialView(ga.Offres.OrderByDescending(a => a.DatePublication));
+                return PartialView(ga.Offres);
+            }
+
+        }
 
         public IActionResult Report()
         {

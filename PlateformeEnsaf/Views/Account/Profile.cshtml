@@ -175,16 +175,12 @@
             {
                 <div class="card border-left-primary shadow mb-4">
                     <div class="card-header py-3">
-<<<<<<< HEAD
-                        <h6 class="m-0 font-weight-bold text-primary">Noter ce profil</h6>
-=======
                          <input type="hidden" name="noteSum" id="noteSum" value="@if(ViewBag.NoteSum != null) { @ViewBag.NoteSum }" />
                          <input type="hidden" name="nbrVote" id="nbrVote" value="@if(ViewBag.NbrVotes != null) { @ViewBag.NbrVotes }" />
                         <input type="hidden" name="lastVote" id="lastVote" value="@if(ViewBag.lastVote != null) { @ViewBag.lastVote }" />
                         <h6 class="m-0 font-weight-bold text-primary">Noter ce profil   </h6>
                         <h7>Note : <span id="NewNoteSum">@if(ViewBag.NoteSum != null && ViewBag.NoteSum != 0) {  @(ViewBag.NoteSum/ViewBag.NbrVotes) } else { <span>0</span>}</span></h7> <br />
                         <h7>Nombre de Vote :<span id="NewNbrVotes"> @if(ViewBag.NbrVotes != null && ViewBag.NbrVotes != 0) { @ViewBag.NbrVotes } else { <span>0</span>}</span></h7>
->>>>>>> 21a9001c838dcaffab726503fab65a9e4e2fb8c1
                     </div>
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -488,7 +484,7 @@
                             </a><p class="card-text">
                                 @annonce.Description
                             </p>
-                            @if (annonce.Images.Count != 0)
+                            @*@if (annonce.Images.Count != 0)
                             {
                                 @if (annonce.Images.Count == 1)
                                 {
@@ -506,7 +502,7 @@
                                         }
                                     </div>
                                 }
-                            }
+                            }*@
                             <div class="mt-2">
                                 @foreach (var domaine in annonce.Annonce_Domaines)
                                 {
@@ -532,13 +528,7 @@
 
 </div>
 
-<<<<<<< HEAD
-<script type="text/javascript">
-
-    $('#follow').on('click', function () {
-=======
 <script type="text/javascript">$('#follow').on('click', function () {
->>>>>>> 21a9001c838dcaffab726503fab65a9e4e2fb8c1
         var targetUserId = $('#profileId').val();
         /*var targetUserId = "hhhhhhhh";*/
         console.log(targetUserId);
