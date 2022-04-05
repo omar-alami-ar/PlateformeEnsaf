@@ -70,7 +70,21 @@
                         }
 
                     </div><div class="ml-2"><a asp-controller="Account" asp-action="Profile" asp-route-id="@annonce.User.Id" class="h5 m-0 text-muted">@annonce.User.FirstName @annonce.User.LastName</a><div class="h7 text-muted"><span>@@</span>@annonce.User.UserName</div></div>
-                </div><div><div class="dropdown"> <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-ellipsis-h"></i> </button><div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1"><div class="h6 dropdown-header">Configuration</div> <a class="dropdown-item" href="#">Save</a> <a class="dropdown-item" href="#">Hide</a> <a class="dropdown-item" href="#">Report</a></div></div></div>
+                </div>@*<div>
+                    <div class="dropdown"> <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-ellipsis-h"></i> </button><div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1"><div class="h6 dropdown-header">Configuration</div> <a class="dropdown-item" href="#">Save</a> <a class="dropdown-item" href="#">Hide</a> <a class="dropdown-item" href="#">Report</a></div></div>
+                </div>*@
+                <div>
+                    @{var save = annonce.EnregistrePar.Where(a => a.UserId == ViewBag.User.Id).FirstOrDefault();
+                        @if (save != null)
+                        {
+                            <i class="fas fa-bookmark saved bookmark" id="@annonce.Id" style="cursor: pointer; color:#4e73df"></i>
+                        }
+                        else
+                        {
+                            <i class="far fa-bookmark unsaved bookmark" id="@annonce.Id" style="cursor:pointer"></i>
+                        }
+                    }
+                </div>
             </div>
         </div>
         <div class="card-body">
@@ -144,6 +158,34 @@
 }
 
 <script>
+    $(".bookmark").on('click', function () {
+        var save = $(this);
+        $.ajax({
+            type: "POST",
+            url: '/Home/Save',
+            data: {
+                id: $(this).attr("id")
+            },
+            /* Response is the data returned from controller method */
+            success: function () {
+                if (save.hasClass('unsaved')) {
+                    save.removeClass('far');
+                    save.removeClass('unsaved');
+                    save.addClass('fas');
+                    save.addClass('saved');
+                    save.css('color', '#4e73df');
+                } else {
+                    save.removeClass('fas');
+                    save.removeClass('saved');
+                    save.addClass('far');
+                    save.addClass('unsaved');
+                    save.css('color', '');
+                }
+            }
+        });
+
+    });
+
     $(".up").on('click', function () {
         var upvote = $(this);
         var downvote = $(this).next();

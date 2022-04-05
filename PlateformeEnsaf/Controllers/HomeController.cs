@@ -40,7 +40,7 @@ namespace PlateformeEnsaf.Controllers
             GenericAnnoces ga = new GenericAnnoces();
             var user = await GetCurrentUser();
 
-            foreach (var offre in await _context.Offres.Include(a => a.Rated_By).ThenInclude(r=>r.User).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d=>d.Domaine).Include(a => a.User).Where(a => a.User != currentUser).ToListAsync())
+            foreach (var offre in await _context.Offres.Include(a => a.EnregistrePar).Include(a => a.Rated_By).ThenInclude(r=>r.User).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d=>d.Domaine).Include(a => a.User).Where(a => a.User != currentUser).ToListAsync())
             {
                 ga.Offres.Add(offre);
             }
@@ -61,7 +61,7 @@ namespace PlateformeEnsaf.Controllers
             if (SelectedDomaine == 0 && selectedCity == "0")
             {
                 ga.Offres.Clear();
-                foreach (var offre in  _context.Offres.Include(a => a.Rated_By).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser)) 
+                foreach (var offre in  _context.Offres.Include(a => a.EnregistrePar).Include(a => a.Rated_By).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser)) 
                 {
                     ga.Offres.Add(offre);
                 }
@@ -77,7 +77,7 @@ namespace PlateformeEnsaf.Controllers
             else if (SelectedDomaine == 0 && selectedCity != "0")
             {
                 ga.Offres.Clear();
-                foreach (var offre in _context.Offres.Include(a => a.Rated_By).Where(a => a.Ville == selectedCity).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser))
+                foreach (var offre in _context.Offres.Include(a => a.EnregistrePar).Include(a => a.Rated_By).Where(a => a.Ville == selectedCity).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser))
                 {
                     ga.Offres.Add(offre);
                 }
@@ -94,8 +94,8 @@ namespace PlateformeEnsaf.Controllers
             {
                 ga.Offres.Clear();
                 // Annonce_Domaine d = new Annonce_Domaine();
-                var offres = _context.Offres.Include(a => a.Rated_By).Where(a => a.Annonce_Domaines.Any(d => d.DomaineId == SelectedDomaine)).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser).ToList();
-                foreach (var offre in _context.Offres.Include(a => a.Rated_By).Where(a => a.Annonce_Domaines.Any(d=>d.DomaineId==SelectedDomaine)).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser))
+                var offres = _context.Offres.Include(a => a.EnregistrePar).Include(a => a.Rated_By).Where(a => a.Annonce_Domaines.Any(d => d.DomaineId == SelectedDomaine)).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser).ToList();
+                foreach (var offre in _context.Offres.Include(a => a.EnregistrePar).Include(a => a.Rated_By).Where(a => a.Annonce_Domaines.Any(d=>d.DomaineId==SelectedDomaine)).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser))
                 {
                     ga.Offres.Add(offre);
                 }
@@ -111,7 +111,7 @@ namespace PlateformeEnsaf.Controllers
             else
             {
                 ga.Offres.Clear();
-                foreach (var offre in _context.Offres.Include(a => a.Rated_By).Where(a => a.Annonce_Domaines.Any(d => d.DomaineId == SelectedDomaine)).Where(a => a.Ville == selectedCity).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser))
+                foreach (var offre in _context.Offres.Include(a => a.EnregistrePar).Include(a => a.Rated_By).Where(a => a.Annonce_Domaines.Any(d => d.DomaineId == SelectedDomaine)).Where(a => a.Ville == selectedCity).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser))
                 {
                     ga.Offres.Add(offre);
                 }
@@ -123,6 +123,33 @@ namespace PlateformeEnsaf.Controllers
                     return PartialView(ga.Offres.OrderByDescending(a => a.DatePublication));
                 return PartialView(ga.Offres);
             }
+
+        }
+
+        [Authorize]
+        public async Task<string> Save(int id)
+        {
+            var currentUser = await GetCurrentUser();
+            var annonce = _context.Annonce.Find(id);
+            var existingSave = _context.Enregistrements.Find(currentUser.Id, annonce.Id);
+            if (existingSave != null)
+            {
+                _context.Enregistrements.Remove(existingSave);
+                await _context.SaveChangesAsync();
+                return null;
+            }
+                //ViewBag.ExistingSave = false;
+                Enregistrement e = new Enregistrement()
+            {
+                User = currentUser,
+                Annonce = annonce,
+            };
+            _context.Enregistrements.Add(e);
+
+            await _context.SaveChangesAsync();
+            
+    
+            return null;
 
         }
 

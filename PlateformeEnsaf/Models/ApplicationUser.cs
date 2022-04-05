@@ -54,6 +54,8 @@ namespace PlateformeEnsaf.Models
 
         public virtual List<ApplicationUser_Domaine> User_Domaines { get; set; }
 
+        public virtual ICollection<Enregistrement> Enregistrements { get; set; }
+
         //public virtual List<Commentaire> Commentaires { get; set; }
         public List<Vote> Votes { get; set; }
         public List<Vote> Voted { get; set; }

@@ -41,6 +41,8 @@ namespace PlateformeEnsaf.Models
 
         public virtual ICollection<User_Annonce_Rating> Rated_By { get; set; }
 
+        public virtual ICollection<Enregistrement> EnregistrePar { get; set; }
+
         public virtual List<Commentaire> Commentaires { get; set; }
 
 

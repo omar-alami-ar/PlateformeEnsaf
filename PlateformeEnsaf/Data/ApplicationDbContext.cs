@@ -23,6 +23,8 @@ namespace PlateformeEnsaf.Data
         public DbSet<Commentaire> Commentaires { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<ApplicationUser_Domaine> user_Domaines { get; set; }
+
+        public DbSet<Enregistrement> Enregistrements { get; set; }
         public DbSet<Annonce_Domaine> Annonce_Domaines { get; set; }
         public DbSet<User_Annonce_Rating> User_Annonce_Rating { get; set; }
         public DbSet<Abonnement> Abonnements { get; set; }
@@ -118,6 +120,18 @@ namespace PlateformeEnsaf.Data
                 .HasOne(bc => bc.User)
                 .WithMany(c => c.Rated_Annonces)
                 .HasForeignKey(bc => bc.UserId);
+
+
+            builder.Entity<Enregistrement>()
+            .HasKey(e => new { e.UserId, e.AnnonceId });
+            builder.Entity<Enregistrement>()
+                .HasOne(e => e.Annonce)
+                .WithMany(b => b.EnregistrePar)
+                .HasForeignKey(bc => bc.AnnonceId);
+            builder.Entity<Enregistrement>()
+                .HasOne(e => e.User)
+                .WithMany(c => c.Enregistrements)
+                .HasForeignKey(e => e.UserId);
 
 
         }

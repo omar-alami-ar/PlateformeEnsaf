@@ -413,6 +413,24 @@ namespace PlateformeEnsaf.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize]
+        public async Task<string> Commenter(int id,string content)
+        {
+            var currentUser = await GetCurrentUser();
+            var annonce = _context.Annonce.Find(id);
+
+            Commentaire comment = new Commentaire();
+            comment.Contenu = content;
+            comment.DatePublication = DateTime.Now;
+            comment.User = currentUser;
+            comment.Annonce = annonce;
+
+            _context.Commentaires.Add(comment);
+            await _context.SaveChangesAsync();
+
+            return "commented";
+
+        }
 
         [Authorize]
         public async Task<string> Upvote(int id)
