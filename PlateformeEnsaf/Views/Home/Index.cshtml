@@ -3,6 +3,8 @@
     ViewData["Title"] = "Home Page";
 }
 
+
+
 @functions{
     public string TimeAgo(DateTime dateTime)
     {
@@ -326,8 +328,9 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
+<script>$(document).ready(function () {
+        $("#alert-succ").hide();
+        $("#alert-err").hide();
         $(".comment").hide();
         $(".comment-btn").on('click', function (event) {
             var btn = $(this);
@@ -455,6 +458,38 @@
             });
         });
 
+        $('#share').on("click", function () {
+            var title = $('#title');
+            var message = $('#message');
+
+
+
+            $.ajax({
+                type: "POST",
+                url: '/Home/Annonce',
+                data: {
+
+                    title: title.val(),
+                    message: message.val(),
+                },
+
+                success: function (response) {
+
+                    console.log(response);
+                    title.val("");
+                    message.val("");
+
+                    if (response == "added") {
+                        $("#alert-err").hide();
+                        $('#alert-succ').show();
+                    } else {
+                        $('#alert-succ').hide();
+                        $("#alert-err").show();
+                    }
+                }
+            });
+        });
+
 
 
         $('#domaines').change(function () {
@@ -513,5 +548,43 @@
             });
         });
 
+    });</script>
+
+
+<script src="~/lib/signalr/signalr.js"></script>
+<input type="hidden" id="connectionId" value="" />
+
+<script>var connection = new signalR.HubConnectionBuilder().withUrl("/MessageHub").build();
+
+
+
+
+    connection.on("ReceiveNotification", function (user,annonceId) {
+        $('#notificationNum').text(parseInt($('#notificationNum').text()) + 1);
+
+        var currentdate = new Date();
+        var datetime = currentdate.getDate() + "/"
+            + (currentdate.getMonth() + 1) + "/"
+            + currentdate.getFullYear() + "   "
+            + currentdate.getHours() + ":"
+            + currentdate.getMinutes();
+        var notification = ' <a class="dropdown-item d-flex align-items-center" href="/Annonce/DetailsOff/' + annonceId +'">   <div class="mr-3"><div class="icon-circle bg-primary"> <i class="fas fa-file-alt text-white"></i></div></div><div><div class="small text-gray-500">' + datetime + '</div> <span class="font-weight-bold">New announcement of ' + user + ' has been added </span></div></a >';
+        $('#notificationCon').append(notification);
+
+
+
     });
-</script>
+
+    connection.start().then(function () {
+        connection.invoke("GetConnectionId").then(function (id) {
+            document.getElementById("connectionId").value = id;
+        });
+
+
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+    </script>
+
+
+

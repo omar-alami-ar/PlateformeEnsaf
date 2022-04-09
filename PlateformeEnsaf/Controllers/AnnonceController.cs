@@ -513,8 +513,6 @@ namespace PlateformeEnsaf.Controllers
         }
 
 
-
-
         private async Task<ApplicationUser> GetCurrentUser()
         {
             return await userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier).ToString());

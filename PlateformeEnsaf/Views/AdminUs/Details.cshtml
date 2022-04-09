@@ -1,0 +1,129 @@
+@model PlateformeEnsaf.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        @*TODO: ajouter l'image de l'utilisateur'*@
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CIN)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CIN)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Adresse)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Adresse)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Biographie)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Biographie)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Niveau)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Niveau)
+        </dd>
+        
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+    </dl>
+    
+    <form asp-action="Details">
+        <input type="hidden" asp-for="Id" id="userId" />
+        
+        <input type="button" id="Black" class= "@if (Model.IsInBlacklist) { @ViewBag.isBlackClass} else { @ViewBag.notBlackClass}" value= "@if (Model.IsInBlacklist){ @ViewBag.isBlack } else { @ViewBag.notBlack }"/><br />
+
+<a asp-action="Index">Back to List</a>
+
+</form>
+</div>
+
+
+
+
+
+
+
+<script>
+    
+    $(document).ready(function () {
+
+        $("#Black").on('click', function () {
+
+                    var userId = $('#userId').val();
+
+                    console.log(userId);
+        
+            
+            $.ajax({
+                    type: "POST",
+                url: "/AdminUs/Black",
+                data: { id: userId },
+                success: function (result) {
+
+                            if ($("#Black").val() == 'Add him to the Black List') {
+                        $("#Black").val('Remove from Black List');
+                        $("#Black").removeClass('btn-danger');
+                        $("#Black").addClass('btn-success');
+                            } else {
+                        $("#Black").val('Add him to the Black List');
+                        $("#Black").removeClass('btn-success');
+                        $("#Black").addClass('btn-danger');
+
+                            }
+                        }
+                    });
+                });
+
+            });
+</script>
+    
