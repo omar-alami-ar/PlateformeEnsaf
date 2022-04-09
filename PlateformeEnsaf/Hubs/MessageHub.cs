@@ -14,7 +14,7 @@ public class MessageHub : Hub
         await Clients.Others.SendAsync("ReceiveMessage", user, message,receiverId);
     }
 
-    public async Task SendNotification(string user,int annonceId)
+    public async Task SendNotification(string user, int annonceId)
     {
         await Clients.Others.SendAsync("ReceiveNotification", user, annonceId);
     }

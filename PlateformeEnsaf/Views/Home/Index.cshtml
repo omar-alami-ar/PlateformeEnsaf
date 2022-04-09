@@ -559,7 +559,7 @@
 
 
 
-    connection.on("ReceiveNotification", function (user,annonceId) {
+    connection.on("ReceiveNotification", function (user, annonceId) {
         $('#notificationNum').text(parseInt($('#notificationNum').text()) + 1);
 
         var currentdate = new Date();
@@ -568,7 +568,7 @@
             + currentdate.getFullYear() + "   "
             + currentdate.getHours() + ":"
             + currentdate.getMinutes();
-        var notification = ' <a class="dropdown-item d-flex align-items-center" href="/Annonce/DetailsOff/' + annonceId +'">   <div class="mr-3"><div class="icon-circle bg-primary"> <i class="fas fa-file-alt text-white"></i></div></div><div><div class="small text-gray-500">' + datetime + '</div> <span class="font-weight-bold">New announcement of ' + user + ' has been added </span></div></a >';
+        var notification = ' <a class="dropdown-item d-flex align-items-center" href="/AdminAn/Edit/' + annonceId + '">   <div class="mr-3"><div class="icon-circle bg-primary"> <i class="fas fa-file-alt text-white"></i></div></div><div><div class="small text-gray-500">' + datetime + '</div> <span class="font-weight-bold">New announcement of ' + user + ' has been added </span></div></a >';
         $('#notificationCon').append(notification);
 
 
