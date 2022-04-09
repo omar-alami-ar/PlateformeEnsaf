@@ -414,6 +414,7 @@
            
             connection.invoke("SendMessage", user, message,receiverId).catch(function (err) {
                 return console.error(err.toString());
+                
             });
 
             $.ajax({

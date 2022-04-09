@@ -1,7 +1,9 @@
-﻿@model IEnumerable<PlateformeEnsaf.Models.Offre> 
+﻿@model IEnumerable<PlateformeEnsaf.Models.Offre>
 @{
     ViewData["Title"] = "Home Page";
 }
+
+
 
 @functions{
     public string TimeAgo(DateTime dateTime)
@@ -43,7 +45,7 @@
                 String.Format("Il y a {0} ans", timeSpan.Days / 365) :
                 "Il y a un an";
         }
-        
+
         return result;
     }
 }
@@ -70,8 +72,8 @@
                     </select>
                 </div>
                 <div class="form-group col-md-4">
-                    <select class="form-control" id="villes" >
-                        <option value="0" >Toutes les villes</option>
+                    <select class="form-control" id="villes">
+                        <option value="0">Toutes les villes</option>
                         @foreach (var ville in ViewBag.villes)
                         {
                             <option value="@ville">@ville</option>
@@ -79,7 +81,7 @@
                     </select>
                 </div>
                 <div class="form-group col-md-4">
-                    <select class="form-control" id="tri" >
+                    <select class="form-control" id="tri">
                         <option value="0" selected disabled>Trier par</option>
                         <option value="rating-desc">Popularité - Le plus populaire</option>
                         <option value="date-desc">Date - La plus récente</option>
@@ -89,18 +91,18 @@
 
             </div>
             @*<div class="card shadow gedf-card mb-3">
-                <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active show" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">
-                                Make
-                                a publication
-                            </a>
-                        </li>
-                        <li class="nav-item"> <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false" href="#images">Images</a></li>
-                    </ul>
-                </div><div class="card-body"><div class="tab-content" id="myTabContent"><div class="tab-pane fade active show" id="posts" role="tabpanel" aria-labelledby="posts-tab"><div class="form-group"> <label class="sr-only" for="message">post</label><textarea class="form-control" id="message" rows="3" placeholder="What are you thinking?"></textarea></div></div><div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab"><div class="form-group"><div class="custom-file"> <input type="file" class="custom-file-input" id="customFile"> <label class="custom-file-label" for="customFile">Upload image</label></div></div><div class="py-4"></div></div></div><div class="btn-toolbar justify-content-between"><div class="btn-group"> <button type="submit" class="btn btn-primary">share</button></div><div class="btn-group"> <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-globe"></i> </button><div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1"> <a class="dropdown-item" href="#"><i class="fa fa-globe"></i> Public</a> <a class="dropdown-item" href="#"><i class="fa fa-users"></i> Friends</a> <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Just me</a></div></div></div></div>
-            </div>*@
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active show" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">
+                                    Make
+                                    a publication
+                                </a>
+                            </li>
+                            <li class="nav-item"> <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false" href="#images">Images</a></li>
+                        </ul>
+                    </div><div class="card-body"><div class="tab-content" id="myTabContent"><div class="tab-pane fade active show" id="posts" role="tabpanel" aria-labelledby="posts-tab"><div class="form-group"> <label class="sr-only" for="message">post</label><textarea class="form-control" id="message" rows="3" placeholder="What are you thinking?"></textarea></div></div><div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab"><div class="form-group"><div class="custom-file"> <input type="file" class="custom-file-input" id="customFile"> <label class="custom-file-label" for="customFile">Upload image</label></div></div><div class="py-4"></div></div></div><div class="btn-toolbar justify-content-between"><div class="btn-group"> <button type="submit" class="btn btn-primary">share</button></div><div class="btn-group"> <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-globe"></i> </button><div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1"> <a class="dropdown-item" href="#"><i class="fa fa-globe"></i> Public</a> <a class="dropdown-item" href="#"><i class="fa fa-users"></i> Friends</a> <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Just me</a></div></div></div></div>
+                </div>*@
             <div id="results">
                 @foreach (var annonce in Model)
                 {
@@ -121,17 +123,17 @@
                                     </div><div class="ml-2"><a asp-controller="Account" asp-action="Profile" asp-route-id="@annonce.User.Id" class="h5 m-0 text-muted">@annonce.User.FirstName @annonce.User.LastName</a><div class="h7 text-muted"><span>@@</span>@annonce.User.UserName</div></div>
                                 </div>
                                 @*<div><div class="dropdown"> <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-ellipsis-h"></i> </button><div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1"><div class="h6 dropdown-header">Configuration</div> <a class="dropdown-item" href="#">Save</a> <a class="dropdown-item" href="#">Hide</a> <a class="dropdown-item" href="#">Report</a></div></div></div>*@
-                            <div>
-                                @{var save = annonce.EnregistrePar.Where(a => a.UserId == ViewBag.User.Id).FirstOrDefault();
-                                    @if (save != null)
-                                    {
-                                        <i class="fas fa-bookmark saved bookmark" id="@annonce.Id" style="cursor: pointer; color:#4e73df"></i>
+                                <div>
+                                    @{var save = annonce.EnregistrePar.Where(a => a.UserId == ViewBag.User.Id).FirstOrDefault();
+                                        @if (save != null)
+                                        {
+                                            <i class="fas fa-bookmark saved bookmark" id="@annonce.Id" style="cursor: pointer; color:#4e73df"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="far fa-bookmark unsaved bookmark" id="@annonce.Id" style="cursor:pointer"></i>
+                                        }
                                     }
-                                    else
-                                    {
-                                        <i class="far fa-bookmark unsaved bookmark" id="@annonce.Id" style="cursor:pointer"></i>
-                                    }
-                                  }
                                 </div>
                             </div>
                         </div>
@@ -141,7 +143,7 @@
 
                                 <h5 class="card-link">@annonce.Categorie.ToString()</h5><h6>@TimeAgo(annonce.DatePublication)</h6>
                             </div>
-                            
+
                             <a class="card-link" asp-action="DetailsOff" asp-controller="Annonce" asp-route-id="@annonce.Id">
                                 <h5 class="card-title">
                                     @annonce.Titre
@@ -150,23 +152,23 @@
                                 @annonce.Description
                             </p>
                             @*@if (annonce.Images.Count != 0)
-                            {
-                                @if (annonce.Images.Count == 1)
-                                {
-                                    @foreach (var image in annonce.Images) {
-                                    <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" class="img-responsive" width="200">
-                                        }
-                                    }
-                                else
-                                {
-                                    <div class="d-flex">
-                                        @foreach (var image in annonce.Images)
+                                    {
+                                        @if (annonce.Images.Count == 1)
                                         {
-                                            <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" class="img-responsive mr-2" width="200">
+                                            @foreach (var image in annonce.Images) {
+                                            <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" class="img-responsive" width="200">
+                                                }
+                                            }
+                                        else
+                                        {
+                                            <div class="d-flex">
+                                                @foreach (var image in annonce.Images)
+                                                {
+                                                    <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" class="img-responsive mr-2" width="200">
+                                                }
+                                </div>
                                         }
-                        </div>
-                                }
-                            }*@
+                                    }*@
                             <div class="mt-2">
                                 @foreach (var domaine in annonce.Annonce_Domaines)
                                 {
@@ -204,12 +206,12 @@
                             <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Partager</a>
                             <br />
                             <div class="comment">
-                                
-                                    <textarea rows="3" id="commentContent" placeholder="Votre commentaire" style="height: 68px;" class="form-control mt-3"></textarea>
-                                    <div class="text-right">
-                                        <button type="submit" id="@annonce.Id" class="sendComment btn btn-primary mt-1">Envoyer</button>
-                                    </div>
-                                
+
+                                <textarea rows="3" id="commentContent" placeholder="Votre commentaire" style="height: 68px;" class="form-control mt-3"></textarea>
+                                <div class="text-right">
+                                    <button type="submit" id="@annonce.Id" class="sendComment btn btn-primary mt-1">Envoyer</button>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -260,21 +262,31 @@
                 </ul>
             </div>
             <div class="card-body">
-             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade active show" id="posts" role="tabpanel" aria-labelledby="posts-tab">
-                 <div class="form-group"> 
-                    <label class="sr-only" for="message">post</label>
-                    <input class="form-control" placeholder="Title" name="title"  />
-                    <textarea class="form-control mt-2" id="message" rows="3" placeholder="What are you thinking?"></textarea>
-                     </div>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade active show" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                        <div class="form-group">
+                            <label class="sr-only" for="message">post</label>
+                            <div class="alert alert-success alert-dismissible" role="alert" id="alert-succ">
+                                Ajouté avec succes
+                            </div>
+                            <div class="alert alert-danger alert-dismissible" role="alert" id="alert-err">
+                                Erreur anonce not accpted
+                            </div>
+                            <input class="form-control" placeholder="Title" name="title" id="title" />
+                            <textarea class="form-control mt-2" id="message" rows="3" placeholder="What are you thinking?" name="message"></textarea>
+                        </div>
                     </div>
-                <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
-                 <div class="form-group"><div class="custom-file">
-                     <input type="file" class="custom-file-input" id="customFile"> 
-                     <label class="custom-file-label" for="customFile">Upload image</label>
-                      </div>
-                     </div>
-                 <div class="py-4"></div></div></div><div class="btn-toolbar justify-content-between"><div class="btn-group"> <button type="submit" class="btn btn-primary">share</button></div><div class="btn-group"> <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-globe"></i> </button><div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1"> <a class="dropdown-item" href="#"><i class="fa fa-globe"></i> Public</a> <a class="dropdown-item" href="#"><i class="fa fa-users"></i> Friends</a> <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Just me</a></div></div></div></div>
+                    <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
+                        <div class="form-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="customFile">
+                                <label class="custom-file-label" for="customFile">Upload image</label>
+                            </div>
+                        </div>
+                        <div class="py-4"></div>
+                    </div>
+                </div><div class="btn-toolbar justify-content-between"><div class="btn-group"> <button id="share" class="btn btn-primary">share</button></div><div class="btn-group"> <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-globe"></i> </button><div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1"> <a class="dropdown-item" href="#"><i class="fa fa-globe"></i> Public</a> <a class="dropdown-item" href="#"><i class="fa fa-users"></i> Friends</a> <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Just me</a></div></div></div>
+            </div>
         </div>
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
@@ -338,14 +350,15 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
+<script>$(document).ready(function () {
+        $("#alert-succ").hide();
+        $("#alert-err").hide();
         $(".comment").hide();
         $(".comment-btn").on('click', function (event) {
             var btn = $(this);
             var comment_section = btn.siblings(".comment");
             var comment_box = comment_section.children("textarea");
-            comment_section.slideToggle(500); 
+            comment_section.slideToggle(500);
             event.preventDefault();
             console.log(btn);
             console.log(comment_section);
@@ -366,11 +379,11 @@
             //        }
             //    });
 
-          //  });
+            //  });
 
         });
 
-        
+
 
         $(".bookmark").on('click', function () {
             var save = $(this);
@@ -397,7 +410,7 @@
                     }
                 }
             });
-            
+
         });
         $(".up").on('click', function () {
             var upvote = $(this);
@@ -458,10 +471,42 @@
                         return false;
                     }
                     else if (response == "cancelledDownvote") {
-                       // console.log(response);
+                        // console.log(response);
                         downvote.removeClass("downvoted");
                         downvote.find('span').text("Downvote");
                         return false;
+                    }
+                }
+            });
+        });
+
+        $('#share').on("click", function () {
+            var title = $('#title');
+            var message = $('#message');
+
+
+
+            $.ajax({
+                type: "POST",
+                url: '/Home/Annonce',
+                data: {
+
+                    title: title.val(),
+                    message: message.val(),
+                },
+
+                success: function (response) {
+
+                    console.log(response);
+                    title.val("");
+                    message.val("");
+
+                    if (response == "added") {
+                        $("#alert-err").hide();
+                        $('#alert-succ').show();
+                    } else {
+                        $('#alert-succ').hide();
+                        $("#alert-err").show();
                     }
                 }
             });
@@ -474,7 +519,7 @@
                 type: "POST",
                 url: '/Home/Listing',
                 data: {
-                   // selectedCity: $("#ville option:selected").text,
+                    // selectedCity: $("#ville option:selected").text,
                     selectedDomaine: $(this).val(),
                     selectedCity: $("#villes").val(),
                     selectedFilter: $("#tri").val()
@@ -525,5 +570,43 @@
             });
         });
 
+    });</script>
+
+
+<script src="~/lib/signalr/signalr.js"></script>
+<input type="hidden" id="connectionId" value="" />
+
+<script>var connection = new signalR.HubConnectionBuilder().withUrl("/MessageHub").build();
+
+
+
+
+    connection.on("ReceiveNotification", function (user) {
+        $('#notificationNum').text(parseInt($('#notificationNum').text()) + 1);
+
+        var currentdate = new Date();
+        var datetime = currentdate.getDate() + "/"
+            + (currentdate.getMonth() + 1) + "/"
+            + currentdate.getFullYear() + "   "
+            + currentdate.getHours() + ":"
+            + currentdate.getMinutes();
+        var notification = ' <a class="dropdown-item d-flex align-items-center" href="#">   <div class="mr-3"><div class="icon-circle bg-primary"> <i class="fas fa-file-alt text-white"></i></div></div><div><div class="small text-gray-500">' + datetime + '</div> <span class="font-weight-bold">New announcement of ' + user + ' has been added </span></div></a >';
+        $('#notificationCon').append(notification);
+
+
+
     });
-</script>
+
+    connection.start().then(function () {
+        connection.invoke("GetConnectionId").then(function (id) {
+            document.getElementById("connectionId").value = id;
+        });
+
+
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+    </script>
+
+
+

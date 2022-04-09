@@ -101,24 +101,23 @@
                                         <textarea class="form-control" asp-for="Input.Biographie" rows="3"></textarea>
                                         <span asp-validation-for="Input.Biographie" class="text-danger"></span>
                                     </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-4">
-                                            <select class="form-control">
-                                                <option value="value">text</option>
-                                                <option value="value">text</option>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label asp-for="Input.Niveau"></label>
+                                            <br />
+                                            <select class="form-control" asp-for="Input.Niveau" required>
+                                                <option selected disabled value="">--Choisir niveau d'études--</option>
+                                                <option value="1ère Année">1ère Année</option>
+                                                <option value="2éme Année">2éme Année</option>
+                                                <option value="3éme Année">3éme Année</option>
+                                                <option value="Laureat">Lauréat</option>
                                             </select>
+                                            <span asp-validation-for="Input.Niveau" class="text-danger"></span>
                                         </div>
-                                        <div class="form-group col-md-4">
-                                            <select class="form-control">
-                                                <option value="value">text</option>
-                                                <option value="value">text</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <select class="form-control">
-                                                <option value="value">text</option>
-                                                <option value="value">text</option>
-                                            </select>
+
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">Filière</label>
+                                            <select asp-for="Input.Filiere" class="form-control" asp-items="ViewBag.Id_Filiere"></select>
                                         </div>
 
                                     </div>

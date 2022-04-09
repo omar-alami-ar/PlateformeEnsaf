@@ -179,8 +179,8 @@
                          <input type="hidden" name="nbrVote" id="nbrVote" value="@if(ViewBag.NbrVotes != null) { @ViewBag.NbrVotes }" />
                         <input type="hidden" name="lastVote" id="lastVote" value="@if(ViewBag.lastVote != null) { @ViewBag.lastVote }" />
                         <h6 class="m-0 font-weight-bold text-primary">Noter ce profil   </h6>
-                        <h7>Note : <span id="NewNoteSum">@if(ViewBag.NoteSum != null && ViewBag.NoteSum != 0) {  @(ViewBag.NoteSum/ViewBag.NbrVotes) } else { <span>0</span>}</span></h7> <br />
-                        <h7>Nombre de Vote :<span id="NewNbrVotes"> @if(ViewBag.NbrVotes != null && ViewBag.NbrVotes != 0) { @ViewBag.NbrVotes } else { <span>0</span>}</span></h7>
+                        <h7>Note : <span id="NewNoteSum">@if(ViewBag.NoteSum != null && ViewBag.NoteSum != 0) {  @(ViewBag.NoteSum/ViewBag.NbrVotes) } else { @(0)}</span></h7> <br />
+                        <h7>Nombre de Vote :<span id="NewNbrVotes"> @if(ViewBag.NbrVotes != null && ViewBag.NbrVotes != 0) { @ViewBag.NbrVotes } else { @(0)}</span></h7>
                     </div>
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -572,7 +572,7 @@
         /* 1. Visualizing things on Hover - See next part for action on click */
         $('#stars li').on('mouseover', function () {
             var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
-
+            
             // Now highlight all the stars that's not after the current hovered star
             $(this).parent().children('li.star').each(function (e) {
                 if (e < onStar) {
@@ -580,6 +580,7 @@
                 }
                 else {
                     $(this).removeClass('hover');
+                    
                 }
             });
 
@@ -600,19 +601,37 @@
                 data: { id: targetUserId, stars: onStar },
                 success: function (result) {
                     if (result == "update") {
-                 
-                        var newNote = (parseFloat(document.getElementById("noteSum").value) - parseFloat(document.getElementById("lastVote").value) + onStar) / parseFloat(document.getElementById("nbrVote").value);
-                        console.log(newNote);
 
+                        var newNote = (parseFloat(document.getElementById("noteSum").value) - parseFloat(document.getElementById("lastVote").value) + onStar) / parseFloat(document.getElementById("nbrVote").value);
+
+
+                        $("#noteSum").val($("#noteSum").val() - $("#lastVote").val() + onStar);
+                        $('#lastVote').val(onStar);
                         $("#NewNoteSum").text(newNote);
 
-                     
+                        console.log($("#noteSum").val());
+                        console.log($('#lastVote').val());
+                        console.log($('#nbrVote').val());
 
                     } else {
-                        var newNote = (parseFloat(document.getElementById("noteSum").value) + onStar) / parseFloat(document.getElementById("nbrVote").value);
-                        $("#NewNoteSum").text(newNote);
+
                         var newnbrVotes = parseFloat(document.getElementById("nbrVote").value) + 1;
                         $("#NewNbrVotes").text(newnbrVotes);
+                        $("#nbrVote").val(newnbrVotes);
+
+                        var newNote = (parseFloat(document.getElementById("noteSum").value) + onStar) / (parseFloat(document.getElementById("nbrVote").value));
+                        $("#NewNoteSum").text(newNote);
+
+                        $("#nbrVote").val(newnbrVotes);
+                        $("#noteSum").val(parseFloat(document.getElementById("noteSum").value) + onStar);
+                        $('#lastVote').val(onStar);
+
+
+                        console.log($("#noteSum").val());
+                        console.log($('#lastVote').val());
+                        console.log($('#nbrVote').val());
+                       
+                        
                         
 
                     }

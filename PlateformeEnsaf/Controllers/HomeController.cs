@@ -153,6 +153,35 @@ namespace PlateformeEnsaf.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<string> Annonce( string title, string message)
+        {
+
+           
+            if (title != null && message != null)
+            {
+                var sourceUser = await GetCurrentUser();
+
+                Question question = new Question();
+
+                question.Titre = title;
+                question.Description = message;
+                question.User = sourceUser;
+
+                _context.Annonce.Add(question);
+                _context.SaveChanges();
+
+                return "added";
+
+
+            }
+            else
+                return "refused";
+            
+
+
+        }
+
         public IActionResult Report()
         {
             var test = _context.Users;

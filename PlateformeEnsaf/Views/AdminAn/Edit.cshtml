@@ -1,0 +1,118 @@
+@model PlateformeEnsaf.Models.Annonce
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<script src="~/lib/signalr/signalr.js"></script>
+
+<input type="hidden" id="connectionId" value="" />
+<input type="hidden" id="senderName" value="@Model.User.UserName" />
+<h1>Edit</h1>
+
+<h4>Annonce</h4>
+<hr />
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Titre)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Titre)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Description)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Description)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.DatePublication)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.DatePublication)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Note)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Note)
+    </dd>
+
+</dl>
+
+
+
+<div class="form-group">
+    <form asp-action="Edit">
+        <input type="submit" value="Confirm" id="confirm" class="btn btn-success" />
+    </form>
+</div>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+
+
+<script>
+
+
+        var connection = new signalR.HubConnectionBuilder().withUrl("/MessageHub").build();
+
+
+
+
+        var user = $('#senderName').val();
+        connection.on("ReceiveNotification", function (user) {
+            $('#notificationNum').text(parseInt($('#notificationNum').text()) + 1);
+
+            var currentdate = new Date();
+            var datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth() + 1) + "/"
+                + currentdate.getFullYear() + "   "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes();
+            var notification = ' <a class="dropdown-item d-flex align-items-center" href="#">   <div class="mr-3"><div class="icon-circle bg-primary"> <i class="fas fa-file-alt text-white"></i></div></div><div><div class="small text-gray-500">' + datetime + '</div> <span class="font-weight-bold">New announcement of '+ user +' has been added </span></div></a >';
+            $('#notificationCon').append(notification);
+
+
+
+        });
+
+        connection.start().then(function () {
+            connection.invoke("GetConnectionId").then(function (id) {
+                document.getElementById("connectionId").value = id;
+            });
+
+
+            }).catch(function (err) {
+            return console.error(err.toString());
+        });
+
+
+
+    $("#confirm").on('click', function () {
+
+        connection.invoke("SendNotification", user).catch(function (err) {
+                return console.error(err.toString());
+
+            });
+
+        });
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
