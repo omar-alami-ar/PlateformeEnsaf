@@ -83,6 +83,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
 <link href="~/css/profile.css" rel="stylesheet" />
 <div class="container">
+    <div class="row mb-3">
+        <div class="btn-group col-lg-1 col-sm-1">
+            <button onClick="history.go(-1); return false;" type="submit" id="back-btn" style="color: #4e73df" class="d-flex align-items-center btn btn-sm btn-custom waves-effect waves-light"><i class="fa-solid fa-arrow-left-long mr-2" style="color: #4e73df"></i>Retour</button>
+        </div>
+    </div>
     <div class="row">
         <div class="col-xl-5">
             <div class="card border-left-primary">
@@ -120,22 +125,91 @@
                     </div>
 
                     <div class="mt-3">
-                        <h4 class="fw- mb-2 font-13 text-uppercase text-dark">A propos de moi:</h4>
-                        <p class="text-muted font-13 mb-3">
-                            @Model.Biographie
-                        </p>
-                        <input type="hidden" name="profileId" id="profileId" value="@Model.Id" />
+                        <input type="hidden" name="noteSum" id="noteSum" value="@if(ViewBag.NoteSum != null) { @ViewBag.NoteSum }" />
+                        <input type="hidden" name="nbrVote" id="nbrVote" value="@if(ViewBag.NbrVotes != null) { @ViewBag.NbrVotes }" />
+                        <input type="hidden" name="lastVote" id="lastVote" value="@if(ViewBag.lastVote != null) { @ViewBag.lastVote }" />
 
-                        <p class="text-muted mb-2 font-13 text-dark"><strong>Nom Complet :</strong> <span class="ms-2">@Model.FirstName @Model.LastName</span></p>
+                        @*<h7>
+            Nombre de Vote :<span id="NewNbrVotes">
+                @if (ViewBag.NbrVotes != null && ViewBag.NbrVotes != 0)
+                {@ViewBag.NbrVotes }
+            else
+            { <span>0</span>}
+            </span>
+        </h7>*@
 
-                        <p class="text-muted mb-2 font-13 text-dark"><strong>Etudes :</strong> <span class="ms-2">@Model.Niveau en @Model.Filiere.Nom</span></p>
+                        @if (Model.Id != ViewBag.CurrentUserId)
+                        {
+                            <div class="col row d-flex justify-content-between">
 
-                        <p class="text-muted mb-2 font-13 text-dark"><strong>Telephone :</strong> <span class="ms-2">@Model.PhoneNumber</span></p>
+                                <div class="ml-4 text-center">
+                                    <i class="fa fa-star fa-fw" style="color:#FF912C"></i> <span id="NewNoteSum">
+                                        @if (ViewBag.NoteSum != null && ViewBag.NoteSum != 0)
+                                        {@(ViewBag.NoteSum / ViewBag.NbrVotes) }
+                                        else
+                                        { <span>0</span>}
+                                    </span>
+                                </div>
 
-                        <p class="text-muted mb-2 font-13 text-dark"><strong>Email :</strong> <span class="ms-2">@Model.Email</span></p>
+                                <div class="no-gutters align-items-center">
+                                    <div class="col mr-2">
 
-                        <p class="text-muted mb-1 font-13 text-dark"><strong>Adresse :</strong> <span class="ms-2">@Model.Adresse</span></p>
-                    </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <section class='rating-widget'>
+
+                                                <!-- Rating Stars Box -->
+                                                <div class='rating-stars text-start'>
+                                                    <ul id='stars'>
+                                                        <li class='star' title='Poor' data-value='1'>
+                                                            <i class='fa fa-star fa-fw'></i>
+                                                        </li>
+                                                        <li class='star' title='Fair' data-value='2'>
+                                                            <i class='fa fa-star fa-fw'></i>
+                                                        </li>
+                                                        <li class='star' title='Good' data-value='3'>
+                                                            <i class='fa fa-star fa-fw'></i>
+                                                        </li>
+                                                        <li class='star' title='Excellent' data-value='4'>
+                                                            <i class='fa fa-star fa-fw'></i>
+                                                        </li>
+                                                        <li class='star' title='WOW!!!' data-value='5'>
+                                                            <i class='fa fa-star fa-fw'></i>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <div hidden class='success-box'>
+                                                    <div class='clearfix'></div>
+                                                    <img alt='tick image' width='20' src='data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA0MjYuNjY3IDQyNi42NjciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQyNi42NjcgNDI2LjY2NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCI+CjxwYXRoIHN0eWxlPSJmaWxsOiM2QUMyNTk7IiBkPSJNMjEzLjMzMywwQzk1LjUxOCwwLDAsOTUuNTE0LDAsMjEzLjMzM3M5NS41MTgsMjEzLjMzMywyMTMuMzMzLDIxMy4zMzMgIGMxMTcuODI4LDAsMjEzLjMzMy05NS41MTQsMjEzLjMzMy0yMTMuMzMzUzMzMS4xNTcsMCwyMTMuMzMzLDB6IE0xNzQuMTk5LDMyMi45MThsLTkzLjkzNS05My45MzFsMzEuMzA5LTMxLjMwOWw2Mi42MjYsNjIuNjIyICBsMTQwLjg5NC0xNDAuODk4bDMxLjMwOSwzMS4zMDlMMTc0LjE5OSwzMjIuOTE4eiIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K' />
+                                                    <div class='text-message'></div>
+                                                    <div class='clearfix'></div>
+                                                </div>
+
+                                            </section>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                        }
+                            <h4 class="fw- mb-2 font-13 text-uppercase text-dark">A propos de moi:</h4>
+                            <p class="text-muted font-13 mb-3">
+                                @Model.Biographie
+                            </p>
+                            <input type="hidden" name="profileId" id="profileId" value="@Model.Id" />
+
+                            <p class="text-muted mb-2 font-13 text-dark"><strong>Nom Complet :</strong> <span class="ms-2">@Model.FirstName @Model.LastName</span></p>
+
+                            <p class="text-muted mb-2 font-13 text-dark"><strong>Etudes :</strong> <span class="ms-2">@Model.Niveau en @Model.Filiere.Nom</span></p>
+
+                            <p class="text-muted mb-2 font-13 text-dark"><strong>Telephone :</strong> <span class="ms-2">@Model.PhoneNumber</span></p>
+
+                            <p class="text-muted mb-2 font-13 text-dark"><strong>Email :</strong> <span class="ms-2">@Model.Email</span></p>
+
+                            <p class="text-muted mb-1 font-13 text-dark"><strong>Adresse :</strong> <span class="ms-2">@Model.Adresse</span></p>
+                        </div>
 
                     <p class="text-muted mb-1 font-13 text-dark"><strong>Réseaux sociaux :</strong></p>
                     <ul class="social-list list-inline mt-1 mb-0">
@@ -171,60 +245,44 @@
                 </div>
             </div> <!-- end card -->
 
-            @if (Model.Id != ViewBag.CurrentUserId)
-            {
-                <div class="card border-left-primary shadow mb-4">
-                    <div class="card-header py-3">
-                         <input type="hidden" name="noteSum" id="noteSum" value="@if(ViewBag.NoteSum != null) { @ViewBag.NoteSum }" />
-                         <input type="hidden" name="nbrVote" id="nbrVote" value="@if(ViewBag.NbrVotes != null) { @ViewBag.NbrVotes }" />
-                        <input type="hidden" name="lastVote" id="lastVote" value="@if(ViewBag.lastVote != null) { @ViewBag.lastVote }" />
-                        <h6 class="m-0 font-weight-bold text-primary">Noter ce profil   </h6>
-                        <h7>Note : <span id="NewNoteSum">@if(ViewBag.NoteSum != null && ViewBag.NoteSum != 0) {  @(ViewBag.NoteSum/ViewBag.NbrVotes) } else { <span>0</span>}</span></h7> <br />
-                        <h7>Nombre de Vote :<span id="NewNbrVotes"> @if(ViewBag.NbrVotes != null && ViewBag.NbrVotes != 0) { @ViewBag.NbrVotes } else { <span>0</span>}</span></h7>
-                    </div>
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
+       
 
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    <section class='rating-widget'>
+                                    <!-- Rating Stars Box -->
+                                    <!--<div class='rating-stars text-center'>
+                                        <ul id='stars'>
+                                            <li class='star' title='Poor' data-value='1'>
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                            <li class='star' title='Fair' data-value='2'>
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                            <li class='star' title='Good' data-value='3'>
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                            <li class='star' title='Excellent' data-value='4'>
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                            <li class='star' title='WOW!!!' data-value='5'>
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                        </ul>
+                                    </div>
 
-                                        <!-- Rating Stars Box -->
-                                        <div class='rating-stars text-center'>
-                                            <ul id='stars'>
-                                                <li class='star' title='Poor' data-value='1'>
-                                                    <i class='fa fa-star fa-fw'></i>
-                                                </li>
-                                                <li class='star' title='Fair' data-value='2'>
-                                                    <i class='fa fa-star fa-fw'></i>
-                                                </li>
-                                                <li class='star' title='Good' data-value='3'>
-                                                    <i class='fa fa-star fa-fw'></i>
-                                                </li>
-                                                <li class='star' title='Excellent' data-value='4'>
-                                                    <i class='fa fa-star fa-fw'></i>
-                                                </li>
-                                                <li class='star' title='WOW!!!' data-value='5'>
-                                                    <i class='fa fa-star fa-fw'></i>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                    <div class='success-box'>
+                                        <div class='clearfix'></div>
+                                        <img alt='tick image' width='20' src='data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA0MjYuNjY3IDQyNi42NjciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQyNi42NjcgNDI2LjY2NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCI+CjxwYXRoIHN0eWxlPSJmaWxsOiM2QUMyNTk7IiBkPSJNMjEzLjMzMywwQzk1LjUxOCwwLDAsOTUuNTE0LDAsMjEzLjMzM3M5NS41MTgsMjEzLjMzMywyMTMuMzMzLDIxMy4zMzMgIGMxMTcuODI4LDAsMjEzLjMzMy05NS41MTQsMjEzLjMzMy0yMTMuMzMzUzMzMS4xNTcsMCwyMTMuMzMzLDB6IE0xNzQuMTk5LDMyMi45MThsLTkzLjkzNS05My45MzFsMzEuMzA5LTMxLjMwOWw2Mi42MjYsNjIuNjIyICBsMTQwLjg5NC0xNDAuODk4bDMxLjMwOSwzMS4zMDlMMTc0LjE5OSwzMjIuOTE4eiIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K' />
+                                        <div class='text-message'></div>
+                                        <div class='clearfix'></div>
+                                    </div>
 
-                                        <div class='success-box'>
-                                            <div class='clearfix'></div>
-                                            <img alt='tick image' width='20' src='data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA0MjYuNjY3IDQyNi42NjciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQyNi42NjcgNDI2LjY2NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCI+CjxwYXRoIHN0eWxlPSJmaWxsOiM2QUMyNTk7IiBkPSJNMjEzLjMzMywwQzk1LjUxOCwwLDAsOTUuNTE0LDAsMjEzLjMzM3M5NS41MTgsMjEzLjMzMywyMTMuMzMzLDIxMy4zMzMgIGMxMTcuODI4LDAsMjEzLjMzMy05NS41MTQsMjEzLjMzMy0yMTMuMzMzUzMzMS4xNTcsMCwyMTMuMzMzLDB6IE0xNzQuMTk5LDMyMi45MThsLTkzLjkzNS05My45MzFsMzEuMzA5LTMxLjMwOWw2Mi42MjYsNjIuNjIyICBsMTQwLjg5NC0xNDAuODk4bDMxLjMwOSwzMS4zMDlMMTc0LjE5OSwzMjIuOTE4eiIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K' />
-                                            <div class='text-message'></div>
-                                            <div class='clearfix'></div>
-                                        </div>
-
-                                    </section>
-                                </div>
+                                </section>
                             </div>
-
                         </div>
+
                     </div>
                 </div>
-            }
+            </div>
+        }-->
 
 
 
@@ -312,141 +370,152 @@
             <!--</div>
             </div>-->
             <!-- end card-->
-            <div class="card border-left-warning">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Membres qui pourraient vous interesser <i class="mdi mdi-account-multiple ms-1"></i></h6>
+                    @*<div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                             aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div>*@
+                </div>
+                <!-- Card Body -->
                 <div class="card-body">
+                    <!-- Item 1-->
+                    @foreach (var follow in Model.Follows)
+                    {
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="d-flex align-items-center flex-shrink-0 me-3">
+                                @if (follow.FollowedUser.ProfilePicture != null)
+                                {
+                                    <img class=" rounded-circle" src="data:image/*;base64,@(Convert.ToBase64String(follow.FollowedUser.ProfilePicture))" alt="" style="height:3rem; width:3rem; margin-right:1rem">
+                                }
+                                else
+                                {
 
-                    <h4 class="header-title mb-3 text-dark">Membres qui pourraient vous interesser <i class="mdi mdi-account-multiple ms-1"></i></h4>
+                                    <img class=" rounded-circle" src="~/img/undraw_profile.svg" alt="" style="height:3rem; width:3rem; margin-right:1rem">
+                                }
+                                <div class="d-flex flex-column fw-bold">
+                                    <a class="text-dark line-height-normal mb-1" asp-controller="Account" asp-action="Profile" asp-route-id="@follow.FollowedUser.Id">@follow.FollowedUser.FirstName @follow.FollowedUser.LastName</a>
+                                    <div class="small text-muted line-height-normal">@follow.FollowedUser.Email</div>
+                                </div>
+                            </div>
+                            <div class="dropdown no-arrow">
+                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                     aria-labelledby="dropdownMenuLink">
+                                    <div class="dropdown-header">Dropdown Header:</div>
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
 
-                    <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex align-items-center pb-1" id="tooltips-container">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar5.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
-                                <div class="w-100 ms-2">
-                                    <h5 class="mb-1">Herbert Stewart<i class="mdi mdi-check-decagram text-info ms-1"></i></h5>
-                                    <p class="mb-0 font-13 text-muted">Co Founder</p>
-                                </div>
-                                <i class="mdi mdi-chevron-right h2"></i>
-                            </div>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex align-items-center pb-1" id="tooltips-container">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
-                                <div class="w-100 ms-2">
-                                    <h5 class="mb-1">Terry Mouser</h5>
-                                    <p class="mb-0 font-13 text-muted">Web Designer</p>
-                                </div>
-                                <i class="mdi mdi-chevron-right h2"></i>
-                            </div>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex align-items-center pb-1" id="tooltips-container">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar8.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
-                                <div class="w-100 ms-2">
-                                    <h5 class="mb-1">Adam Barney</h5>
-                                    <p class="mb-0 font-13 text-muted">PHP Developer</p>
-                                </div>
-                                <i class="mdi mdi-chevron-right h2"></i>
-                            </div>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex align-items-center pb-1" id="tooltips-container">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent" alt="">
-                                <div class="w-100 ms-2">
-                                    <h5 class="mb-1">Michal Chang</h5>
-                                    <p class="mb-0 font-13 text-muted">UI/UX Designer</p>
-                                </div>
-                                <i class="mdi mdi-chevron-right h2"></i>
-                            </div>
-                        </a>
-                    </div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-body">
 
-                    <h4 class="header-title mb-3">Upcoming Reminders <i class="mdi mdi-adjust ms-1"></i></h4>
+            @*<div class="card">
+                    <div class="card-body">
 
-                    <div class="list-group">
-                        <a href="#" class="my-1">
-                            <div class="d-flex align-items-start" id="tooltips-container">
-                                <div class="">
-                                    <i class="mdi mdi-circle h3 text-primary"></i>
-                                </div>
-                                <div class="w-100 ms-2">
-                                    <h5 class="mb-1 mt-0">New Admin Layout Discuss</h5>
-                                    <ul class="list-inline text-muted font-12">
-                                        <li class="list-inline-item"><i class="mdi mdi-calendar-blank-outline me-1"></i>10 May 2021</li>
-                                        <li class="list-inline-item"> - </li>
-                                        <li class="list-inline-item"><i class="mdi mdi-clock-time-eight-outline me-1"></i>09:00am <span class="px-1">To</span> 10:30am</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="#" class="my-1">
-                            <div class="d-flex align-items-start" id="tooltips-container">
-                                <div class="">
-                                    <i class="mdi mdi-circle h3 text-pink"></i>
-                                </div>
-                                <div class="w-100 ms-2">
-                                    <h5 class="mb-1 mt-0">Landing Pages Planning</h5>
-                                    <ul class="list-inline text-muted font-12">
-                                        <li class="list-inline-item"><i class="mdi mdi-calendar-blank-outline me-1"></i>10 May 2021</li>
-                                        <li class="list-inline-item"> - </li>
-                                        <li class="list-inline-item"><i class="mdi mdi-clock-time-eight-outline me-1"></i>02:00pm <span class="px-1">To</span> 4:00pm</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="#" class="my-1">
-                            <div class="d-flex align-items-start" id="tooltips-container">
-                                <div class="">
-                                    <i class="mdi mdi-circle h3 text-success"></i>
-                                </div>
-                                <div class="w-100 ms-2">
-                                    <h5 class="mb-1 mt-0">Meet Our Clients</h5>
-                                    <ul class="list-inline text-muted font-12">
-                                        <li class="list-inline-item"><i class="mdi mdi-calendar-blank-outline me-1"></i>11 May 2021</li>
-                                        <li class="list-inline-item"> - </li>
-                                        <li class="list-inline-item"><i class="mdi mdi-clock-time-eight-outline me-1"></i>08:00am <span class="px-1">To</span> 11:20am</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="#" class="my-1">
-                            <div class="d-flex align-items-start" id="tooltips-container">
-                                <div class="">
-                                    <i class="mdi mdi-circle h3 text-warning"></i>
-                                </div>
-                                <div class="w-100 ms-2">
-                                    <h5 class="mb-1 mt-0">Project Discussion</h5>
-                                    <ul class="list-inline text-muted font-12">
-                                        <li class="list-inline-item"><i class="mdi mdi-calendar-blank-outline me-1"></i>11 May 2021</li>
-                                        <li class="list-inline-item"> - </li>
-                                        <li class="list-inline-item"><i class="mdi mdi-clock-time-eight-outline me-1"></i>12:00am <span class="px-1">To</span> 03:00am</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="#" class="my-1">
-                            <div class="d-flex align-items-start" id="tooltips-container">
-                                <div class="">
-                                    <i class="mdi mdi-circle h3 text-dark"></i>
-                                </div>
-                                <div class="w-100 ms-2">
-                                    <h5 class="mb-1 mt-0">Businees Meeting</h5>
-                                    <ul class="list-inline text-muted font-12">
-                                        <li class="list-inline-item"><i class="mdi mdi-calendar-blank-outline me-1"></i>12 May 2021</li>
-                                        <li class="list-inline-item"> - </li>
-                                        <li class="list-inline-item"><i class="mdi mdi-clock-time-eight-outline me-1"></i>08:30am <span class="px-1">To</span> 10:00am</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </a>
+                        <h4 class="header-title mb-3">Upcoming Reminders <i class="mdi mdi-adjust ms-1"></i></h4>
 
+                        <div class="list-group">
+                            <a href="#" class="my-1">
+                                <div class="d-flex align-items-start" id="tooltips-container">
+                                    <div class="">
+                                        <i class="mdi mdi-circle h3 text-primary"></i>
+                                    </div>
+                                    <div class="w-100 ms-2">
+                                        <h5 class="mb-1 mt-0">New Admin Layout Discuss</h5>
+                                        <ul class="list-inline text-muted font-12">
+                                            <li class="list-inline-item"><i class="mdi mdi-calendar-blank-outline me-1"></i>10 May 2021</li>
+                                            <li class="list-inline-item"> - </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-clock-time-eight-outline me-1"></i>09:00am <span class="px-1">To</span> 10:30am</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="#" class="my-1">
+                                <div class="d-flex align-items-start" id="tooltips-container">
+                                    <div class="">
+                                        <i class="mdi mdi-circle h3 text-pink"></i>
+                                    </div>
+                                    <div class="w-100 ms-2">
+                                        <h5 class="mb-1 mt-0">Landing Pages Planning</h5>
+                                        <ul class="list-inline text-muted font-12">
+                                            <li class="list-inline-item"><i class="mdi mdi-calendar-blank-outline me-1"></i>10 May 2021</li>
+                                            <li class="list-inline-item"> - </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-clock-time-eight-outline me-1"></i>02:00pm <span class="px-1">To</span> 4:00pm</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="#" class="my-1">
+                                <div class="d-flex align-items-start" id="tooltips-container">
+                                    <div class="">
+                                        <i class="mdi mdi-circle h3 text-success"></i>
+                                    </div>
+                                    <div class="w-100 ms-2">
+                                        <h5 class="mb-1 mt-0">Meet Our Clients</h5>
+                                        <ul class="list-inline text-muted font-12">
+                                            <li class="list-inline-item"><i class="mdi mdi-calendar-blank-outline me-1"></i>11 May 2021</li>
+                                            <li class="list-inline-item"> - </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-clock-time-eight-outline me-1"></i>08:00am <span class="px-1">To</span> 11:20am</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="#" class="my-1">
+                                <div class="d-flex align-items-start" id="tooltips-container">
+                                    <div class="">
+                                        <i class="mdi mdi-circle h3 text-warning"></i>
+                                    </div>
+                                    <div class="w-100 ms-2">
+                                        <h5 class="mb-1 mt-0">Project Discussion</h5>
+                                        <ul class="list-inline text-muted font-12">
+                                            <li class="list-inline-item"><i class="mdi mdi-calendar-blank-outline me-1"></i>11 May 2021</li>
+                                            <li class="list-inline-item"> - </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-clock-time-eight-outline me-1"></i>12:00am <span class="px-1">To</span> 03:00am</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="#" class="my-1">
+                                <div class="d-flex align-items-start" id="tooltips-container">
+                                    <div class="">
+                                        <i class="mdi mdi-circle h3 text-dark"></i>
+                                    </div>
+                                    <div class="w-100 ms-2">
+                                        <h5 class="mb-1 mt-0">Businees Meeting</h5>
+                                        <ul class="list-inline text-muted font-12">
+                                            <li class="list-inline-item"><i class="mdi mdi-calendar-blank-outline me-1"></i>12 May 2021</li>
+                                            <li class="list-inline-item"> - </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-clock-time-eight-outline me-1"></i>08:30am <span class="px-1">To</span> 10:00am</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
                     </div>
-                </div>
-            </div>
+                </div>*@
         </div> <!-- end col-->
 
         <div class="col-xl-7">
@@ -468,7 +537,22 @@
                                         }
 
                                     </div><div class="ml-2"><a asp-controller="Account" asp-action="Profile" asp-route-id="@annonce.User.Id" class="h5 m-0 text-muted">@annonce.User.FirstName @annonce.User.LastName</a><div class="h7 text-muted"><span>@@</span>@annonce.User.UserName</div></div>
-                                </div><div><div class="dropdown"> <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-ellipsis-h"></i> </button><div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1"><div class="h6 dropdown-header">Configuration</div> <a class="dropdown-item" href="#">Save</a> <a class="dropdown-item" href="#">Hide</a> <a class="dropdown-item" href="#">Report</a></div></div></div>
+                                </div>
+                                @*<div><div class="dropdown"> <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-ellipsis-h"></i> </button><div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1"><div class="h6 dropdown-header">Configuration</div> <a class="dropdown-item" href="#">Save</a> <a class="dropdown-item" href="#">Hide</a> <a class="dropdown-item" href="#">Report</a></div></div></div>*@
+                                @*<div>
+                                    @{
+                                        
+                                        var save = User.Result.Enregistrements.Where(a => a.Annonce == annonce).FirstOrDefault();
+                                        @if (save != null)
+                                        {
+                                            <i class="fas fa-bookmark saved bookmark" id="@annonce.Id" style="cursor: pointer; color:#4e73df"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="far fa-bookmark unsaved bookmark" id="@annonce.Id" style="cursor:pointer"></i>
+                                        }
+                                    }
+                                </div>*@
                             </div>
                         </div>
                         <div class="card-body">
@@ -477,7 +561,8 @@
 
                                 <h5 class="card-link">@annonce.Categorie.ToString()</h5><h6>@TimeAgo(annonce.DatePublication)</h6>
                             </div>
-                            <a class="card-link" href="#">
+
+                            <a class="card-link" asp-action="DetailsOff" asp-controller="Annonce" asp-route-id="@annonce.Id">
                                 <h5 class="card-title">
                                     @annonce.Titre
                                 </h5>
@@ -485,24 +570,23 @@
                                 @annonce.Description
                             </p>
                             @*@if (annonce.Images.Count != 0)
+                        {
+                            @if (annonce.Images.Count == 1)
                             {
-                                @if (annonce.Images.Count == 1)
-                                {
-                                    @foreach (var image in annonce.Images)
-                                    {
-                                        <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" class="img-responsive" width="200">
+                                @foreach (var image in annonce.Images) {
+                                <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" class="img-responsive" width="200">
                                     }
                                 }
-                                else
-                                {
-                                    <div class="d-flex">
-                                        @foreach (var image in annonce.Images)
-                                        {
-                                            <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" class="img-responsive mr-2" width="200">
-                                        }
-                                    </div>
-                                }
-                            }*@
+                            else
+                            {
+                                <div class="d-flex">
+                                    @foreach (var image in annonce.Images)
+                                    {
+                                        <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" class="img-responsive mr-2" width="200">
+                                    }
+                    </div>
+                            }
+                        }*@
                             <div class="mt-2">
                                 @foreach (var domaine in annonce.Annonce_Domaines)
                                 {
@@ -512,14 +596,45 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <a href="#" class="card-link"><i class="fa-solid fa-circle-up"></i> Upvote</a>
-                            <a href="#" class="card-link"><i class="fa-solid fa-circle-down"></i> Downvote</a>
-                            <a href="#" class="card-link"><i class="fa fa-comment"></i> Commenter</a>
+                            @*@{var rating = Model.Rated_Annonces.Where(a => a.Annonce == annonce).FirstOrDefault();
+                                if (rating != null)
+                                {
+                                    if (rating.Type == "upvote")
+                                    {
+                                        <a style="cursor:pointer" class="card-link up upvoted" id="upvote"><i class="fa-solid fa-circle-up"></i> <span id="@annonce.Id">Upvoted</span></a>
+                                        <a style="cursor:pointer" class="card-link down" id="downvote"><i class="fa-solid fa-circle-down"></i> <span id="@annonce.Id">Downvote</span></a>
+                                    }
+                                    else
+                                    {
+                                        <a style="cursor:pointer" class="card-link up" id="upvote"><i class="fa-solid fa-circle-up"></i> <span id="@annonce.Id">Upvote</span></a>
+                                        <a style="cursor:pointer" class="card-link down downvoted" id="downvote"><i class="fa-solid fa-circle-down"></i> <span id="@annonce.Id">Downvoted</span></a>
+                                    }
+                                }
+                                else
+                                {
+                                    <a style="cursor:pointer" class="card-link up" id="upvote"><i class="fa-solid fa-circle-up"></i> <span id="@annonce.Id">Upvote</span></a>
+                                    <a style="cursor:pointer" class="card-link down" id="downvote"><i class="fa-solid fa-circle-down"></i> <span id="@annonce.Id">Downvote</span></a>
+                                }
+
+                            }*@
+
+
+
+                            <a href="" id="" class="card-link comment-btn"><i class="fa fa-comment"></i> Commenter</a>
                             <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Partager</a>
+                            <br />
+                            <div class="comment">
+
+                                <textarea rows="3" id="commentContent" placeholder="Votre commentaire" style="height: 68px;" class="form-control mt-3"></textarea>
+                                <div class="text-right">
+                                    <button type="submit" id="@annonce.Id" class="sendComment btn btn-primary mt-1">Envoyer</button>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 }
-                
+
             </div>
 
         </div> <!-- end col -->
@@ -568,7 +683,132 @@
 
 <script>
     $(document).ready(function () {
+        $(".comment").hide();
+        $(".comment-btn").on('click', function (event) {
+            var btn = $(this);
+            var comment_section = btn.siblings(".comment");
+            var comment_box = comment_section.children("textarea");
+            comment_section.slideToggle(500);
+            event.preventDefault();
+            //console.log(btn);
+            //console.log(comment_section);
+            //console.log(comment_box);
 
+            $(".sendComment").on('click', function () {
+                $.ajax({
+                    type: "POST",
+                    url: '/Annonce/Commenter',
+                    data: {
+                        id: $(this).attr("id"),
+                        content: comment_box.val()
+                    },
+                    /* Response is the data returned from controller method */
+                    success: function () {
+
+                        /* console.log(comment_box);*/
+                    }
+                });
+
+            });
+
+        });
+
+
+
+        $(".bookmark").on('click', function () {
+            var save = $(this);
+            $.ajax({
+                type: "POST",
+                url: '/Home/Save',
+                data: {
+                    id: $(this).attr("id")
+                },
+                /* Response is the data returned from controller method */
+                success: function () {
+                    if (save.hasClass('unsaved')) {
+                        save.removeClass('far');
+                        save.removeClass('unsaved');
+                        save.addClass('fas');
+                        save.addClass('saved');
+                        save.css('color', '#4e73df');
+                    } else {
+                        save.removeClass('fas');
+                        save.removeClass('saved');
+                        save.addClass('far');
+                        save.addClass('unsaved');
+                        save.css('color', '');
+                    }
+                }
+            });
+
+        });
+        $(".up").on('click', function () {
+            var upvote = $(this);
+            var downvote = $(this).next();
+            $.ajax({
+                type: "POST",
+                url: '/Annonce/Upvote',
+                data: {
+                    id: $(this).find('span').attr("id")
+                },
+                /* Response is the data returned from controller method */
+                success: function (response) {
+                    if (response == "upvoted") {
+                        //TODO : Use these values to update your page.
+                        upvote.addClass("upvoted");
+                        //$(this).find('i').css("color", "#FF4500");
+                        upvote.find('span').text("Upvoted");
+                        //$(this).find('span').css("color", "#FF4500");
+                        if (downvote.hasClass("downvoted")) {
+                            downvote.removeClass("downvoted");
+                            downvote.find('span').text("Downvote");
+                        }
+
+                        return false;
+                    }
+                    else if (response == "cancelledUpvote") {
+                        //console.log(response);
+                        upvote.removeClass("upvoted");
+                        upvote.find('span').text("Upvote");
+                        return false;
+                    }
+                }
+            });
+        });
+
+        $(".down").on('click', function () {
+            var downvote = $(this);
+            var upvote = $(this).prev();
+            $.ajax({
+                type: "POST",
+                url: '/Annonce/Downvote',
+                data: {
+                    id: $(this).find('span').attr("id")
+                },
+                /* Response is the data returned from controller method */
+                success: function (response) {
+                    if (response == "downvoted") {
+                        //TODO : Use these values to update your page.
+                        downvote.addClass("downvoted");
+                        //$(this).find('i').css("color", "#FF4500");
+                        downvote.find('span').text("Downvoted");
+                        //$(this).find('span').css("color", "#FF4500");
+                        if (upvote.hasClass("upvoted")) {
+                            upvote.removeClass("upvoted");
+                            upvote.find('span').text("Upvote");
+                        }
+
+                        return false;
+                    }
+                    else if (response == "cancelledDownvote") {
+                        // console.log(response);
+                        downvote.removeClass("downvoted");
+                        downvote.find('span').text("Downvote");
+                        return false;
+                    }
+                }
+            });
+        });
         /* 1. Visualizing things on Hover - See next part for action on click */
         $('#stars li').on('mouseover', function () {
             var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on

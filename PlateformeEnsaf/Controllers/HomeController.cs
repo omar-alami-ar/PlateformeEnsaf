@@ -36,7 +36,7 @@ namespace PlateformeEnsaf.Controllers
             var currentUser = await GetCurrentUser();
             ViewBag.User = currentUser;
             //var currentUserId = await User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-            ViewBag.People =  userManager.Users.Where(a => a.Id != currentUser.Id ).Take(3);
+            ViewBag.People =  userManager.Users.Where(a => a.Id != currentUser.Id ).OrderBy(a => a.Note).Take(3);
             GenericAnnoces ga = new GenericAnnoces();
             var user = await GetCurrentUser();
 
@@ -94,7 +94,26 @@ namespace PlateformeEnsaf.Controllers
             {
                 ga.Offres.Clear();
                 // Annonce_Domaine d = new Annonce_Domaine();
-                var offres = _context.Offres.Include(a => a.EnregistrePar).Include(a => a.Rated_By).Where(a => a.Annonce_Domaines.Any(d => d.DomaineId == SelectedDomaine)).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser).ToList();
+                List<Offre> offres = null;
+                //if (SelectedDomaine == 999)
+                //{
+                //    var interets = currentUser.User_Domaines.Select(a => a.Domaine).ToList();
+                //    var res = _context.Offres.Include(a => a.EnregistrePar).Include(a => a.Rated_By).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser).ToList();
+                //    foreach (var o in res)
+                //    {
+                //        foreach (var d in interets)
+                //        {
+                //            if (o.Annonce_Domaines.Select(a => a.Domaine).ToList().Contains(d))
+                //            {
+                //                offres.Add(o);
+                //            }
+                //        }
+
+                //    }
+                //}
+                
+                    offres = _context.Offres.Include(a => a.EnregistrePar).Include(a => a.Rated_By).Where(a => a.Annonce_Domaines.Any(d => d.DomaineId == SelectedDomaine)).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser).ToList();
+                
                 foreach (var offre in _context.Offres.Include(a => a.EnregistrePar).Include(a => a.Rated_By).Where(a => a.Annonce_Domaines.Any(d=>d.DomaineId==SelectedDomaine)).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User != currentUser))
                 {
                     ga.Offres.Add(offre);

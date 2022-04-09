@@ -40,6 +40,20 @@ namespace PlateformeEnsaf.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> ListeEnregistrements()
+        {
+            var user = await GetCurrentUser();
+            var ga = new GenericAnnoces();
+
+            foreach (var offre in await _context.Offres.Where(a => a.EnregistrePar.Any(d => d.User == user)).ToListAsync())
+            {
+                ga.Offres.Add(offre);
+            }
+            //var annonces = user.Annonces.Where(a=>a.).ToList();
+            return View(ga);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Interets()
         {
             ViewBag.Domaines = _context.Domaines.ToList();
@@ -75,7 +89,9 @@ namespace PlateformeEnsaf.Controllers
             }
             var currentUser = await GetCurrentUser();
             ViewBag.CurrentUserId = currentUser.Id;
-            var user = await userManager.Users.Include(u => u.Annonces).Include(u=> u.Filiere).Include(u => u.Follows).Include(u => u.Followers).FirstOrDefaultAsync(u=> u.Id==id);
+            ViewBag.CurrentUser = currentUser;
+            //ViewBag.Members = currentUser.Follows.;
+            var user = await userManager.Users.Include(u => u.Enregistrements).ThenInclude(u => u.Annonce).Include(u => u.Rated_Annonces).Include(u => u.Annonces).Include(u=> u.Filiere).Include(u => u.Follows).ThenInclude(u=>u.FollowedUser).Include(u => u.Followers).FirstOrDefaultAsync(u=> u.Id==id);
             if (user == null)
             {
                 return RedirectToAction("PageNotFound", "Home");
@@ -97,7 +113,7 @@ namespace PlateformeEnsaf.Controllers
             GenericAnnoces ga = new GenericAnnoces();
         
 
-            foreach (var offre in await _context.Offres.Include(u => u.Rated_By).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User == user).ToListAsync())
+            foreach (var offre in await _context.Offres.Include(a => a.EnregistrePar).Include(a => a.Rated_By).ThenInclude(r => r.User).Include(a => a.Images).Include(a => a.Annonce_Domaines).ThenInclude(d => d.Domaine).Include(a => a.User).Where(a => a.User == user).ToListAsync())
             {
                 ga.Offres.Add(offre);
             }

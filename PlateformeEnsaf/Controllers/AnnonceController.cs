@@ -73,7 +73,8 @@ namespace PlateformeEnsaf.Controllers
                 return NotFound();
             }
 
-            var offre = await _context.Offres.Include(x => x.Images).Include(x => x.Annonce_Domaines).ThenInclude(x => x.Domaine).FirstOrDefaultAsync(m => m.Id == id);
+            ViewBag.currentUser =await GetCurrentUser();
+            var offre = await _context.Offres.Include(x => x.EnregistrePar).ThenInclude(x => x.User).Include(x => x.User).Include(x => x.Commentaires).ThenInclude(x => x.User).Include(x => x.Images).Include(x => x.Annonce_Domaines).ThenInclude(x => x.Domaine).FirstOrDefaultAsync(m => m.Id == id);
             if (offre == null)
             {
                 return NotFound();

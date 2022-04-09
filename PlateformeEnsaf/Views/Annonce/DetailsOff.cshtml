@@ -2,9 +2,338 @@
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
 
-<h1>Details</h1>
+    .card-box {
+        padding: 20px;
+        border-radius: 3px;
+        margin-bottom: 30px;
+        background-color: #f8f9fc;
+    }
+
+    .thumb-sm {
+        height: 36px;
+        width: 36px;
+    }
+
+    .task-detail .task-dates li {
+        width: 50%;
+        float: left
+    }
+
+    .task-detail .task-tags .bootstrap-tagsinput {
+        padding: 0;
+        border: none
+    }
+
+    .task-detail .assign-team a {
+        display: inline-block;
+        margin: 5px 5px 5px 0
+    }
+
+    .task-detail .files-list .file-box {
+        display: inline-block;
+        vertical-align: middle;
+        width: 80px;
+        padding: 2px;
+        border-radius: 3px;
+        -moz-border-radius: 3px;
+        background-clip: padding-box
+    }
+
+        .task-detail .files-list .file-box img {
+            line-height: 70px
+        }
+
+        .task-detail .files-list .file-box p {
+            width: 100%;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+    .add-new-plus {
+        height: 32px;
+        text-align: center;
+        width: 32px;
+        display: block;
+        line-height: 32px;
+        color: #98a6ad;
+        font-weight: 700;
+        background-color: #e3eaef;
+        border-radius: 50%
+    }
+
+    .project-sort-item .form-group {
+        margin-right: 30px
+    }
+
+        .project-sort-item .form-group:last-of-type {
+            margin-right: 0
+        }
+
+    .project-box {
+        position: relative
+    }
+
+        .project-box .badge {
+            position: absolute;
+            right: 20px
+        }
+
+        .project-box h4 {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: block;
+            width: 100%;
+            overflow: hidden
+        }
+
+        .project-box ul li {
+            padding-right: 30px
+        }
+
+        .project-box .project-members a {
+            margin: 0 0 10px -12px;
+            display: inline-block;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            -webkit-box-shadow: 0 0 24px 0 rgba(0, 0, 0, .06), 0 1px 0 0 rgba(0, 0, 0, .02);
+            box-shadow: 0 0 24px 0 rgba(0, 0, 0, .06), 0 1px 0 0 rgba(0, 0, 0, .02)
+        }
+
+            .project-box .project-members a:first-of-type {
+                margin-left: 0
+            }
+
+    .company-card .company-logo {
+        float: left;
+        height: 60px;
+        width: 60px;
+        border-radius: 3px
+    }
+
+    .company-card .company-detail {
+        margin: 0 0 50px 75px
+    }
+
+    .text-muted {
+        color: #98a6ad !important;
+    }
+
+    p {
+        line-height: 1.6;
+        font-size: 14px;
+    }
+
+    .bootstrap-tagsinput .label-info {
+        background-color: #02c0ce;
+        display: inline-block;
+        padding: 4px 8px;
+        font-size: 13px;
+        margin: 3px 1px;
+        border-radius: 3px;
+    }
+</style>
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="content">
+    <div class="container">
+        <div class="row mb-3">
+            <div class="btn-group col-lg-1 col-sm-1">          
+                <button onClick="history.go(-1); return false;" type="submit" id="back-btn" style="color: #4e73df" class="d-flex align-items-center btn btn-sm btn-custom waves-effect waves-light"><i class="fa-solid fa-arrow-left-long mr-2" style="color: #4e73df"></i>Retour</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card shadow gedf-card mb-3">
+                    <div class="card-header">
+                        <div class="media mt-0 m-b-30">
+
+                            @if (Model.User.ProfilePicture != null)
+                            {
+                                <img class="d-flex mr-3 rounded-circle" alt="64x64" id="userImage" src="data:image/*;base64,@(Convert.ToBase64String(Model.User.ProfilePicture))" style="width: 48px; height: 48px;">
+
+                            }
+                            else
+                            {
+                                <img class="d-flex mr-3 rounded-circle" alt="64x64" id="userImage" src="~/img/undraw_profile.svg" style="width: 48px; height: 48px;">
+
+                            }
+
+                            <div class="media-body">
+                                <a asp-controller="Account" asp-action="Profile" asp-route-id="@Model.User.Id" class="media-heading h5 mb-0 mt-0 text-dark">@Html.DisplayFor(model => model.User.FirstName) @Html.DisplayFor(model => model.User.LastName)</a>
+
+                                <div class="h7 text-muted"><span>@@</span>@Model.User.UserName</div>
+                            </div>
+                            <input type="hidden" id="annonceId" value="@Model.Id" />
+
+
+                            @{var save = Model.EnregistrePar.Where(a => a.UserId == ViewBag.currentUser.Id).FirstOrDefault();
+                                @if (save != null)
+                                {
+                                    <div>
+                                        <i class="fas fa-bookmark saved bookmark" id="@Model.Id" style="cursor: pointer; color:#4e73df"></i>
+                                    </div>
+
+                                }
+                                else
+                                {
+                                    <div>
+                                        <i class="far fa-bookmark unsaved bookmark" id="@Model.Id" style="cursor:pointer"></i>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="m-b-20 text-dark">@Html.DisplayFor(model => model.Titre)</h4>
+                            <p class="text-dark">@Html.DisplayFor(model => model.DatePublication)</p>
+                        </div>
+
+                        <p class="text-dark">@Html.DisplayFor(model => model.Description)</p>
+
+                        <ul class="list-inline d-flex justify-content-between task-dates m-b-0 mt-4">
+                            <li style="width:30%">
+                                <h5 class="m-b-5 text-dark">Categorie</h5>
+                                @if (Model.Categorie == CategorieOffre.Stage)
+                                {
+                                    <p class="text-dark">Offre de stage</p>
+
+                                }
+                                else
+                                {
+                                    <p class="text-dark">Offre d'emploi</p>
+
+                                }
+
+                            </li>
+                            <li style="width:30%">
+                                <h5 class="m-b-5 text-dark">Entreprise</h5>
+                                <p class="text-dark"> @Html.DisplayFor(model => model.Entreprise)</p>
+                            </li>
+                            <li style="width:30%">
+                                <h5 class="m-b-5 text-dark">Ville</h5>
+                                <p class="text-dark"> @Html.DisplayFor(model => model.Ville)</p>
+                            </li>
+                        </ul>
+                        @*<div class="clearfix"></div>*@
+                        <div class="task-tags mt-2">
+                            <h5 class="text-dark">Domaines</h5>
+                            <div class="bootstrap-tagsinput">
+                                @foreach (var domaine in Model.Annonce_Domaines.Select(x => x.Domaine.Nom))
+                                {
+                                    <span class="badge badge-primary">@domaine</span>
+                                }
+
+                            </div>
+
+                        </div>
+
+                        @*<div class="attached-files mt-4">
+                            <h5 class="text-dark">Images</h5>
+                            @if (Model.Images.Count != 0)
+                            {
+                                @if (Model.Images.Count == 1)
+                                {
+                                    @foreach (var image in Model.Images)
+                                    {
+                                        <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" class="img-responsive  img-thumbnail" width="200">
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="d-flex">
+                                        @foreach (var image in Model.Images)
+                                        {
+                                            <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" class="img-responsive  img-thumbnail mr-2" width="200">
+                                        }
+                                    </div>
+                                }
+                            }
+                            
+                        </div>*@
+
+                    </div>
+                    
+                </div>
+              
+            </div>
+            <!-- end col -->
+            <div class="col-lg-4">
+                <div class="card-box shadow">
+                    <h4 class="header-title m-b-30 mb-3 text-dark">Commentaires (<span id="comments-nbr">@Model.Commentaires.Count</span>)</h4>
+                    <div>
+                        <div id="comments-list">
+                            @foreach (var commentaire in Model.Commentaires)
+                            {
+                                <div id="comment" class="media m-b-20 mb-3">
+                                    <div class="d-flex mr-3">
+                                        <a asp-controller="Account" asp-action="Profile" asp-route-id="@commentaire.User.Id" >
+                                            @if (commentaire.User.ProfilePicture != null)
+                                            {
+
+                                                <img id="comment-img" class="media-object rounded-circle thumb-sm" alt="64x64" src="data:image/*;base64,@(Convert.ToBase64String(commentaire.User.ProfilePicture))">
+                                            }
+                                            else
+                                            {
+                                                <img id="comment-img" class="media-object rounded-circle thumb-sm" alt="64x64" src="~/img/undraw_profile.svg">
+                                            }
+
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <a asp-controller="Account" id="comment-username" asp-action="Profile" asp-route-id="@commentaire.User.Id" class="media-heading h5 mt-0 text-dark">@commentaire.User.FirstName @commentaire.User.LastName</a>
+                                        
+                                        <p id="comment-content" class="font-13 mb-0 text-dark">@commentaire.Contenu</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="media m-b-20 mt-3">
+                            <div class="d-flex mr-3">
+                                <a href="#">
+                                    @if (ViewBag.currentUser.ProfilePicture != null)
+                                    {
+
+
+                                        <img class="media-object rounded-circle thumb-sm" alt="64x64" src="data:image/*;base64,@(Convert.ToBase64String(ViewBag.currentUser.ProfilePicture))">
+                                    }
+                                    else
+                                    {
+                                        <img class="media-object rounded-circle thumb-sm" alt="64x64" src="~/img/undraw_profile.svg">
+                                    }
+
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <input id="comment-box" type="text" class="form-control input-sm" placeholder="Ajouter un commentaire...">
+                                <div class="mt-2 text-right">
+                                    <button type="submit" id="comment-btn" style="color: #4e73df" class="btn btn-sm btn-custom waves-effect waves-light">Envoyer</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- container -->
+</div>
+
+
+
+<!--<h1>Details</h1>
 
 <div>
     <h4>Annonce</h4>
@@ -57,18 +386,18 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Categorie)
-        </dd>
-        @*@if (Model.Images != null)
+        </dd>-->
+@*@if (Model.Images != null)
+    {
+    <dd class="col-sm-10">
+        <label>Images</label>
+        @foreach (var image in Model.Images)
         {
-        <dd class="col-sm-10">
-            <label>Images</label>
-            @foreach (var image in Model.Images)
-            {
-                <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" alt="Alternate Text" width="100" height="100" />
-            }
-        </dd>
-        }*@
-        <dt class="col-sm-2">
+            <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" alt="Alternate Text" width="100" height="100" />
+        }
+    </dd>
+    }*@
+<!--<dt class="col-sm-2">
             @Html.DisplayName("Domaines")
         </dt>
         @foreach (var item in Model.Annonce_Domaines.Select(x => x.Domaine.Nom))
@@ -83,4 +412,68 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
-</div>
+</div>-->
+
+<script>
+    $("#comment-btn").on('click', function () {
+        var comment_box = $("#comment-box");
+        var comment = $("#comment");
+        var commentsNbr = parseInt($('#comments-nbr').text());
+        var newNbr = commentsNbr + 1;
+        $.ajax({
+            type: "POST",
+            url: '/Annonce/Commenter',
+            data: {
+                id: $("#annonceId").val(),
+                content: comment_box.val()
+            },
+            /* Response is the data returned from controller method */
+            success: function () {
+                /* console.log(comment_box);*/
+                $(comment).find("#comment-content").text(comment_box.val());
+                $(comment).find("#comment-username").html($("#fullName").text());
+                $(comment).find("#comment-img").attr('src', $("#current-profile-pic").attr('src'));
+                $("#comments-nbr").text(newNbr);
+                comment_box.val("");
+               // $(comment).find("#comment-img").html(comment_box.val());
+                $("#comments-list").append(comment);
+                
+            }
+        });
+    });
+
+    $('#comment-box').keypress(function (e) {
+        if (e.which == 13) {//Enter key pressed
+            $('#comment-btn').click();
+           
+        }
+    });
+
+    $(".bookmark").on('click', function () {
+        var save = $(this);
+        $.ajax({
+            type: "POST",
+            url: '/Home/Save',
+            data: {
+                id: $(this).attr("id")
+            },
+            /* Response is the data returned from controller method */
+            success: function () {
+                if (save.hasClass('unsaved')) {
+                    save.removeClass('far');
+                    save.removeClass('unsaved');
+                    save.addClass('fas');
+                    save.addClass('saved');
+                    save.css('color', '#4e73df');
+                } else {
+                    save.removeClass('fas');
+                    save.removeClass('saved');
+                    save.addClass('far');
+                    save.addClass('unsaved');
+                    save.css('color', '');
+                }
+            }
+        });
+
+    });
+</script>

@@ -41,6 +41,22 @@ namespace PlateformeEnsaf.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Start()
+        {
+           
+            var sender = await GetCurrentUser();
+
+            ViewBag.senderId = sender.Id;
+            var currentUser = await userManager.Users.Include(u => u.Follows).ThenInclude(x => x.FollowedUser).Include(u => u.Followers).FirstOrDefaultAsync(u => u.Id == sender.Id);
+           
+            ViewBag.contacts = currentUser.Follows;
+
+           
+            return View();
+        }
+
+
+
         [HttpPost]
         public async Task<IActionResult> StoreMessage(string content,string senderId, string receiverId)
         {

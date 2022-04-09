@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PlateformeEnsaf.Models.Offre> 
+﻿@model IEnumerable<PlateformeEnsaf.Models.Offre>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -43,64 +43,72 @@
                 String.Format("Il y a {0} ans", timeSpan.Days / 365) :
                 "Il y a un an";
         }
-        
+
         return result;
     }
 }
 
 <!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Accueil</h1>
-    <a asp-action="Report" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-        <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
-    </a>
-</div>
+@*<div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Accueil</h1>
+        <a asp-action="Report" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
+        </a>
+    </div>*@
 
+<div class="row">
+    <div class="form-group col-md-3">
+        <select class="form-control" id="domaines" asp-items="ViewBag.domaines">
+            <option value="0" selected>Tous les domaines</option>
+            <option value="999">Mes domaines d'intérêt</option>
+
+        </select>
+    </div>
+    <div class="form-group col-md-3">
+        <select class="form-control" id="villes">
+            <option value="0">Toutes les villes</option>
+            @foreach (var ville in ViewBag.villes)
+            {
+                <option value="@ville">@ville</option>
+            }
+        </select>
+    </div>
+    <div class="form-group col-md-3">
+        <select class="form-control" id="srcAnnonces">
+            <option value="0" selected>Toutes les annonces</option>
+            <option value="1">Annonces de mes abonnements</option>
+        </select>
+    </div>
+    <div class="form-group col-md-3">
+        <select class="form-control" id="tri">
+            <option value="0" selected disabled>Trier par</option>
+            <option value="rating-desc">Popularité - Le plus populaire</option>
+            <option value="date-desc">Date - La plus récente</option>
+            <option value="date-asc">Date - La plus ancienne</option>
+        </select>
+    </div>
+
+</div>
 <div class="row">
 
     <!-- Area Chart -->
     <div class="col-xl-8 col-lg-7">
         <div>
 
-            <div class="row">
-                <div class="form-group col-md-4">
-                    <select class="form-control" id="domaines" asp-items="ViewBag.domaines">
-                        <option value="0" selected>Tous les domaines</option>
-
-                    </select>
-                </div>
-                <div class="form-group col-md-4">
-                    <select class="form-control" id="villes" >
-                        <option value="0" >Toutes les villes</option>
-                        @foreach (var ville in ViewBag.villes)
-                        {
-                            <option value="@ville">@ville</option>
-                        }
-                    </select>
-                </div>
-                <div class="form-group col-md-4">
-                    <select class="form-control" id="tri" >
-                        <option value="0" selected disabled>Trier par</option>
-                        <option value="rating-desc">Popularité - Le plus populaire</option>
-                        <option value="date-desc">Date - La plus récente</option>
-                        <option value="date-asc">Date - La plus ancienne</option>
-                    </select>
-                </div>
-
-            </div>
+           
             @*<div class="card shadow gedf-card mb-3">
-                <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active show" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">
-                                Make
-                                a publication
-                            </a>
-                        </li>
-                        <li class="nav-item"> <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false" href="#images">Images</a></li>
-                    </ul>
-                </div><div class="card-body"><div class="tab-content" id="myTabContent"><div class="tab-pane fade active show" id="posts" role="tabpanel" aria-labelledby="posts-tab"><div class="form-group"> <label class="sr-only" for="message">post</label><textarea class="form-control" id="message" rows="3" placeholder="What are you thinking?"></textarea></div></div><div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab"><div class="form-group"><div class="custom-file"> <input type="file" class="custom-file-input" id="customFile"> <label class="custom-file-label" for="customFile">Upload image</label></div></div><div class="py-4"></div></div></div><div class="btn-toolbar justify-content-between"><div class="btn-group"> <button type="submit" class="btn btn-primary">share</button></div><div class="btn-group"> <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-globe"></i> </button><div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1"> <a class="dropdown-item" href="#"><i class="fa fa-globe"></i> Public</a> <a class="dropdown-item" href="#"><i class="fa fa-users"></i> Friends</a> <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Just me</a></div></div></div></div>
-            </div>*@
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active show" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">
+                                    Make
+                                    a publication
+                                </a>
+                            </li>
+                            <li class="nav-item"> <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false" href="#images">Images</a></li>
+                        </ul>
+                    </div><div class="card-body"><div class="tab-content" id="myTabContent"><div class="tab-pane fade active show" id="posts" role="tabpanel" aria-labelledby="posts-tab"><div class="form-group"> <label class="sr-only" for="message">post</label><textarea class="form-control" id="message" rows="3" placeholder="What are you thinking?"></textarea></div></div><div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab"><div class="form-group"><div class="custom-file"> <input type="file" class="custom-file-input" id="customFile"> <label class="custom-file-label" for="customFile">Upload image</label></div></div><div class="py-4"></div></div></div><div class="btn-toolbar justify-content-between"><div class="btn-group"> <button type="submit" class="btn btn-primary">share</button></div><div class="btn-group"> <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-globe"></i> </button><div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1"> <a class="dropdown-item" href="#"><i class="fa fa-globe"></i> Public</a> <a class="dropdown-item" href="#"><i class="fa fa-users"></i> Friends</a> <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Just me</a></div></div></div></div>
+                </div>*@
             <div id="results">
                 @foreach (var annonce in Model)
                 {
@@ -121,17 +129,17 @@
                                     </div><div class="ml-2"><a asp-controller="Account" asp-action="Profile" asp-route-id="@annonce.User.Id" class="h5 m-0 text-muted">@annonce.User.FirstName @annonce.User.LastName</a><div class="h7 text-muted"><span>@@</span>@annonce.User.UserName</div></div>
                                 </div>
                                 @*<div><div class="dropdown"> <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-ellipsis-h"></i> </button><div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1"><div class="h6 dropdown-header">Configuration</div> <a class="dropdown-item" href="#">Save</a> <a class="dropdown-item" href="#">Hide</a> <a class="dropdown-item" href="#">Report</a></div></div></div>*@
-                            <div>
-                                @{var save = annonce.EnregistrePar.Where(a => a.UserId == ViewBag.User.Id).FirstOrDefault();
-                                    @if (save != null)
-                                    {
-                                        <i class="fas fa-bookmark saved bookmark" id="@annonce.Id" style="cursor: pointer; color:#4e73df"></i>
+                                <div>
+                                    @{var save = annonce.EnregistrePar.Where(a => a.UserId == ViewBag.User.Id).FirstOrDefault();
+                                        @if (save != null)
+                                        {
+                                            <i class="fas fa-bookmark saved bookmark" id="@annonce.Id" style="cursor: pointer; color:#4e73df"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="far fa-bookmark unsaved bookmark" id="@annonce.Id" style="cursor:pointer"></i>
+                                        }
                                     }
-                                    else
-                                    {
-                                        <i class="far fa-bookmark unsaved bookmark" id="@annonce.Id" style="cursor:pointer"></i>
-                                    }
-                                  }
                                 </div>
                             </div>
                         </div>
@@ -141,7 +149,7 @@
 
                                 <h5 class="card-link">@annonce.Categorie.ToString()</h5><h6>@TimeAgo(annonce.DatePublication)</h6>
                             </div>
-                            
+
                             <a class="card-link" asp-action="DetailsOff" asp-controller="Annonce" asp-route-id="@annonce.Id">
                                 <h5 class="card-title">
                                     @annonce.Titre
@@ -150,23 +158,23 @@
                                 @annonce.Description
                             </p>
                             @*@if (annonce.Images.Count != 0)
-                            {
-                                @if (annonce.Images.Count == 1)
-                                {
-                                    @foreach (var image in annonce.Images) {
-                                    <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" class="img-responsive" width="200">
-                                        }
-                                    }
-                                else
-                                {
-                                    <div class="d-flex">
-                                        @foreach (var image in annonce.Images)
+                                    {
+                                        @if (annonce.Images.Count == 1)
                                         {
-                                            <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" class="img-responsive mr-2" width="200">
+                                            @foreach (var image in annonce.Images) {
+                                            <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" class="img-responsive" width="200">
+                                                }
+                                            }
+                                        else
+                                        {
+                                            <div class="d-flex">
+                                                @foreach (var image in annonce.Images)
+                                                {
+                                                    <img src="data:image/*;base64,@(Convert.ToBase64String(image.Contenu))" class="img-responsive mr-2" width="200">
+                                                }
+                                </div>
                                         }
-                        </div>
-                                }
-                            }*@
+                                    }*@
                             <div class="mt-2">
                                 @foreach (var domaine in annonce.Annonce_Domaines)
                                 {
@@ -204,12 +212,12 @@
                             <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Partager</a>
                             <br />
                             <div class="comment">
-                                
-                                    <textarea rows="3" id="commentContent" placeholder="Votre commentaire" style="height: 68px;" class="form-control mt-3"></textarea>
-                                    <div class="text-right">
-                                        <button type="submit" id="@annonce.Id" class="sendComment btn btn-primary mt-1">Envoyer</button>
-                                    </div>
-                                
+
+                                <textarea rows="3" id="commentContent" placeholder="Votre commentaire" style="height: 68px;" class="form-control mt-3"></textarea>
+                                <div class="text-right">
+                                    <button type="submit" id="@annonce.Id" class="sendComment btn btn-primary mt-1">Envoyer</button>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -249,51 +257,31 @@
     <div class="col-xl-4 col-lg-5">
         <div class="card shadow gedf-card mb-3">
             <div class="card-header">
-                <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active show" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">
-                            Make
-                            a publication
-                        </a>
-                    </li>
-                    <li class="nav-item"> <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false" href="#images">Images</a></li>
-                </ul>
+                <h6 class="m-0 font-weight-bold text-primary">Annonce rapide</h6>
             </div>
             <div class="card-body">
-             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade active show" id="posts" role="tabpanel" aria-labelledby="posts-tab">
-                 <div class="form-group"> 
-                    <label class="sr-only" for="message">post</label>
-                    <input class="form-control" placeholder="Title" name="title"  />
-                    <textarea class="form-control mt-2" id="message" rows="3" placeholder="What are you thinking?"></textarea>
-                     </div>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade active show" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                        <div class="form-group">
+                            <label class="sr-only" for="message">post</label>
+                            <input class="form-control" placeholder="Titre" name="title" />
+                            <textarea class="form-control mt-2" id="message" rows="3" placeholder="Exprimez vous ..."></textarea>
+                        </div>
                     </div>
-                <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
-                 <div class="form-group"><div class="custom-file">
-                     <input type="file" class="custom-file-input" id="customFile"> 
-                     <label class="custom-file-label" for="customFile">Upload image</label>
-                      </div>
-                     </div>
-                 <div class="py-4"></div></div></div><div class="btn-toolbar justify-content-between"><div class="btn-group"> <button type="submit" class="btn btn-primary">share</button></div><div class="btn-group"> <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-globe"></i> </button><div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1"> <a class="dropdown-item" href="#"><i class="fa fa-globe"></i> Public</a> <a class="dropdown-item" href="#"><i class="fa fa-users"></i> Friends</a> <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Just me</a></div></div></div></div>
+
+                </div>
+                <div class="btn-toolbar justify-content-between">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">Partager</button>
+                    </div>
+
+                </div>
+            </div>
         </div>
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Profils Intéressants</h6>
-                <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                         aria-labelledby="dropdownMenuLink">
-                        <div class="dropdown-header">Dropdown Header:</div>
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </div>
             </div>
             <!-- Card Body -->
             <div class="card-body">
@@ -345,32 +333,32 @@
             var btn = $(this);
             var comment_section = btn.siblings(".comment");
             var comment_box = comment_section.children("textarea");
-            comment_section.slideToggle(500); 
+            comment_section.slideToggle(500);
             event.preventDefault();
-            console.log(btn);
-            console.log(comment_section);
-            console.log(comment_box);
+            //console.log(btn);
+            //console.log(comment_section);
+            //console.log(comment_box);
 
-            //$(".sendComment").on('click', function () {
-            //    $.ajax({
-            //        type: "POST",
-            //        url: '/Annonce/Commenter',
-            //        data: {
-            //            id: $(this).attr("id"),
-            //            content: comment_box.val()
-            //        },
-            //        /* Response is the data returned from controller method */
-            //        success: function () {
+            $(".sendComment").on('click', function () {
+                $.ajax({
+                    type: "POST",
+                    url: '/Annonce/Commenter',
+                    data: {
+                        id: $(this).attr("id"),
+                        content: comment_box.val()
+                    },
+                    /* Response is the data returned from controller method */
+                    success: function () {
 
-            //            console.log(comment_box);
-            //        }
-            //    });
+                        /* console.log(comment_box);*/
+                    }
+                });
 
-          //  });
+            });
 
         });
 
-        
+
 
         $(".bookmark").on('click', function () {
             var save = $(this);
@@ -397,7 +385,7 @@
                     }
                 }
             });
-            
+
         });
         $(".up").on('click', function () {
             var upvote = $(this);
@@ -458,7 +446,7 @@
                         return false;
                     }
                     else if (response == "cancelledDownvote") {
-                       // console.log(response);
+                        // console.log(response);
                         downvote.removeClass("downvoted");
                         downvote.find('span').text("Downvote");
                         return false;
@@ -474,7 +462,7 @@
                 type: "POST",
                 url: '/Home/Listing',
                 data: {
-                   // selectedCity: $("#ville option:selected").text,
+                    // selectedCity: $("#ville option:selected").text,
                     selectedDomaine: $(this).val(),
                     selectedCity: $("#villes").val(),
                     selectedFilter: $("#tri").val()
