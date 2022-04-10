@@ -36,6 +36,7 @@ namespace PlateformeEnsaf.Data
 
             base.OnModelCreating(builder);
 
+            
             builder.Entity<Annonce>()
             .HasMany(l => l.Images)
             .WithOne(a=> a.Annonce)
