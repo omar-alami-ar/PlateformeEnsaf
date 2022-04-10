@@ -59,7 +59,7 @@ namespace PlateformeEnsaf.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
 
             Annonce annonce = _context.Annonce.Where(x => x.Id == id).FirstOrDefault();
@@ -68,8 +68,8 @@ namespace PlateformeEnsaf.Controllers
             _context.SaveChanges();
 
 
-            
-            
+
+
 
             return RedirectToAction(nameof(Index));
         }

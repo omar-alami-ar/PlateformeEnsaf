@@ -1,0 +1,123 @@
+﻿@model IEnumerable<PlateformeEnsaf.Models.Abonnement>
+@{
+    ViewData["Title"] = "Historique";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
+
+<h2>Historique Personnel</h2>
+
+<div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-pills flex-row">
+                <li class="nav-item"><a class="nav-link" id="profile" href="/Account/Historique">Historique de publications</a></li>
+                <li class="nav-item"><a class="nav-link " id="profile" href="/Account/ListeEnregistrements">Enregistrements</a></li>
+                <li class="nav-item"><a class="nav-link active" id="email" href="/Account/HistoriqueAbonnement">Historique d'abonnements</a></li>
+                <li class="nav-item"><a class="nav-link" id="change-password" href="/Identity/Account/Manage/ChangePassword">Historique de likes</a></li>
+                <li class="nav-item"><a class="nav-link" id="two-factor" href="/Identity/Account/Manage/TwoFactorAuthentication">Historique de commentaires</a></li>
+            </ul>
+
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-12">
+
+            <table id="myTable" class="table table-sm" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th class="th-sm">
+                            UserName
+                        </th>
+                        <th class="th-sm">
+                            First Name
+                        </th>
+                        <th class="th-sm">
+                            Last Name
+                        </th>
+                        <th class="th-sm">
+                            Email
+                        </th>
+                        <th class="th-sm">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var abonnement in Model.ToList())
+                    {
+                    <tr>
+                        <td>@abonnement.FollowedUser.UserName</td>
+                        <td>@abonnement.FollowedUser.FirstName</td>
+                        <td>@abonnement.FollowedUser.LastName</td>
+                        <td>@abonnement.FollowedUser.Email</td>
+                       
+
+                        <td>
+                            <button class="btn btn-danger btn-rounded actionId" id="@abonnement.FollowedUser.Id">Désabonne</button>
+                            
+                        </td>
+                    </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.noConflict();
+        $('#myTable').DataTable();
+    });
+</script>
+
+
+<script>
+
+
+    $(document).ready(function () {
+
+        $(".actionId").on('click', function () {
+
+            var userId = $(this).attr('id');
+
+            console.log(userId);
+
+            
+
+            $.ajax({
+                type: "POST",
+                url: "/Account/DelAddAbonnement",
+                data: { id: userId },
+                success: function (result) {
+
+                    if (result == 'deleted') {
+                        $("#" + userId).text('Abonne');
+                        $("#" + userId).removeClass('btn-danger');
+                        $("#" + userId).addClass('btn-success');
+                    } else {
+                        $("#" + userId).text('Désabonne');
+                        $("#" + userId).removeClass('btn-success');
+                        $("#" + userId).addClass('btn-danger');
+
+                    }
+                }
+            });
+
+        });
+
+    });
+
+
+
+
+</script>

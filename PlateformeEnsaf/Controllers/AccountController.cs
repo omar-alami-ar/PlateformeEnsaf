@@ -39,6 +39,50 @@ namespace PlateformeEnsaf.Controllers
             return View(ga);
         }
 
+        
+        public async Task<IActionResult> HistoriqueAbonnement()
+        {
+            var user = await GetCurrentUser();
+
+            var abnmts = _context.Abonnements.Include(x=>x.FollowedUser).Where(x => x.Id_Following_User == user.Id).ToList();
+
+            
+            //var annonces = user.Annonces.Where(a=>a.).ToList();
+            return View(abnmts);
+        }
+
+        public async Task<String> DelAddAbonnement(string id)
+        {
+            var user = await GetCurrentUser();
+
+            var abnmt = _context.Abonnements.Where(x => x.Id_Following_User == user.Id && x.Id_Followed_User == id).FirstOrDefault();
+
+            if (abnmt != null)
+            {
+                _context.Abonnements.Remove(abnmt);
+                _context.SaveChanges();
+
+                return "deleted";
+            }
+            else
+            {
+                var followedUser = _context.Users.Find(id);
+
+                var abntnew = new Abonnement();
+
+                abntnew.Id_Following_User = user.Id;
+                abntnew.FollowingUser = user;
+                abntnew.Id_Followed_User = id;
+                abntnew.FollowedUser = followedUser;
+
+                _context.Abonnements.Add(abntnew);
+                _context.SaveChanges();
+
+                return "added";
+            }
+
+        }
+
         [HttpGet]
         public async Task<IActionResult> ListeEnregistrements()
         {
