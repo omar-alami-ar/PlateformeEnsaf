@@ -1,0 +1,115 @@
+﻿@model IEnumerable<PlateformeEnsaf.Models.Annonce>
+@{
+    ViewData["Title"] = "Enregistrements";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
+
+<h2>Enregistrements</h2>
+
+<div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-pills flex-row">
+                <li class="nav-item"><a class="nav-link" id="profile" href="/Account/Historique">Historique de publications</a></li>
+                <li class="nav-item"><a class="nav-link" id="profile" href="/Identity/Account/Manage">Enregistrements</a></li>
+                <li class="nav-item"><a class="nav-link" id="email" href="/Account/HistoriqueAbonnement">Historique d'abonnements</a></li>
+                <li class="nav-item"><a class="nav-link active" id="change-password" href="/Account/HistoriqueLikes">Historique de likes</a></li>
+                <li class="nav-item"><a class="nav-link" id="two-factor" href="/Identity/Account/Manage/TwoFactorAuthentication">Historique de commentaires</a></li>
+            </ul>
+
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-12">
+
+            <table id="myTable" class="table table-sm" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th class="th-sm">
+                            Title
+                        </th>
+                        <th class="th-sm">
+                            UserName
+                        </th>
+                        <th class="th-sm">
+                            FirstName
+                        </th>
+                        <th class="th-sm">
+                            LastName
+                        </th>
+                        <th class="th-sm">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var annonce in Model)
+                    {
+                    <tr>
+                        <td>@annonce.Titre</td>
+                        <td>
+                            @foreach (var rate in annonce.Rated_By)
+                            {
+                                @rate.User.UserName;
+                                <br />
+                            }
+
+                        </td>
+                        <td>
+                            @foreach (var rate in annonce.Rated_By)
+                            {
+                                @rate.User.FirstName;
+                                <br />
+                            }
+
+                        </td>
+                        <td>
+                            @foreach (var rate in annonce.Rated_By)
+                            {
+                                @rate.User.LastName;
+                                <br />
+                            }
+
+                        </td>
+                        <td>
+                            @foreach (var rate in annonce.Rated_By)
+                            {
+                                if (@rate.Type == "Up")
+                                {
+                                    <span class="btn btn-success">
+                                        @rate.Type
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="btn btn-danger">
+                                        @rate.Type
+                                    </span>
+                                }
+                                <br />
+                            }
+
+                        </td>
+                    </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.noConflict();
+        $('#myTable').DataTable();
+    });
+</script>
