@@ -145,7 +145,7 @@
                                 <div class="ml-4 text-center">
                                     <i class="fa fa-star fa-fw" style="color:#FF912C"></i> <span id="NewNoteSum">
                                         @if (ViewBag.NoteSum != null && ViewBag.NoteSum != 0)
-                                        {@(ViewBag.NoteSum / ViewBag.NbrVotes) }
+                                        {@((float)(Math.Round((double)(ViewBag.NoteSum / ViewBag.NbrVotes), 2))) }
                                         else
                                         { <span>0</span>}
                                     </span>
@@ -845,6 +845,8 @@
                         var newNote = (parseFloat(document.getElementById("noteSum").value) - parseFloat(document.getElementById("lastVote").value) + onStar) / parseFloat(document.getElementById("nbrVote").value);
 
 
+                        newNote = Math.round(newNote * 100) / 100;
+
                         $("#noteSum").val($("#noteSum").val() - $("#lastVote").val() + onStar);
                         $('#lastVote').val(onStar);
                         $("#NewNoteSum").text(newNote);
@@ -860,6 +862,7 @@
                         $("#nbrVote").val(newnbrVotes);
 
                         var newNote = (parseFloat(document.getElementById("noteSum").value) + onStar) / (parseFloat(document.getElementById("nbrVote").value));
+                        newNote = Math.round(newNote * 100) / 100;
                         $("#NewNoteSum").text(newNote);
 
                         $("#nbrVote").val(newnbrVotes);

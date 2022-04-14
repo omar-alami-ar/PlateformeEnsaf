@@ -50,6 +50,17 @@ namespace PlateformeEnsaf.Controllers
             //var annonces = user.Annonces.Where(a=>a.).ToList();
             return View(abnmts);
         }
+        public async Task<IActionResult> HistoriqueLikes()
+        {
+            var user = await GetCurrentUser();
+
+            var annones = _context.Annonce.Include(x => x.Rated_By).ThenInclude(x=>x.User).Where(x => x.User.Id == user.Id).ToList();
+
+
+
+            //var annonces = user.Annonces.Where(a=>a.).ToList();
+            return View(annones);
+        }
 
         public async Task<String> DelAddAbonnement(string id)
         {
@@ -146,13 +157,13 @@ namespace PlateformeEnsaf.Controllers
 
             var lastvote = _context.Votes.Where(a => a.Votant == currentUser && a.VoteeId == id).FirstOrDefault();
             if(lastvote != null)
-            ViewBag.lastVote = lastvote.Value;
+                ViewBag.lastVote = lastvote.Value;
 
             var votes = _context.Votes.Where(a => a.Votee == user).ToList();
-            var nbrVotes = votes.Count;
+            var nbrVotes = (float) votes.Count;
             ViewBag.NbrVotes = nbrVotes;
             
-            int test = votes.Sum(x => x.Value);
+            float test = (float) votes.Sum(x => x.Value);
             ViewBag.NoteSum = test;
             GenericAnnoces ga = new GenericAnnoces();
         
@@ -234,10 +245,20 @@ namespace PlateformeEnsaf.Controllers
             var targetUser = await userManager.FindByIdAsync(id);
             Vote vote = _context.Votes.Include(x => x.Votee).Include(x=>x.Votant).Where(a => a.Votant == sourceUser && a.Votee == targetUser).FirstOrDefault();
 
-            if(vote != null)
+            
+
+            if (vote != null)
             {
                 vote.Value = stars;
                 vote.Date = DateTime.Now;
+
+                _context.SaveChanges();
+
+                var votes = _context.Votes.Where(a => a.Votee == targetUser).ToList();
+                var nbrVotes = (float)votes.Count;
+                float sum = (float)votes.Sum(x => x.Value);
+
+                targetUser.Note = sum / nbrVotes;
 
                 _context.SaveChanges();
 
@@ -258,6 +279,14 @@ namespace PlateformeEnsaf.Controllers
                 };
 
                 _context.Votes.Add(newVote);
+                _context.SaveChanges();
+
+                var votes = _context.Votes.Where(a => a.Votee == targetUser).ToList();
+                var nbrVotes = (float)votes.Count;
+                float sum = (float)votes.Sum(x => x.Value);
+
+                targetUser.Note = sum / nbrVotes;
+
                 _context.SaveChanges();
 
                 return "add";
