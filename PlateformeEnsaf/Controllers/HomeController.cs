@@ -33,7 +33,11 @@ namespace PlateformeEnsaf.Controllers
 
         public async  Task<IActionResult> Index()
         {
+
             var currentUser = await GetCurrentUser();
+
+            
+
             ViewBag.User = currentUser;
             //var currentUserId = await User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
             ViewBag.People =  userManager.Users.Where(a => a.Id != currentUser.Id ).OrderBy(a => a.Note).Take(3);
@@ -205,6 +209,31 @@ namespace PlateformeEnsaf.Controllers
         {
             var test = _context.Users;
             ViewBag.tests = test;
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult IndexAdmin()
+        {
+            ViewBag.one = _context.Users.Where(a => a.Niveau == "1ère Année").Count();
+            ViewBag.two = _context.Users.Where(a => a.Niveau == "2éme Année").Count();
+            ViewBag.three = _context.Users.Where(a => a.Niveau == "3éme Année").Count();
+            ViewBag.L = _context.Users.Where(a => a.Niveau == "Laureat").Count();
+            ViewBag.domaines = _context.Domaines.Select(d=>d.Nom).ToList();
+            var domaines = _context.Domaines.ToList();
+            List<int> nbrParDomaine = new List<int>();
+;            foreach(var domaine in domaines)
+            {
+                var nbr = _context.Offres.Where(a=>a.Annonce_Domaines.Select(d=>d.Domaine).Contains(domaine)).Count();
+                
+                nbrParDomaine.Add(nbr);
+            }
+            ViewBag.nbrParDomaine = nbrParDomaine;
+            ViewBag.nbrStage = _context.Offres.Where(a => a.Categorie == CategorieOffre.Stage).Count(); 
+            ViewBag.nbrEmploi = _context.Offres.Where(a => a.Categorie == CategorieOffre.Emploi).Count();
+            ViewBag.Utilisateurs = _context.Users.Count();
+            ViewBag.AnnoncesEnLigne = _context.Annonce.Where(a=>a.Statut=="Approuvé").Count();
+            ViewBag.AnnoncesEnAttente = _context.Annonce.Where(a => a.Statut == "En Attente").Count();
             return View();
         }
 

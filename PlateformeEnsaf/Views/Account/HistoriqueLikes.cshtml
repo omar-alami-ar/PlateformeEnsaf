@@ -78,7 +78,7 @@
                         <td>
                             @foreach (var rate in annonce.Rated_By)
                             {
-                                if (@rate.Type == "Up")
+                                if (@rate.Type == "upvote")
                                 {
                                     <span class="btn btn-success">
                                         @rate.Type

@@ -96,8 +96,17 @@ namespace PlateformeEnsaf.Areas.Identity.Pages.Account
                     
                 if (result.Succeeded)
                 {
+                        
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                        var roles = _userManager.GetRolesAsync(user).Result.ToList();
+                        //{
+                        //    return RedirectToAction("IndexAdmin", "Home");
+                        //}
+                        if(roles.Contains("Admin"))
+                        {
+                            return RedirectToAction("IndexAdmin", "Home");
+                        }
+                        return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {

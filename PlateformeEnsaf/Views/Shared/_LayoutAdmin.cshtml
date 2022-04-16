@@ -54,15 +54,11 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-
             <li class="nav-item">
-
-
-                <a class="nav-link" href="/Home/Index">
+                <a class="nav-link" href="/Home/IndexAdmin">
                     <i class="fas fa-fw fa-home"></i>
                     <span>Accueil</span>
                 </a>
-
             </li>
 
             <!-- Divider -->
@@ -73,92 +69,45 @@
                 Menu
             </div>
 
-            @if (User.IsInRole("Admin"))
-            {
-                <li class="nav-item">
-                    <a class="nav-link" href="/Home/IndexAdmin">
-                        <i class="fa fa-chart-simple"></i>
-                        <span>Statistiques</span>
-                    </a>
-                </li>
+            <!-- Nav Item - Pages Collapse Menu -->
 
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="AdminUs" asp-action="Index">
-                        <i class="fa fa-users"></i>
-                        <span>Utilisateurs</span>
-                    </a>
-                </li>
 
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                       aria-expanded="true" aria-controls="collapseTwo">
-                        <i class="fas fa-fw fa-file-lines"></i>
-                        <span>Annonces</span>
-                    </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Publier:</h6>
-                            <a class="collapse-item" asp-controller="AdminAn" asp-action="AnOnline">En ligne</a>
-                            <a class="collapse-item" asp-controller="AdminAn" asp-action="Index">En attente d'approbation</a>
-                        </div>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="AdminUs" asp-action="Index">
+                    <i class="fa fa-users"></i>
+                    <span>Utilisateurs</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-file-lines"></i>
+                    <span>Annonces</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Publier:</h6>
+                        <a class="collapse-item" asp-controller="AdminAn" asp-action="AnOnline">En ligne</a>
+                        <a class="collapse-item" asp-controller="AdminAn" asp-action="Index">En attente d'approbation</a>
                     </div>
-                </li>
+                </div>
+            </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/Chat/Start">
-                        <i class="fa fa-message"></i>
-                        <span>Messagerie</span>
-                    </a>
-                </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/Chat/Start">
+                    <i class="fa fa-message"></i>
+                    <span>Messagerie</span>
+                </a>
+            </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/Home/Report">
-                        <i class="fa fa-envelope"></i>
-                        <span>Contact</span>
-                    </a>
-                </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Account" asp-action="ListeEnregistrements">
+                    <i class="fas fa-bookmark"></i>
+                    <span>Enregistrements</span>
+                </a>
+            </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Account" asp-action="ListeEnregistrements">
-                        <i class="fas fa-bookmark"></i>
-                        <span>Enregistrements</span>
-                    </a>
-                </li>
-            }
-
-            else
-            {
-                <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                       aria-expanded="true" aria-controls="collapseTwo">
-                        <i class="fas fa-fw fa-pen-square"></i>
-                        <span>Publier</span>
-                    </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Publier:</h6>
-                            <a class="collapse-item" asp-controller="Annonce" asp-action="CreateOff">Offre</a>
-                            <a class="collapse-item" asp-controller="Annonce" asp-action="Create">Question</a>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Chat" asp-action="Start">
-                        <i class="fa fa-message"></i>
-                        <span>Messagerie</span>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Account" asp-action="ListeEnregistrements">
-                        <i class="fas fa-bookmark"></i>
-                        <span>Enregistrements</span>
-                    </a>
-                </li>
-
-            }
 
 
 
@@ -246,11 +195,11 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    
+
                     <div class="">
                         <h3 style="font-weight:400; margin-bottom:0;"><span style="color:#4e73df">Ensaf</span>Job</h3>
                     </div>
-                    
+
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <!-- Topbar Navbar -->
@@ -280,7 +229,7 @@
                                 </div>
                             </li>
 
-                        
+
 
                             <!-- Nav Item - Alerts -->
                             <li class="nav-item dropdown no-arrow mx-1">
@@ -300,7 +249,7 @@
                                 </div>
                             </li>
 
-                        
+
 
                             <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -309,7 +258,7 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                            <span id="fullName" class="mr-2 d-none d-lg-inline text-gray-600 small">@UserManager.GetUserAsync(User).Result.FirstName @UserManager.GetUserAsync(User).Result.LastName</span>
+                                    <span id="fullName" class="mr-2 d-none d-lg-inline text-gray-600 small">@UserManager.GetUserAsync(User).Result.FirstName @UserManager.GetUserAsync(User).Result.LastName</span>
 
                                     @if (@UserManager.GetUserAsync(User).Result.ProfilePicture != null)
                                     {
@@ -332,35 +281,20 @@
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    @if (!User.IsInRole("Admin"))
-                                    {
-                                        <a class="dropdown-item" asp-controller="Account" asp-action="Profile" asp-route-id="@UserManager.GetUserAsync(User).Result.Id">
-                                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Profil
-                                        </a>
-                                    }
                                     <a class="dropdown-item text-dark" asp-area="Identity" asp-page="/Account/Manage/Index">
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Paramètres
                                     </a>
-                                    @if (!User.IsInRole("Admin"))
-                                    {
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Historique Personnel
-                                        </a>
-                                    }
-                                        <div class="dropdown-divider"></div>
-
-                                        <a class="dropdown-item" type="submit" href="#" data-toggle="modal" data-target="#logoutModal">
-                                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Déconnexion
-                                        </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" type="submit" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Déconnexion
+                                    </a>
 
 
 
 
-                                    </div>
+                                </div>
                             </li>
 
                         </ul>
@@ -386,15 +320,7 @@
 
             </div>
             <!-- End of Main Content -->
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
+           
 
         </div>
         <!-- End of Content Wrapper -->

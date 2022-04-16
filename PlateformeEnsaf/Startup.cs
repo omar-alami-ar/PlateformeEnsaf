@@ -35,6 +35,7 @@ namespace PlateformeEnsaf
             {
                 options.SignIn.RequireConfirmedAccount = false;
             })
+                 .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();

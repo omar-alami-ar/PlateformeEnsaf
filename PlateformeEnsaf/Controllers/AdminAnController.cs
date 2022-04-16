@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR;
@@ -12,6 +13,7 @@ using PlateformeEnsaf.Models;
 
 namespace PlateformeEnsaf.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminAnController : Controller
     {
         private readonly ApplicationDbContext _context;
