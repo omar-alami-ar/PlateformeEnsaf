@@ -35,8 +35,14 @@ namespace PlateformeEnsaf.Controllers
         {
             var currentUser = await GetCurrentUser();
             ViewBag.User = currentUser;
+            //var follows = _context.Users.Include(x => x.Followers).ThenInclude(x => x.FollowedUser).Include(x => x.Followers).ThenInclude(x => x.FollowingUser).Where(x => !x.Followers.Select(t=>t.FollowedUser).Contains(currentUser)).ToList();
+            //var fl = follows;
             //var currentUserId = await User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-            ViewBag.People =  userManager.Users.Where(a => a.Id != currentUser.Id ).OrderBy(a => a.Note).Take(3);
+            //ViewBag.People =  userManager.Users.Where(a => a.Id != currentUser.Id ).OrderBy(a => a.Note).Take(3);
+
+            ViewBag.People = _context.Users.Include(x => x.Followers).ThenInclude(x => x.FollowedUser).Include(x => x.Followers).ThenInclude(x => x.FollowingUser).Where(x => !x.Followers.Select(t => t.FollowingUser).Contains(currentUser) && x != currentUser).OrderByDescending(x=>x.Note).Take(3);
+
+
             GenericAnnoces ga = new GenericAnnoces();
             var user = await GetCurrentUser();
 
@@ -44,6 +50,7 @@ namespace PlateformeEnsaf.Controllers
             {
                 ga.Offres.Add(offre);
             }
+
             ViewBag.annonces = ga.Offres;
             var annonces = ga.Offres;
             ViewData["domaines"] = new SelectList(_context.Domaines, "Id", "Nom");

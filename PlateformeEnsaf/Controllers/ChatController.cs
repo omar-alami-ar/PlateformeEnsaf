@@ -26,7 +26,8 @@ namespace PlateformeEnsaf.Controllers
         }
         public async Task<IActionResult> Index(string id)
         {
-            ViewBag.number = ApplicationUser.Ids;
+            
+
             var receiver = await userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
             ViewBag.user = receiver;
             var sender = await GetCurrentUser();
@@ -38,11 +39,16 @@ namespace PlateformeEnsaf.Controllers
 
             var messages = _context.Messages.Where(r => (r.Sender == sender && r.Receiver == receiver) || (r.Sender == receiver && r.Receiver == sender)).Include(u=>u.Sender).Include(u => u.Receiver).OrderBy(u=>u.DateEnvoi).ToList();
             ViewBag.messages = messages;
+
+            ViewBag.connect = ApplicationUser.Ids;
+            ViewBag.number = ApplicationUser.Ids.Count;
+
             return View();
         }
 
         public async Task<IActionResult> Start()
         {
+
            
             var sender = await GetCurrentUser();
 
@@ -51,7 +57,9 @@ namespace PlateformeEnsaf.Controllers
            
             ViewBag.contacts = currentUser.Follows;
 
-           
+            ViewBag.connect = ApplicationUser.Ids;
+            ViewBag.number = ApplicationUser.Ids.Count;
+
             return View();
         }
 
