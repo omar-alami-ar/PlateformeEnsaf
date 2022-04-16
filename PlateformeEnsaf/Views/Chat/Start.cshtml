@@ -45,7 +45,20 @@
                             }
                             <div class="flex-grow-1 ml-3">
                                 @contact.FollowedUser.FirstName @contact.FollowedUser.LastName
-                                <div class="small"><span class="fas fa-circle chat-online"></span> Online</div>
+                                <div class="small d-flex align-items-center">
+                                    @if (ViewBag.connect.Contains(contact.Id_Followed_User))
+                                    {
+                                        <span class="fas fa-circle chat-online mr-1"></span>
+                                        <p class="mb-0">Online</p>
+
+                                    }
+                                    else
+                                    {
+                                        <span class="fas fa-circle chat-offline mr-1"></span>
+                                        <p class="mb-0">Offline</p>
+
+                                    }
+                                </div>
                             </div>
                         </div>
                     </a>

@@ -63,6 +63,17 @@ namespace PlateformeEnsaf.Models
         [NotMapped]
         public static List<string> Ids = new List<string>();
 
+        public static void AddOnly(string id)
+        {
+            if (!Ids.Contains(id))
+                Ids.Add(id);
+        }
+        public static void RemoveOnly(string id)
+        {
+            if (Ids.Contains(id))
+                Ids.Remove(id);
+        }
+
     }
 
 }

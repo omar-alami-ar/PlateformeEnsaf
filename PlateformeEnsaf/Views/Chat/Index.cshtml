@@ -8,14 +8,16 @@
 <div class="container p-0">
 
     @*<ul>
-       
-        @foreach (var item in ViewBag.number) {
-         <li>@item</li>
-        }
-        
-    </ul>*@
-    
-    <input type="hidden" id="connectionId"  value="" />
+
+            @foreach (var item in ViewBag.number) {
+             <li>@item</li>
+            }
+
+        </ul>*@
+
+    <h1>Hello</h1> <strong id="counter"></strong>
+
+    <input type="hidden" id="connectionId" value="" />
     <input type="hidden" id="receiverId" value="@ViewBag.user.Id" />
     <input type="hidden" id="senderId" value="@ViewBag.senderId" />
     <input type="hidden" id="senderName" value="@ViewBag.senderName" />
@@ -31,12 +33,12 @@
                     </div>
                 </div>
 
-         
+
 
                 @foreach (var contact in ViewBag.contacts)
                 {
                     <a asp-controller="Chat" asp-action="Index" asp-route-id="@contact.FollowedUser.Id" class="list-group-item list-group-item-action border-0">
-                       
+
                         <div class="d-flex align-items-start">
                             @if (contact.FollowedUser.ProfilePicture != null)
                             {
@@ -45,12 +47,26 @@
                             else
                             {
                                 <img src="https://bootdey.com/img/Content/avatar/avatar5.png" class="rounded-circle mr-1" alt="" width="40" height="40">
-                                
-                                            }
-                        <div class="flex-grow-1 ml-3">
-                            @contact.FollowedUser.FirstName @contact.FollowedUser.LastName
-                            <div class="small"><span class="fas fa-circle chat-online"></span> Online</div>
-                        </div>
+
+                            }
+                            <div class="flex-grow-1 ml-3">
+                                @contact.FollowedUser.FirstName @contact.FollowedUser.LastName
+                                <div class="small d-flex align-items-center">
+                                    @if (ViewBag.connect.Contains(contact.Id_Followed_User))
+                                    {
+                                        <span class="fas fa-circle chat-online mr-1"></span>
+                                        <p class="mb-0">Online</p>
+
+                                    }
+                                    else
+                                    {
+                                        <span class="fas fa-circle chat-offline mr-1"></span>
+                                        <p class="mb-0">Offline</p>
+
+                                    }
+
+                                </div>
+                            </div>
                         </div>
                     </a>
                 }
@@ -64,14 +80,14 @@
                         <div class="position-relative">
                             @if (ViewBag.user.ProfilePicture != null)
                             {
-                            <img id="chat-profile-pic" class="rounded-circle"
-                                 src="data:image/*;base64,@(Convert.ToBase64String(ViewBag.user.ProfilePicture))" style="width:40px; height:40px">
+                                <img id="chat-profile-pic" class="rounded-circle"
+                                     src="data:image/*;base64,@(Convert.ToBase64String(ViewBag.user.ProfilePicture))" style="width:40px; height:40px">
 
                             }
                             else
                             {
-                            <img id="chat-profile-pic" class="rounded-circle" style="width:40px; height:40px"
-                                 src="~/img/undraw_profile.svg">
+                                <img id="chat-profile-pic" class="rounded-circle" style="width:40px; height:40px"
+                                     src="~/img/undraw_profile.svg">
                             }
 
                         </div>
@@ -79,7 +95,7 @@
                             <a class="text-dark" asp-controller="Account" asp-action="Profile" asp-route-id="@ViewBag.user.Id"><strong>@ViewBag.user.FirstName @ViewBag.user.LastName</strong></a>
                             @*<div class="text-muted small"><em>Typing...</em></div>*@
                         </div>
-                        
+
                     </div>
                 </div>
 
@@ -143,7 +159,7 @@
 
                         <div id="scroll"></div>
                     </div>
-                    
+
                 </div>
 
                 <div class="flex-grow-0 py-3 px-4 border-top">
@@ -173,7 +189,7 @@
         flex-direction: column;
         max-height: 350px;
         overflow-y: scroll;
-        min-height:350px;
+        min-height: 350px;
     }
 
     .chat-message-left,
@@ -212,56 +228,54 @@
 
 
 @*
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#send-btn").on('click', function () {
-            var message = $("#message-box").val();
-            if (message != "") {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#send-btn").on('click', function () {
+                var message = $("#message-box").val();
+                if (message != "") {
 
-                var rootDiv = jQuery('<div>', {
-                    class: 'chat-message-right pb-4',
-                }).appendTo('#chat-messages-list');
+                    var rootDiv = jQuery('<div>', {
+                        class: 'chat-message-right pb-4',
+                    }).appendTo('#chat-messages-list');
 
-                var imageAndTimeDiv = jQuery('<div>', {
-                }).appendTo(rootDiv);
+                    var imageAndTimeDiv = jQuery('<div>', {
+                    }).appendTo(rootDiv);
 
-                imageAndTimeDiv.prepend('<img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">')
-                var time = jQuery('<div>', {
-                    class: 'text-muted small text-nowrap mt-2'
-                });
-                var dateWithouthSecond = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                time.append(dateWithouthSecond);
-                imageAndTimeDiv.append(time);
+                    imageAndTimeDiv.prepend('<img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">')
+                    var time = jQuery('<div>', {
+                        class: 'text-muted small text-nowrap mt-2'
+                    });
+                    var dateWithouthSecond = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    time.append(dateWithouthSecond);
+                    imageAndTimeDiv.append(time);
 
-                var contentDiv = jQuery('<div>', {
-                    class: 'flex-shrink-1 bg-light rounded py-2 px-3 mr-3',
-                }).appendTo(rootDiv);
+                    var contentDiv = jQuery('<div>', {
+                        class: 'flex-shrink-1 bg-light rounded py-2 px-3 mr-3',
+                    }).appendTo(rootDiv);
 
-                var nameDiv = jQuery('<div>', {
-                    class: 'font-weight-bold mb-1',
-                });
-                nameDiv.append("You");
-                contentDiv.append(nameDiv);
-                contentDiv.append(message);
+                    var nameDiv = jQuery('<div>', {
+                        class: 'font-weight-bold mb-1',
+                    });
+                    nameDiv.append("You");
+                    contentDiv.append(nameDiv);
+                    contentDiv.append(message);
 
-                //clear input box
-                $("#message-box").val('');
+                    //clear input box
+                    $("#message-box").val('');
 
-            }
+                }
+            });
+            $('#message-box').keypress(function (e) {
+                if (e.which == 13) {
+                    $('#send-btn').click();
+                }
+            });
         });
-        $('#message-box').keypress(function (e) {
-            if (e.which == 13) {
-                $('#send-btn').click();
-            }
-        });
-    });
 
-</script>*@
+    </script>*@
 
-<script type="text/javascript">
-
-    function chatBottom() {
-       // $("#chat-messages-list").lastElementChild.scrollIntoView();
+<script type="text/javascript">function chatBottom() {
+        // $("#chat-messages-list").lastElementChild.scrollIntoView();
         document.getElementById('scroll').scrollIntoView();
     };
     chatBottom();
@@ -269,9 +283,9 @@
     "use strict";
     var connection = new signalR.HubConnectionBuilder().withUrl("/MessageHub").build();
 
-    
+
     //Disable send button until connection is established
-   // document.getElementById("send-btn").disabled = true;
+    // document.getElementById("send-btn").disabled = true;
 
     connection.on("ReceiveMessage", function (user, message, receiverId) {
         if (receiverId == $("#senderId").val()) {
@@ -340,7 +354,7 @@
     }).catch(function (err) {
         return console.error(err.toString());
     });
-    
+
     //document.getElementById("sendButton").addEventListener("click", function (event) {
     //    var user = document.getElementById("userInput").value;
     //    var message = document.getElementById("messageInput").value;
@@ -362,7 +376,7 @@
                 class: 'chat-message-right pb-4',
             }).appendTo('#chat-messages-list');
 
-            
+
 
             var imageAndTimeDiv = jQuery('<div>', {
             }).appendTo(rootDiv);
@@ -374,13 +388,13 @@
                 class: 'rounded-circle mr-1',
                 alt: 'img'
             }).height(40).width(40);
-            
+
             imageAndTimeDiv.prepend(img);
             var time = jQuery('<div>', {
                 class: 'text-muted small text-nowrap mt-2'
             });
             var dateWithouthSecond = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-          
+
 
             var MyDate = new Date();
             var MyDateString;
@@ -390,7 +404,7 @@
             MyDateString = ('0' + MyDate.getDate()).slice(-2) + '/'
                 + ('0' + (MyDate.getMonth() + 1)).slice(-2);
 
-            time.prepend(MyDateString+'<br>');
+            time.prepend(MyDateString + '<br>');
             time.append(dateWithouthSecond);
             imageAndTimeDiv.append(time);
 
@@ -406,12 +420,12 @@
             /*contentDiv.append(message);*/
 
             var user = document.getElementById("senderName").value; //name of sender
-           // var receiverConnectionId = document.getElementById("receiverId").value;  //id of receiver
+            // var receiverConnectionId = document.getElementById("receiverId").value;  //id of receiver
             contentDiv.append(message);
-           
-            connection.invoke("SendMessage", user, message,receiverId).catch(function (err) {
+
+            connection.invoke("SendMessage", user, message, receiverId).catch(function (err) {
                 return console.error(err.toString());
-                
+
             });
 
             $.ajax({
@@ -420,7 +434,7 @@
                 data: { senderId: $("#senderId").val(), receiverId: $("#receiverId").val(), content: message },
                 success: function () {
                     //console.log(null);
-                    
+
                 },
                 error: function (req, status, error) {
                     console.log(result);
@@ -454,7 +468,11 @@
     //        return console.error(err.toString());
     //    });
     //    event.preventDefault();
-    //});
+    //});</script>
 
-</script>
+
+
+
+
+
 

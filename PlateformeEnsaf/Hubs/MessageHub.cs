@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 [HubName("MessageHub")]
 public class MessageHub : Hub
 {
+    static long counter = 0;
 
     public async Task SendMessage(string user, string message,string receiverId)
     {
@@ -33,13 +34,13 @@ public class MessageHub : Hub
 
     public override Task OnConnectedAsync()
     {
-        ApplicationUser.Ids.Add(Context.ConnectionId);
+        ApplicationUser.AddOnly(Context.UserIdentifier);
         return base.OnConnectedAsync();
     }
 
     public override Task OnDisconnectedAsync(Exception exception)
     {
-        ApplicationUser.Ids.Remove(Context.ConnectionId);
+        ApplicationUser.RemoveOnly(Context.UserIdentifier);
         return base.OnDisconnectedAsync(exception);
     }
 }
