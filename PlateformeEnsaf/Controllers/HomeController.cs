@@ -296,6 +296,8 @@ namespace PlateformeEnsaf.Controllers
         
         public async Task<IActionResult> Search(string? searchText)
         {
+
+
             string txt = null;
             if (searchText != null)
             {
