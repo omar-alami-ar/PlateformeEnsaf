@@ -246,11 +246,22 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    
+
                     <div class="">
                         <h3 style="font-weight:400; margin-bottom:0;"><span style="color:#4e73df">Ensaf</span>Job</h3>
                     </div>
-                    
+
+                    <form asp-action="Search" asp-controller="Home" id="search" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input  name="searchText" type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <input id="searchButton" href="#" class="btn btn-primary" type="submit"/>
+                                    @*<i class="fas fa-search fa-sm"></i>*@
+                                
+                            </div>
+                        </div>
+                    </form>
+
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <!-- Topbar Navbar -->
@@ -280,7 +291,7 @@
                                 </div>
                             </li>
 
-                        
+
 
                             <!-- Nav Item - Alerts -->
                             <li class="nav-item dropdown no-arrow mx-1">
@@ -300,7 +311,7 @@
                                 </div>
                             </li>
 
-                        
+
 
                             <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -309,7 +320,7 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                            <span id="fullName" class="mr-2 d-none d-lg-inline text-gray-600 small">@UserManager.GetUserAsync(User).Result.FirstName @UserManager.GetUserAsync(User).Result.LastName</span>
+                                    <span id="fullName" class="mr-2 d-none d-lg-inline text-gray-600 small">@UserManager.GetUserAsync(User).Result.FirstName @UserManager.GetUserAsync(User).Result.LastName</span>
 
                                     @if (@UserManager.GetUserAsync(User).Result.ProfilePicture != null)
                                     {
@@ -350,17 +361,17 @@
                                             Historique Personnel
                                         </a>
                                     }
-                                        <div class="dropdown-divider"></div>
+                                    <div class="dropdown-divider"></div>
 
-                                        <a class="dropdown-item" type="submit" href="#" data-toggle="modal" data-target="#logoutModal">
-                                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Déconnexion
-                                        </a>
-
-
+                                    <a class="dropdown-item" type="submit" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Déconnexion
+                                    </a>
 
 
-                                    </div>
+
+
+                                </div>
                             </li>
 
                         </ul>

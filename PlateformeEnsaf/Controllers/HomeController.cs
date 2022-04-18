@@ -293,6 +293,19 @@ namespace PlateformeEnsaf.Controllers
             return View();
         }
 
+        
+        public async Task<IActionResult> Search(string? searchText)
+        {
+            string txt = null;
+            if (searchText != null)
+            {
+                 txt = String.Concat(searchText.Where(c => !Char.IsWhiteSpace(c)));
+            } 
+                var results = _context.Users.Where(a => (a.FirstName + a.LastName).Contains(txt) || a.UserName.Contains(txt)).ToList();
+                return View(results);
+            
+            
+        }
 
     }
 }
