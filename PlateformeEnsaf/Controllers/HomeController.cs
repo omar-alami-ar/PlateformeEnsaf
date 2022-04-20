@@ -300,6 +300,7 @@ namespace PlateformeEnsaf.Controllers
 
             string txt = null;
             if (searchText != null)
+
             {
                  txt = String.Concat(searchText.Where(c => !Char.IsWhiteSpace(c)));
             } 
