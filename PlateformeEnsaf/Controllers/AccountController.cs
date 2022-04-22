@@ -35,6 +35,10 @@ namespace PlateformeEnsaf.Controllers
             {
                 ga.Offres.Add(offre);
             }
+            foreach (var question in await _context.Questions.Where(o => o.User == user).ToListAsync())
+            {
+                ga.Questions.Add(question);
+            }
             //var annonces = user.Annonces.Where(a=>a.).ToList();
             return View(ga);
         }

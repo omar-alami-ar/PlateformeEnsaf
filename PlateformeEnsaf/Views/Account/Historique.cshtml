@@ -49,38 +49,68 @@
                 <tbody>
                     @foreach (var annonce in Model.Offres)
                     {
-                    <tr>
-                        <td>@annonce.Titre</td>
-                        <td>@annonce.DatePublication</td>
-                        <td>@annonce.Categorie</td>
-                        @if (annonce.Statut == "En attente")
-                        {
-                            <td><span class="badge badge-danger rounded-pill">@annonce.Statut</span></td>
-                        }
-                        else
-                        {
-                            <td><span class="badge badge-success rounded-pill">@annonce.Statut</span></td>
-                        }
+                        <tr>
+                            <td>@annonce.Titre</td>
+                            <td>@annonce.DatePublication</td>
+                            <td>@annonce.Categorie</td>
+                            @if (annonce.Statut == "En attente")
+                            {
+                                <td><span class="badge badge-danger rounded-pill">@annonce.Statut</span></td>
+                            }
+                            else
+                            {
+                                <td><span class="badge badge-success rounded-pill">@annonce.Statut</span></td>
+                            }
 
-                    <td>
-                        <a 
-                                class="btn btn-link btn-rounded btn-sm fw-bold"
-                                data-mdb-ripple-color="dark" asp-action="DetailsOff" asp-controller="Annonce" asp-route-id="@annonce.Id">
-                            Détails
-                        </a> |
-                        <a 
-                                class="btn btn-link btn-rounded btn-sm fw-bold"
-                                data-mdb-ripple-color="dark" asp-action="EditOff" asp-controller="Annonce" asp-route-id="@annonce.Id">
-                            Modifier
-                        </a> |
-                        <a 
-                                class="btn btn-link btn-rounded btn-sm fw-bold"
-                                data-mdb-ripple-color="dark" asp-action="DeleteOff" asp-controller="Annonce" asp-route-id="@annonce.Id">
-                            Supprimer
-                        </a>
+                            <td>
+                                <a class="btn btn-link btn-rounded btn-sm fw-bold"
+                                   data-mdb-ripple-color="dark" asp-action="DetailsOff" asp-controller="Annonce" asp-route-id="@annonce.Id">
+                                    Détails
+                                </a> |
+                                <a class="btn btn-link btn-rounded btn-sm fw-bold"
+                                   data-mdb-ripple-color="dark" asp-action="EditOff" asp-controller="Annonce" asp-route-id="@annonce.Id">
+                                    Modifier
+                                </a> |
+                                <a class="btn btn-link btn-rounded btn-sm fw-bold"
+                                   data-mdb-ripple-color="dark" asp-action="DeleteOff" asp-controller="Annonce" asp-route-id="@annonce.Id">
+                                    Supprimer
+                                </a>
 
-                    </td>
-                    </tr>
+                            </td>
+                        </tr>
+
+                    }
+                    @foreach (var annonce in Model.Questions)
+                    {
+                        <tr>
+                            <td>@annonce.Titre</td>
+                            <td>@annonce.DatePublication</td>
+                            <td> Question</td>
+                            @if (annonce.Statut == "En attente")
+                            {
+                                <td><span class="badge badge-danger rounded-pill">@annonce.Statut</span></td>
+                            }
+                            else
+                            {
+                                <td><span class="badge badge-success rounded-pill">@annonce.Statut</span></td>
+                            }
+
+                            <td>
+                                <a class="btn btn-link btn-rounded btn-sm fw-bold"
+                                   data-mdb-ripple-color="dark" asp-action="Details" asp-controller="Annonce" asp-route-id="@annonce.Id">
+                                    Détails
+                                </a> |
+                                <a class="btn btn-link btn-rounded btn-sm fw-bold"
+                                   data-mdb-ripple-color="dark" asp-action="Edit" asp-controller="Annonce" asp-route-id="@annonce.Id">
+                                    Modifier
+                                </a> |
+                                <a class="btn btn-link btn-rounded btn-sm fw-bold"
+                                   data-mdb-ripple-color="dark" asp-action="Delete" asp-controller="Annonce" asp-route-id="@annonce.Id">
+                                    Supprimer
+                                </a>
+
+                            </td>
+                        </tr>
 
                     }
 

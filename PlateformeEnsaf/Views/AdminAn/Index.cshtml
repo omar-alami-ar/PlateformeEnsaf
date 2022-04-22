@@ -47,9 +47,16 @@
                         </td>
 
                         <td>
-                      
-                            <a class="text-primary" asp-action="DetailsOff" asp-route-id="@item.Id">Details</a> |
-                            <a class="text-success" asp-action="Delete" asp-route-id="@item.Id">Approuver</a> |
+
+                            @if (item is Offre)
+                            {
+                                <a class="text-primary" asp-action="DetailsOff" asp-controller="Annonce" asp-route-id="@item.Id">Details</a>
+                            }
+                            else
+                            {
+                                <a class="text-primary" asp-action="Details" asp-controller="Annonce" asp-route-id="@item.Id">Details</a>
+                            }|
+                            <a class="text-success" asp-action="Edit" asp-route-id="@item.Id">Approuver</a> |
                             <a class="text-danger" asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
                         </td>
                     </tr>

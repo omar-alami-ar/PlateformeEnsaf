@@ -102,7 +102,7 @@ namespace PlateformeEnsaf.Controllers
             var annonce = await _context.Annonce.FindAsync(id);
             _context.Annonce.Remove(annonce);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("AnOnline");
         }
 
         private bool AnnonceExists(int id)

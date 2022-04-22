@@ -57,9 +57,8 @@
                     <td>
 
                         <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="/Chat/Index/@item.Id" asp-route-id="@item.Id">Contacter</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Blacklist</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Supprimer</a> 
+                        <a asp-action="Index" asp-controller="Chat" asp-route-id="@item.Id">Contacter</a> |
+                      
                     </td>
                 </tr>
                 }

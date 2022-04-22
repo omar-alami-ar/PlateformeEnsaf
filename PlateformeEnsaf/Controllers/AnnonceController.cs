@@ -144,7 +144,7 @@ namespace PlateformeEnsaf.Controllers
 
 
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Historique", "Account");
             }
             return View(offre);
         }
@@ -211,7 +211,7 @@ namespace PlateformeEnsaf.Controllers
 
 
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Historique", "Account");
             }
             return View(annonce);
         }
@@ -284,7 +284,7 @@ namespace PlateformeEnsaf.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Historique", "Account");
             }
             return View(question);
         }
@@ -354,7 +354,7 @@ namespace PlateformeEnsaf.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Historique","Account");
             }
             return View(offre);
         }
@@ -384,7 +384,7 @@ namespace PlateformeEnsaf.Controllers
             var annonce = await _context.Annonce.FindAsync(id);
             _context.Annonce.Remove(annonce);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Historique", "Account");
         }
 
         public async Task<IActionResult> DeleteOff(int? id)
@@ -411,7 +411,7 @@ namespace PlateformeEnsaf.Controllers
             var annonce = await _context.Annonce.FindAsync(id);
             _context.Annonce.Remove(annonce);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Historique", "Account");
         }
 
         [Authorize]

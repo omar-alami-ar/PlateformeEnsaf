@@ -51,7 +51,14 @@
                             @Html.DisplayFor(modelItem => item.Note)
                         </td>
                         <td>
-                            <a class="text-primary" asp-action="DetailsOff" asp-route-id="@item.Id">Details</a> |
+                            @if (item is Offre)
+                            {
+                                <a class="text-primary" asp-action="DetailsOff" asp-controller="Annonce" asp-route-id="@item.Id">Details</a>
+                            }
+                            else
+                            {
+                                <a class="text-primary" asp-action="Details" asp-controller="Annonce" asp-route-id="@item.Id">Details</a>
+                            } |
                             <a class="text-danger" asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
                         </td>
                     </tr>
