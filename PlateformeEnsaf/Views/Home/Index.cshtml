@@ -267,7 +267,15 @@
                     <div class="tab-pane fade active show" id="posts" role="tabpanel" aria-labelledby="posts-tab">
                         <div class="form-group">
                             <label class="sr-only" for="message">post</label>
-                            <input class="form-control" placeholder="Titre" name="title" />
+
+                            <div class="alert alert-success alert-dismissible" role="alert" id="alert-succ">
+                                Ajouté avec succes
+                            </div>
+                            <div class="alert alert-danger alert-dismissible" role="alert" id="alert-err">
+                                Erreur annonce not accepted
+                            </div>
+
+                            <input class="form-control" placeholder="Titre" id="title" name="title" />
                             <textarea class="form-control mt-2" id="message" rows="3" placeholder="Exprimez vous ..."></textarea>
                         </div>
                     </div>
@@ -275,7 +283,7 @@
                 </div>
                 <div class="btn-toolbar justify-content-between">
                     <div class="btn-group">
-                        <button type="submit" class="btn btn-primary">Partager</button>
+                        <button type="submit" id="share" class="btn btn-primary">Partager</button>
                     </div>
 
                 </div>
